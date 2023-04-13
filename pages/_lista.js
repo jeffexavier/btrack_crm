@@ -1,5 +1,3 @@
-
-
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { parse } from "node-html-parser"
@@ -29,7 +27,7 @@ export default function lista() {
         <th className="border border-slate-600">CNPJ</th>
         <th className="border border-slate-600">Empresa</th>
         <th className="border border-slate-600">CS</th>
-        <th className="border border-slate-600">nota</th>
+        <th className="border border-slate-600">Nota</th>
       </tr>
     </thead>
     <tbody>
