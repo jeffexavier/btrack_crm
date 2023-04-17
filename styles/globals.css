@@ -1,6 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: 'Poppins', sans-serif;
+  src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@100&display=swap');
+}
 
 :root {
   --foreground-rgb: 0, 0, 0;
@@ -18,10 +22,15 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: #fbfffe;
+  color: #191716;
+  font-family: 'Poppins', sans-serif;
+}
+
+.button {
+  @apply text-periwinkle;
+  @apply p-5 w-fit text-center font-semibold;
+  @apply hover:text-rose;
+
+
 }

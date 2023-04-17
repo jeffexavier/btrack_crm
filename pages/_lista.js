@@ -20,20 +20,20 @@ export default function lista() {
 
 
   return(
-    <table className="table-auto">
-    <thead>
-      <tr>
-        <th className="border border-slate-600">Data da nota</th>
-        <th className="border border-slate-600">CNPJ</th>
-        <th className="border border-slate-600">Empresa</th>
-        <th className="border border-slate-600">CS</th>
-        <th className="border border-slate-600">Nota</th>
+    <table className="table-auto ">
+    <thead className=" bg-russian-violet text-white h-[50px]">
+      <tr className="border-b text-left">
+        <th className="px-2 min-w-[150px]">Data da nota</th>
+        <th className="px-2 min-w-[180px]">CNPJ</th>
+        <th className="px-2 min-w-[180px]">Empresa</th>
+        <th className="px-2 min-w-[210px]">CS</th>
+        <th className="px-2">Nota</th>
       </tr>
     </thead>
     <tbody>
       {customers.map((item, index) => (
-        <tr key={index}>
-          <td className="border border-slate-700"> {
+        <tr key={index} className="bg-tropical-indigo text-lavender transition duration-300 ease-in-out hover:bg-slate-blue hover:text-white py-2"> 
+          <td className="border-b px-2 font-bold"> {
             new Date(item.created_on).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',
@@ -42,11 +42,11 @@ export default function lista() {
             minute: '2-digit'
             })
           }
-  </td>
-          <td className="border border-slate-700">{item.customer.cnpj}</td>
-          <td className="border border-slate-700">{item.customer.name_contract}</td>
-          <td className="border border-slate-700">{item.created_by.email}</td>
-          <td className="border border-slate-700">{parse(item.description).text}</td>
+          </td>
+          <td className="border-b p-2">{item.customer.cnpj}</td>
+          <td className="border-b p-2 hover:font-bold"><a href={"https://biud.sensedata.io/cliente/" + item.customer.id} target="_blank">{item.customer.name_contract}</a></td>
+          <td className="border-b p-2">{item.created_by.email}</td>
+          <td className="border-b p-2 text-justify hover:font-bold">{parse(item.description).text}</td>
         </tr>
       ))}
       </tbody>

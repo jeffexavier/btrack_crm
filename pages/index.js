@@ -1,7 +1,10 @@
-import App from "./_app.js"
+import Lista from "./_lista.js"
+
 
 export default function Home() {
   return (
-    <App />
+    <>
+    <h1>teste</h1>
+    </>
   )
 }
