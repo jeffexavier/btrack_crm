@@ -9,7 +9,7 @@ export default function lista() {
         {
           customer: {
             cnpj: "40.821.857/0001-97",
-            name_contract: "1 - Boteco do jeffin",
+            name_contract: "1 - Bar do jeffin",
             id: "37134"
           },
           created_on: "2023-04-16T00:00:00.000Z",
@@ -22,6 +22,18 @@ export default function lista() {
           customer: {
             cnpj: "40.821.857/0001-97",
             name_contract: "2 - Boteco do jeffin",
+            id: "37134"
+          },
+          created_on: "2023-04-16T00:00:00.000Z",
+          created_by: {
+            email: "jeffin22k@hotmail.com"
+          },
+          description: "Este é um teste do jeff para conseguir desenvolver a tela de notas do sensedata"
+        },
+        {
+          customer: {
+            cnpj: "40.821.857/0001-97",
+            name_contract: "3 - Bar do jeffin",
             id: "37134"
           },
           created_on: "2023-04-16T00:00:00.000Z",
