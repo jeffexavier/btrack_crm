@@ -4,8 +4,7 @@ import { parse } from "node-html-parser"
 import notas from "../public/notas.json"
 
 export default function lista() {
-  const notasJson= {
-      customers_notes: [
+  const customersNotes= [
         {
           customer: {
             cnpj: "40.821.857/0001-97",
@@ -43,9 +42,26 @@ export default function lista() {
           description: "Este é um teste do jeff para conseguir desenvolver a tela de notas do sensedata"
         }
       ]
-    }
 
-  const [customers, setCustomers] = useState(notasJson.customers_notes)
+  const [textInput, setTextInput] = useState("");
+
+  const [customers, setCustomers] = useState([]);
+
+  if(textInput.length > 2) {
+    const filterCustomer = customersNotes.filter(item =>{
+      if(item.customer.name_contract.includes(textInput)) {
+        return item
+      }
+    })
+    setCustomers(filterCustomer)
+    setTextInput
+  }
+
+
+
+  
+
+  // const [customers, setCustomers] = useState(customersNotes);
 
   // useEffect(()=> {
   //   axios.get("./api/sensedata/notas",{
@@ -61,6 +77,9 @@ export default function lista() {
 
 
   return(
+    <div>
+    <input type="text" id="text-filter" className="border border-2 border-rose" value={textInput} onChange={newText => setTextInput(newText.target.value)}/>
+    {/* <p>{textInput}</p> */}
     <table className="table-auto ">
     <thead className=" bg-russian-violet text-white h-[50px]">
       <tr className="border-b text-left">
@@ -92,5 +111,6 @@ export default function lista() {
       ))}
       </tbody>
       </table>
+      </div>
     )
 }

@@ -31,5 +31,4 @@ const customersNotes=  [
     }
   })
 
-
   console.log(notasTeste)
