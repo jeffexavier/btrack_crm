@@ -6,7 +6,7 @@ dotenv.config()
 import axios from "axios"
 
 export default async function handler(req, res) {
-  await axios.get(process.env.SENSEDATA_API + "customers_notes",{
+  await axios.get(process.env.SENSEDATA_API + "customers_notes/?limit=1000",{
     headers: {
       Authorization: `Bearer `+ process.env.SENSEDATA_TOKEN
     }

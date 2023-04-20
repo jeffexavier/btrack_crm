@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { parse } from "node-html-parser"
 import notas from "../public/notas.json"
+import { Button, useTheme, Text, Avatar } from "@nextui-org/react"
 
 export default function lista() {
   const notasJson= {
@@ -46,6 +47,7 @@ export default function lista() {
     }
 
   const [customers, setCustomers] = useState(notasJson.customers_notes)
+  const { theme } = useTheme();
 
   // useEffect(()=> {
   //   axios.get("./api/sensedata/notas",{
@@ -61,6 +63,9 @@ export default function lista() {
 
 
   return(
+    <>
+    <Avatar />
+    <Button>teste</Button>
     <table className="table-auto ">
     <thead className=" bg-russian-violet text-white h-[50px]">
       <tr className="border-b text-left">
@@ -92,5 +97,6 @@ export default function lista() {
       ))}
       </tbody>
       </table>
+      </>
     )
 }

@@ -1,17 +1,16 @@
-import '@/styles/globals.css'
-// import Lista from "./_lista.js"
-// import Menu from './_menu.js'
-// import { Router, Routes, Route } from 'next/router.js'
-// import Link from 'next/link.js'
-import Layout from './components/Layout.js'
+'use client';
 
+import '@/styles/globals.css'
+
+import { NextUIProvider } from '@nextui-org/react';
+import Layout from './components/Layout';
 
 export default function MyApp({ Component, pageProps }) {
   return(
-    <>
-    <Layout>
+    <NextUIProvider>
+      <Layout>
       <Component {...pageProps} />
-    </Layout>  
-    </>
+      </Layout>
+    </NextUIProvider> 
   )
 }
