@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { parse } from "node-html-parser"
 import notas from "../public/notas.json"
+import { Button, useTheme, Text, Avatar } from "@nextui-org/react"
 
 export default function lista() {
   const customersNotes= [
