@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { parse } from "node-html-parser"
 import notas from "../public/notas.json"
-import { Button, useTheme, Text, Avatar } from "@nextui-org/react"
+import { Button, useTheme, Avatar, Table } from "@nextui-org/react"
 
 export default function lista() {
   const customersNotes= [
@@ -44,25 +44,8 @@ export default function lista() {
         }
       ]
 
-  const [textInput, setTextInput] = useState("");
-
-  const [customers, setCustomers] = useState([]);
-
-  if(textInput.length > 2) {
-    const filterCustomer = customersNotes.filter(item =>{
-      if(item.customer.name_contract.includes(textInput)) {
-        return item
-      }
-    })
-    setCustomers(filterCustomer)
-    setTextInput
-  }
-
-
-
-  
-
-  // const [customers, setCustomers] = useState(customersNotes);
+  const [customers, setCustomers] = useState(customersNotes)
+  const { theme } = useTheme();
 
   // useEffect(()=> {
   //   axios.get("./api/sensedata/notas",{
@@ -78,23 +61,30 @@ export default function lista() {
 
 
   return(
-    <div>
-    <input type="text" id="text-filter" className="border border-2 border-rose" value={textInput} onChange={newText => setTextInput(newText.target.value)}/>
-    {/* <p>{textInput}</p> */}
-    <table className="table-auto ">
-    <thead className=" bg-russian-violet text-white h-[50px]">
-      <tr className="border-b text-left">
-        <th className="px-2 min-w-[150px]">Data da nota</th>
-        <th className="px-2 min-w-[180px]">CNPJ</th>
-        <th className="px-2 min-w-[180px]">Empresa</th>
-        <th className="px-2 min-w-[210px]">CS</th>
-        <th className="px-2">Nota</th>
-      </tr>
-    </thead>
-    <tbody>
+    <>
+    <Avatar />
+    <Button>teste</Button>
+    <Table 
+      bordered
+      shadow={false}
+      color="secondary"
+      aria-label="Example pagination  table"
+      css={{
+        height: "auto",
+        minWidth: "100%",
+      }}
+      selectionMode="multiple">
+    <Table.Header>
+        <Table.Column>Data da nota</Table.Column>
+        <Table.Column>CNPJ</Table.Column>
+        <Table.Column>Empresa</Table.Column>
+        <Table.Column>CS</Table.Column>
+        <Table.Column>Nota</Table.Column>
+    </Table.Header>
+    <Table.Body>
       {customers.map((item, index) => (
-        <tr key={index} className="bg-tropical-indigo text-lavender transition duration-300 ease-in-out hover:bg-slate-blue hover:text-white py-2"> 
-          <td className="border-b px-2 font-bold"> {
+        <Table.Row key={index}> 
+          <Table.Cell> {
             new Date(item.created_on).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',
@@ -103,15 +93,25 @@ export default function lista() {
             minute: '2-digit'
             })
           }
-          </td>
-          <td className="border-b p-2">{item.customer.cnpj}</td>
-          <td className="border-b p-2 hover:font-bold"><a href={"https://biud.sensedata.io/cliente/" + item.customer.id} target="_blank">{item.customer.name_contract}</a></td>
-          <td className="border-b p-2">{item.created_by.email}</td>
-          <td className="border-b p-2 text-justify hover:font-bold">{parse(item.description).text}</td>
-        </tr>
+          </Table.Cell>
+          <Table.Cell>{item.customer.cnpj}</Table.Cell>
+          <Table.Cell><a href={"https://biud.sensedata.io/cliente/" + item.customer.id} target="_blank">{item.customer.name_contract}</a></Table.Cell>
+          <Table.Cell>{item.created_by.email}</Table.Cell>
+          <Table.Cell  css={{
+        height: "auto",
+        maxWidth: "500px",
+      }}>{parse(item.description).text}</Table.Cell>
+        </Table.Row>
       ))}
-      </tbody>
-      </table>
-      </div>
+      </Table.Body>
+      <Table.Pagination
+        shadow
+        noMargin
+        align="center"
+        rowsPerPage={1}
+        onPageChange={(page) => console.log({ page })}
+      />
+      </Table>
+      </>
     )
 }
