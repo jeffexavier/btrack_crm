@@ -1,14 +1,12 @@
-import Image from "next/image.js";
-import Link from "next/link.js";
+import { Avatar, Button } from "@nextui-org/react";
 
-export default function Navbar() {
+export default function NavBar() {
   return (
-    <nav className="flex justify-end bg-eerie-black min-h-max">
-      <div className="flex justify-end">
-          <a href="/" className="flex-auto button">HOME</a>
-          <a href="/about" className="flex-auto button">SOBRE</a>
-          <a href="/_lista2" className="flex-auto button">SENSEDATA</a>
-          </div>  
+    <nav className="flex justify-end items-center px-4 py-4 shadow-sm">
+      <div className="flex">
+        <a className="p-2 text-rebecca-purple font-medium">Ajuda</a>
+        <Button color="secondary" ripple animated className="mx-2">Logout</Button>
+      </div>
     </nav>
   )
 }

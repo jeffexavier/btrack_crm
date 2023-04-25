@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     }
   })
   .then(response => {
-      const customerNote = response.data
+      const customerNote = response.data;
       res.status(200).json(customerNote);
     })
 }

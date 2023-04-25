@@ -28,7 +28,7 @@ body {
 }
 
 .button {
-  @apply text-periwinkle;
-  @apply p-5 w-fit text-center font-semibold;
+  @apply text-periwinkle mx-4 rounded-md transition-shadow shadow-sm hover:shadow-lg;
+  @apply p-2 mb-2 min-w-[150px] text-center font-semibold;
   @apply hover:text-rose;
 }
