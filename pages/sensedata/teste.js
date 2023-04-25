@@ -1,17 +1,31 @@
-// pages/[slug].js
-import Link from 'next/link'
-import { useState } from 'react'
-import { useRouter } from 'next/router'
+import { useEffect, useState } from "react"
+import Layout from "./Layout.js"
 
-export default function Page(props) {
-  const router = useRouter()
-  const [count, setCount] = useState(0)
+export default function botaoLocal() {
+
+  function setStorage() {
+      setLocalData(localStorage.getItem('dataLocal'))
+  }
+
+  const [localdata, setLocalData] = useState('')
+  function setlocal() {
+    localStorage.setItem('dataLocal', 'mude isso aqui MAIS UMA VEZ de novo outra vez again aaaaaaa bbbbbbbbbbbbb')
+    setStorage()
+  }
+
+  useEffect(() => {
+    if(localStorage.getItem('dataLocal')) {
+      setStorage()
+    }
+  }, [])
+
+
   return (
-    <div>
-      <h1>Page: {router.query.slug}</h1>
-      <p>Count: {count}</p>
-      <button onClick={() => setCount(count + 1)}>Increase count</button>
-      <Link href="/one">one</Link> <Link href="/two">two</Link>
-    </div>
+    <>
+      <Layout>
+      <button onClick={setlocal}>teste</button>
+      <h1>{localdata}</h1>
+      </Layout>
+    </>
   )
 }

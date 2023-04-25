@@ -1,4 +1,4 @@
-import Lista from "./_lista.js"
+import Lista from "./sensedata/lista3.js"
 
 
 export default function Home() {
