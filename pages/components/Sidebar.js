@@ -14,7 +14,7 @@ const pages = [
   },
   {
     page: "SENSEDATA",
-    link: "/lista2"
+    link: "/sensedata/lista3"
   }
 ]
 

@@ -8,12 +8,29 @@ import { setCookie, parseCookies } from "nookies";
 import Layout from "./Layout.js";
 
 
-export default function lista(props) {
+export default function lista() {
+
+  function getCustomersNotes() {
+    axios.get("/api/sensedata/notas")
+      .then((response) => {
+        const customersNotes = response.data.customers_notes
+        const customersNotesReverse = customersNotes.reverse()
+        const newCustomersNotes = JSON.stringify(customersNotesReverse)
+
+        localStorage.setItem("customers_notes", newCustomersNotes)
+
+        console.log(newCustomersNotes)
+    })
+      .catch(error => {
+        console.log(error.response)
+        setCustomers(customersNotes)
+      })
+  }
 
   const customersNotes= [
         {
           customer: {
-            cnpj: "40.821.857/0001-97",
+            cnpj: new Date(),
             name_contract: "1 - Bar do jeffin",
             id: "37134"
           },
@@ -49,65 +66,33 @@ export default function lista(props) {
         }
       ]
 
-
   const [customers, setCustomers] = useState([])
-  // const [customers, setCustomers] = useState([])    
 
   const [customerNota, setCustomerNota] = useState({customer: "Boteco do jeffin", description: "testasdfasdfasdfasdfasdf", date: "2023-04-24"})
   const [visible, setVisible] = useState(false)
 
-  console.log(props.customers_notes)
-
-  useEffect(()=> {    
-    
+  useEffect(()=> {  
     if(localStorage.getItem('customers_notes')) {
       setCustomers(JSON.parse(localStorage.getItem('customers_notes')))
     } else {
-      axios.get("/api/sensedata/notas")
-      .then((response) => {
-        const customersNotes = response.data.customers_notes
-        const customersNotesReverse = customersNotes.reverse()
-
-        const newCustomersNotes = JSON.stringify(customersNotesReverse)
-
-        localStorage.setItem("customers_notes", newCustomersNotes)
-
-        // setCookie(null, "customers_notes", newCustomersNotes, {
-        //   maxAge: 60, // 30 seconds
-        //   path: '/'
-        // });
-
-        console.log(newCustomersNotes)
-    })
-      .catch(error => {
-        console.log(error.response)
-      })
+      getCustomersNotes()
     }
-
-
-    
-
-      const newCustomersNotes = localStorage.getItem("customers_notes")
-      
-      if(localStorage.getItem("customers_notes")) {
-        setCustomers(JSON.parse(newCustomersNotes))
-      }
   }, [])
 
   return(
     <Layout>
-    <div className="p-5">
-      <Table color="secondary" borderWeight="" aria-label="Example static collection table">
-        <Table.Header>
-            <Table.Column>Data da nota</Table.Column>
-            <Table.Column>Empresa</Table.Column>
-            <Table.Column>CS</Table.Column>
-            <Table.Column>Nota</Table.Column>
+    <div className="p-5 min-w-[100%]">
+      <Table color="secondary" borderWeight="" aria-label="Example static collection table" css={{minWidth: "100%", maxWidth: "100%"}}>
+        <Table.Header >
+            <Table.Column css={{maxWidth: "min-content"}}>Data da nota</Table.Column>
+            <Table.Column >Empresa</Table.Column>
+            <Table.Column >CS</Table.Column>
+            <Table.Column >Nota</Table.Column>
         </Table.Header> 
         <Table.Body>
         {customers.map((item, index) => (
           <Table.Row key={index}> 
-            <Table.Cell css={{maxWidth: "150px", minWidth: "150px"}}> {
+            <Table.Cell css={{minWidth: "min-content", maxWidth: "min-content"}}> {
               new Date(item.created_on).toLocaleDateString('pt-BR', {
               day: '2-digit',
               month: '2-digit',
@@ -117,10 +102,10 @@ export default function lista(props) {
               })
             }
             </Table.Cell>
-            <Table.Cell css={{maxWidth: "180px", minWidth: "180px"}}><a href={"https://biud.sensedata.io/cliente/" + item.customer.id} target="_blank" className="text-rebecca-purple font-bold">{item.customer.name_contract}</a></Table.Cell>
-            <Table.Cell css={{maxWidth: "180px", minWidth: "180px"}}>{item.created_by.name}</Table.Cell>
-            <Table.Cell css={{ height: "auto", minWidth: "800px", maxWidth: "800px"}} className="hover:font-bold">
-              <button className="hover:font-bold text-rebecca-purple cursor-pointer" onClick={() => {
+            <Table.Cell css={{minWidth: "auto", maxWidth: "160px"}}><a href={"https://biud.sensedata.io/cliente/" + item.customer.id} target="_blank" className="text-rebecca-purple font-bold">{item.customer.name_contract}</a></Table.Cell>
+            <Table.Cell css={{minWidth: "auto", maxWidth: "160px"}}>{item.created_by.name}</Table.Cell>
+            <Table.Cell css={{minWidth: "auto", maxWidth: "500px"}} className="hover:font-bold">
+            <div className="cursor-pointer hover:font-bold max-w-[500px] flex text-rebecca-purple" onClick={() => {
                 console.log(item.description)
                 setCustomerNota({
                   customer: item.customer.name_contract,
@@ -137,7 +122,7 @@ export default function lista(props) {
                 setVisible(true)
               }}>
               {parse(item.description).text}
-              </button>
+              </div>
             </Table.Cell>
           </Table.Row>
         ))}
