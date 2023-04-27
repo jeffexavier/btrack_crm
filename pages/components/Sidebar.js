@@ -17,6 +17,10 @@ const pages = [
     link: "/sensedata/notas_clientes"
   },
   {
+    page: "QRCODE",
+    link: "/qrcode"
+  },
+  {
     page: "MÚSICAS",
     link: "/musica"
   }
