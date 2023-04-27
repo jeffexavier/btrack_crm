@@ -1,4 +1,4 @@
-import Lista from "./sensedata/lista3.js"
+import Lista from "./sensedata/notas_clientes.js"
 
 
 export default function Home() {

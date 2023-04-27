@@ -1,6 +1,8 @@
 import { Modal, useModal, Button, Text } from "@nextui-org/react";
-import { useState } from "react";
+import { Component, useState } from "react";
 import { setCookie, parseCookies } from "nookies"
+import Layout from "./Layout.js";
+import Lista from "./notas_clientes.js";
 
 export default function App() {
   const [ visible, setVisible ] = useState();
@@ -12,40 +14,9 @@ export default function App() {
   })
 
   return (
-    <div>
-      <Button auto shadow color="secondary" onPress={() => setVisible(true)}>
-        Open modal
-      </Button>
-      <Modal
-        scroll
-        blur
-        closeButton
-        width="600px"
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        open={visible}
-        onClose={() => setVisible(false)}
-      >
-        <Modal.Header aria-labelledby="modal-header">
-          <Text size={18}>
-            Modal with a lot of content
-          </Text>
-        </Modal.Header>
-        <Modal.Body>
-          <Text>
-          teste
-          </Text>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button auto flat color="error" onPress={() => setVisible(false)}>
-            Close
-          </Button>
-          <Button auto onPress={() => setVisible(false)}>
-            Agree
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </div>
+    <Layout>
+      <h1>index</h1>
+    </Layout>
   );
 }
 

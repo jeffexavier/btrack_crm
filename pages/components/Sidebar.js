@@ -14,7 +14,11 @@ const pages = [
   },
   {
     page: "SENSEDATA",
-    link: "/sensedata/lista3"
+    link: "/sensedata/notas_clientes"
+  },
+  {
+    page: "MÚSICAS",
+    link: "/musica"
   }
 ]
 
@@ -27,18 +31,11 @@ export default function SideBar() {
       </div>
       <div className="flex-1 flex flex-col">
         {pages.map((item, index) => (
-          <a key={index} href={item.link}><Button bordered ghost color="secondary"  className="my-1 mx-2">{item.page}</Button></a>
+          <a key={index} href={item.link}><Button shadow color="secondary" className="my-1 mx-2">{item.page}</Button></a>
         ))}
       </div>
       <p className="text-center sticky pb-5 font-normal text-periwinkle">Versão 0.0.0</p>
     </nav>
-    {/* <Navbar css={{ backgroundColor: "$blue600" }}>
-      <Navbar.Content css={{ backgroundColor: "$blue600" , padding: 0 , margin: 0}}>
-        <Navbar.Link href="/">HOME</Navbar.Link>
-        <Navbar.Link href="/sobre">SOBRE</Navbar.Link>
-        <Navbar.Link href="/lista">SENSEDATA</Navbar.Link>
-      </Navbar.Content>
-    </Navbar> */}
     </> 
   )
 }

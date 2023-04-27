@@ -31,6 +31,7 @@ module.exports = {
       'hunyadi-yellow': '#f4b860',
       "lavender": '#DAD9ED',
       "tropical-indigo": "#897AC2",
+      'lavender-blush': "#FCF0F7",
     }
   },
   plugins: [],
