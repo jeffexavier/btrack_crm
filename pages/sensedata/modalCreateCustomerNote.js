@@ -1,8 +1,36 @@
-import { Modal, useModal, Button, Text, Input } from "@nextui-org/react";
-import { useState } from "react";
+import { Modal, useModal, Button, Text, Input, Textarea } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function App() {
   const [ visible, setVisible ] = useState();
+
+  async function getCustomers() {
+    await axios.get("/api/sensedata/clientes")
+      .then((response) => {
+        const customers = response.data.customers
+        const customersReverse = customers.reverse()
+        const newCustomers = JSON.stringify(customersReverse)
+
+        localStorage.setItem("customers", newCustomers)
+        setCustomers(customersReverse)
+        console.log(newCustomers)
+    })
+      .catch(error => {
+        console.log(error.response)
+      })
+  }
+
+  const [customers, setCustomers] = useState([])
+
+  useEffect(() => {
+    if(localStorage.getItem('customers')) {
+      setCustomers(JSON.parse(localStorage.getItem('customers')))
+    } else {
+      getCustomers()
+    }
+  }, [])
+
   return (
     <div>
       <Button auto shadow color="secondary" onPress={() => setVisible(true)}>
@@ -22,19 +50,17 @@ export default function App() {
           </Text>
         </Modal.Header>
         <Modal.Body>
-        <form>
-          <Input placeholder="Cliente"/>
-          <Button>teste</Button>
+        <form className="flex flex-col gap-2" onSubmit={(e) => {e.preventDefault(); console.log("inserido")}}>
+          <Input list="lista" placeHolder="Nome da empresa"/>
+          <datalist id="lista">
+            {customers.map((item, index) => (
+              <option key={index} value={item.name_contract}/>
+            ))}
+          </datalist>
+          <Textarea type="text" placeHolder="Descrição da nota"/>
+          <Input type="submit" value="Criar nota" css={{backgroundColor:"#654893"}}/>
         </form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button auto flat color="error" onPress={() => setVisible(false)}>
-            Cancelar
-          </Button>
-          <Button color="secondary" auto onPress={() => setVisible(false)}>
-            Criar nota de cliente
-          </Button>
-        </Modal.Footer>
       </Modal>
     </div>
   );
