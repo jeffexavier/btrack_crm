@@ -1,6 +1,7 @@
 import { Modal, useModal, Button, Text, Input, Textarea } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import {v4 as uuidv4} from 'uuid'
 
 export default function App() {
   const [ visible, setVisible ] = useState();
@@ -21,6 +22,39 @@ export default function App() {
       })
   }
 
+  async function postCustomerNote(customer_id, noteDescription) {
+    const reqBodyCustomerNote = {
+      customers_notes: [
+        {
+          id_legacy: uuidv4(),
+          customer: {
+            id: customer_id
+          },
+          description: noteDescription,
+          created_on: new Date()
+        }
+      ]
+    }
+    console.log((reqBodyCustomerNote))
+    console.log(JSON.stringify(reqBodyCustomerNote))
+
+    await axios.post('/api/sensedata/notas', reqBodyCustomerNote, {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => {
+      console.log(response.data)
+      alert('Nota criada com sucesso!')
+    })
+    .catch(error => {
+      console.log(error)
+      alert('Erro desconhecido na criaçãod a nota!')
+    })
+
+    setVisible(false)
+  }
+
   const [customers, setCustomers] = useState([])
 
   useEffect(() => {
@@ -38,27 +72,34 @@ export default function App() {
       </Button>
       <Modal
         scroll
-        width="600px"
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        open={visible}
-        onClose={() => setVisible(false)}
-      >
+          // blur
+          closeButton
+          width="600px"
+          aria-labelledby="modal-title"
+          aria-describedby="modal-description"
+          open={visible}
+          css={{
+            cursor: "default"
+          }}
+          onClose={() => setVisible(false)}>
         <Modal.Header>
-          <Text id="modal-title" size={18}>
+          <Text id="modal-title" size={18} weight="semibold">
             Criar nota de cliente
           </Text>
         </Modal.Header>
         <Modal.Body>
-        <form className="flex flex-col gap-2" onSubmit={(e) => {e.preventDefault(); console.log("inserido")}}>
-          <Input list="lista" placeHolder="Nome da empresa"/>
-          <datalist id="lista">
+        <form className="flex flex-col gap-2" onSubmit={(e) => {
+          e.preventDefault();
+          postCustomerNote(e.target[0].value, e.target[1].value)
+          }}>
+          <Input as="select" css={{color:"red", placeHolder:"red"}} className="text-rose placeholder:text-rose">
+          <option value="" className="text-[#11181c]">Escolha a empresa</option>
             {customers.map((item, index) => (
-              <option key={index} value={item.name_contract}/>
+              <option key={index} className="text-[#11181c]" value={item.id}>{item.name_contract}</option>
             ))}
-          </datalist>
+            </Input>        
           <Textarea type="text" placeHolder="Descrição da nota"/>
-          <Input type="submit" value="Criar nota" css={{backgroundColor:"#654893"}}/>
+          <Input cursor="pointer" type="submit" value="Criar nota" css={{backgroundColor:"#654893"}}/>
         </form>
         </Modal.Body>
       </Modal>
