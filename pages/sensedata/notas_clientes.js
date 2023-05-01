@@ -23,7 +23,7 @@ export default function lista() {
     })
       .catch(error => {
         console.log(error.response)
-        if(localStorage.getItem('customer_notes')) {
+        if(localStorage.getItem('customers_notes')) {
           setCustomers(JSON.parse(localStorage.getItem('customers_notes')))
         } else {
           setCustomers(customersNotes)

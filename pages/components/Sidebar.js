@@ -9,10 +9,6 @@ const pages = [
     link: "/"
   },
   {
-    page: "SOBRE",
-    link: "/sobre"
-  },
-  {
     page: "SENSEDATA",
     link: "/sensedata/notas_clientes"
   },
