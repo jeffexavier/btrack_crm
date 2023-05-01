@@ -67,7 +67,7 @@ export default function App() {
 
   return (
     <div>
-      <Button auto shadow color="secondary" onPress={() => setVisible(true)}>
+      <Button color="secondary" onPress={() => setVisible(true)}>
         Criar nova nota
       </Button>
       <Modal

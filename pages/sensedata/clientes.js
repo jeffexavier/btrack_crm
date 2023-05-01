@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Layout from "./Layout.js";
-import { Card, Collapse, Container, Link, Text, textTransforms } from "@nextui-org/react";
+import { Card, Collapse, Container, Link, Text, textTransforms, Button } from "@nextui-org/react";
 import { TEMPORARY_REDIRECT_STATUS } from "next/dist/shared/lib/constants.js";
 
 export default function Clientes() {
@@ -18,7 +18,11 @@ export default function Clientes() {
         console.log(newCustomers)
     })
       .catch(error => {
+        if(localStorage.getItem("customers")) {
+          setCustomers(JSON.parse(localStorage.getItem('customers')))
+        }
         console.log(error.response)
+        
       })
   }
 
@@ -35,6 +39,14 @@ const [customers, setCustomers] = useState([])
 
   return (
     <Layout>
+    <div className="flex justify-between mb-3">
+    <Button disabled>Criar nova empresa</Button>
+    <Button bordered auto color="secondary" onPress={() => {getCustomers()}}>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+      </svg>
+      </Button>
+    </div>
       <div className="grid grid-cols-3 gap-3">
       {customers.map((item, index) => (
         <Card key={index} borderWeight="" variant="shadow" isHoverable css={{display:"flex", minHeight:"300px", maxHeight:"600px", overflow:"hidden"}} >
