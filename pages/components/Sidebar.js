@@ -35,7 +35,7 @@ export default function SideBar() {
       </div>
       <div className="flex-1 flex flex-col">
         {pages.map((item, index) => (
-          <a key={index} href={item.link}><Button shadow color="secondary" className="my-1 mx-2">{item.page}</Button></a>
+          <Link key={index} href={item.link}><Button shadow color="secondary" className="my-1 mx-2">{item.page}</Button></Link>
         ))}
       </div>
       <p className="text-center sticky pb-5 font-normal text-periwinkle">Versão 0.0.0</p>
