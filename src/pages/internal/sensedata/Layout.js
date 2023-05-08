@@ -6,7 +6,7 @@ export default function Layout({children}) {
     <div className="flex flex-col p-5 gap-3 justify-between">
       <h2>SenseData</h2>      
       <Button.Group flat color="secondary" css={{p: "0", margin: "0"}}>
-        <Button><Link href="/sensedata/clientes">Clientes</Link></Button>
+        <Button><Link className="text-rebecca-purple" href="/sensedata/clientes">Clientes</Link></Button>
         <Button><Link className="text-rebecca-purple" href="/sensedata/notas_clientes">Notas de clientes</Link></Button>
       </Button.Group>       
       <main className="flex-1">{children}</main>

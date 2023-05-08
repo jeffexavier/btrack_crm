@@ -1,9 +1,9 @@
 // 'use client';
 
-import '@/styles/globals.css'
+import '@/src/globals.css'
 
 import { NextUIProvider } from '@nextui-org/react';
-import Layout from './components/Layout';
+import Layout from '../components/Layout';
 
 export default function MyApp({ Component, pageProps }) {
   
