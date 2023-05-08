@@ -68,7 +68,7 @@ export default function Index() {
             {linkList.map((item, index) => (
                 <Card borderWeight="" key={index} css={{minWidth:'fit-content'}}>
                 <Card.Header css={{textAlign: 'center', justifyContent: 'space-between', paddingLeft:'25px'}}>
-                    <Text p weight="medium">{
+                    <Text weight="medium">{
                         new Date(item.date).toLocaleDateString('pt-BR', {
                             day: '2-digit',
                             month: '2-digit',
