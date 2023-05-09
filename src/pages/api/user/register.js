@@ -1,6 +1,10 @@
-import { register } from "@/src/backend/services/user"
+import { registerUser } from "@/src/backend/services/user"
 
 export default async function register(req, res) {
-    const register = await register(req.body)
-    res.status(201).json(register)
+    try {
+        const registerNewUser = await registerUser(req.body)
+        res.status(201).json(registerNewUser)
+    } catch (error) {
+        res.status(400).json("Usuário já existe!")
+    }    
 }

@@ -8,7 +8,7 @@ import User from "../models/user";
 const SECRET = process.env.JWT_SECRET
 
 function createToken(user) {
-    return jwt.sign({email: user.email, name: user.name}, )
+    return jwt.sign({email: user.email, name: user.name}, SECRET)
 }
 
 function readToken(token) {
@@ -23,15 +23,32 @@ function verifyToken(token) {
     return readToken(token)
 }
 
-export async function register(body) {
+export async function registerUser(body) {
     databaseConnection();
     const newUser = {
         email: body.email,
         name: body.name,
         password: await bcrypt.hash(body.password, 8)
     }
-
     const createNewUser = await User.create(newUser)
-    const token = createToken(newUser)
+    const token = createToken(body)
     return token;
+}
+
+export async function loginUser(body) {
+    databaseConnection();
+    const verifyUser = await User.findOne({email: body.email})
+
+    if(verifyUser === null) {
+        throw Error("Email não encontrado.");
+    } else {
+        const verifyPassword = await bcrypt.compare(body.password, verifyUser.password);
+
+        if(!verifyPassword) {
+            throw Error("Senha incorreta.")
+        } else {
+            const token = createToken(body);
+            return token;
+        }        
+    }
 }
