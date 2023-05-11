@@ -55,7 +55,7 @@ useEffect(() => {
     <>
       <Head>
         <link rel="shortcut icon" href="/public/favicon.ico" />
-        <title>Jefferson Xavier</title>
+        <title>Btrack</title>
       </Head>
         <div className="flex flex-row justify-between min-h-screen max-w-screen">
           <Sidebar/>
