@@ -6,9 +6,7 @@ import InternalLayout from '@/src/components/InternalLayout';
 
 export default function Home() {
   return (
-    <InternalLayout>
       <Lista />
-    </InternalLayout>
   )
 }
 
