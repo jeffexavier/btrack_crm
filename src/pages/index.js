@@ -1,12 +1,14 @@
 import { parseCookies } from "nookies"
+import { verifyToken } from "@/src/backend/services/user"
 
 import Lista from "./internal/sensedata/notas_clientes.js"
+import InternalLayout from '@/src/components/InternalLayout';
 
 export default function Home() {
   return (
-    <>
-    <Lista />
-    </>
+    <InternalLayout>
+      <Lista />
+    </InternalLayout>
   )
 }
 

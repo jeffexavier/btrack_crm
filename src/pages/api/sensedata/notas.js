@@ -1,8 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import * as dotenv from 'dotenv'
-dotenv.config()
-
 import axios from "axios"
 import { verifyToken } from '@/src/backend/services/user.js'
 

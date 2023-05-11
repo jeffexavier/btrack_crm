@@ -2,10 +2,11 @@ import { Children } from "react";
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/services/user"
 import Lista from "./sensedata/notas_clientes.js"
+import InternalLayout from '@/src/components/InternalLayout';
 
 export default function Home({ children }) {
   return (
-    <Lista />
+      <Lista />
   )
 }
 

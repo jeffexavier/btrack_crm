@@ -4,7 +4,6 @@ import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken";
 import databaseConnection from "../utils/database";
 import User from "../models/user";
-import mongoose from "mongoose";
 
 const SECRET = process.env.JWT_SECRET
 

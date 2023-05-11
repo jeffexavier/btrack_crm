@@ -6,6 +6,7 @@ import Layout from "@/src/components/sensedata/Layout.js";
 import axios from "axios";
 import { Card, Collapse, Container, Link, Text, textTransforms, Button } from "@nextui-org/react";
 import { TEMPORARY_REDIRECT_STATUS } from "next/dist/shared/lib/constants.js";
+import InternalLayout from '@/src/components/InternalLayout';
 
 export default function Clientes() {
 
@@ -41,6 +42,7 @@ const [customers, setCustomers] = useState([])
   }, [])
 
   return (
+    <InternalLayout>
     <Layout>
     <div className="flex justify-between mb-3">
     <Button disabled>Criar nova empresa</Button>
@@ -106,6 +108,7 @@ const [customers, setCustomers] = useState([])
       ))}
       </div>   
     </Layout>
+    </InternalLayout>
   )
 }
 

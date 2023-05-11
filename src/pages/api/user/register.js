@@ -5,6 +5,6 @@ export default async function register(req, res) {
         const registerNewUser = await registerUser(req.body)
         res.status(201).json(registerNewUser)
     } catch (error) {
-        res.status(400).json("Usuário já existe!")
+        res.status(400).json(error.message)
     }    
 }

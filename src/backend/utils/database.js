@@ -10,6 +10,4 @@ const databaseConnection = async () => {
         global.mongoose = await mongoose.connect(URI);
     }
 }
-
-
 export default databaseConnection;
