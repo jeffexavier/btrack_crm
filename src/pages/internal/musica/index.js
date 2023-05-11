@@ -1,5 +1,8 @@
- import {useState } from "react";
-// import Layout from "./Layout.js";
+
+import { parseCookies } from "nookies";
+import { verifyToken } from "@/src/backend/services/user.js";
+
+import {useState } from "react";
 import { Input, Container, Card, Text } from "@nextui-org/react";
 import axios from "axios";
 import { MagnifyingGlassIcon } from "@/public/icons/MagnifyingGlassIcon.js";
@@ -44,4 +47,20 @@ const [musicas, setMusicas] = useState([])
        </div>
     </div>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookies = parseCookies(context)
+  const token = cookies.authorization
+  try {
+    verifyToken(token)
+  } catch (err) {     
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login'
+      },
+      props: {}
+    }
+  }
 }

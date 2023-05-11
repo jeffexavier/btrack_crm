@@ -9,12 +9,18 @@ export default function Home() {
   )
 }
 
-export async function getServerSideProps({props}) {
-  return {
-    redirect: {
-      permanent: false,
-      destination: '/internal/dashboard'
-    },
-    props: {}
+export async function getServerSideProps(context) {
+  const cookies = parseCookies(context)
+  const token = cookies.authorization
+  try {
+    verifyToken(token)
+  } catch (err) {     
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login'
+      },
+      props: {}
+    }
   }
 }

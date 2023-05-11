@@ -1,6 +1,9 @@
+// import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
+import { parseCookies } from "nookies";
+import { verifyToken } from "@/src/backend/services/user.js";
+import Layout from "@/src/components/sensedata/Layout.js";
 import axios from "axios";
-import Layout from "./Layout.js";
 import { Card, Collapse, Container, Link, Text, textTransforms, Button } from "@nextui-org/react";
 import { TEMPORARY_REDIRECT_STATUS } from "next/dist/shared/lib/constants.js";
 
@@ -104,4 +107,20 @@ const [customers, setCustomers] = useState([])
       </div>   
     </Layout>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookies = parseCookies(context)
+  const token = cookies.authorization
+  try {
+    verifyToken(token)
+  } catch (err) {     
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login'
+      },
+      props: {}
+    }
+  }
 }

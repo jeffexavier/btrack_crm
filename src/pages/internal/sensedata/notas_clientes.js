@@ -4,9 +4,10 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { parse } from "node-html-parser"
 import { Table, Modal, Text, Button } from "@nextui-org/react";
-import { setCookie, parseCookies } from "nookies";
-import Layout from "./Layout.js";
-import ModalCreateCustomerNote from './modalCreateCustomerNote.js'
+import { parseCookies } from "nookies";
+import { verifyToken } from "@/src/backend/services/user.js";
+import Layout from "@/src/components/sensedata/Layout.js";
+import ModalCreateCustomerNote from '@/src/components/sensedata/modalCreateCustomerNote.js'
 
 
 export default function lista() {
@@ -180,14 +181,17 @@ export default function lista() {
 }
 
 export async function getServerSideProps(context) {
-
-  // const cookies = parseCookies(context);
-
-  return {
-    props: {
-      msg: "[teste] esté é um teste",
-      // customers_notes: cookies.customers_notes2
+  const cookies = parseCookies(context)
+  const token = cookies.authorization
+  try {
+    verifyToken(token)
+  } catch (err) {     
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login'
+      },
+      props: {}
     }
   }
-
 }

@@ -1,4 +1,5 @@
 import { Progress, Card, Grid, Avatar, Text, Button } from "@nextui-org/react";
+import { parseCookies } from "nookies";
 import Link from "next/link.js";
 
 export default function Layout({children}) {

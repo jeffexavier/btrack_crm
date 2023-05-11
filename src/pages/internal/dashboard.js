@@ -1,10 +1,29 @@
+import { Children } from "react";
+import { parseCookies } from "nookies";
+import { verifyToken } from "@/src/backend/services/user"
 import Lista from "./sensedata/notas_clientes.js"
 
-
-export default function Home() {
+export default function Home({ children }) {
   return (
-    <>
     <Lista />
-    </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookies = parseCookies(context)
+  const token = cookies.authorization
+  try {
+    verifyToken(token)
+    return {
+      props: {}
+    }
+  } catch (err) {     
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login'
+      },
+      props: {}
+    }
+  }
 }

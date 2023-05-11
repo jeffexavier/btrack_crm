@@ -1,9 +1,10 @@
-import { useEffect } from "react"
-import Footer from "./Footer.js"
-import NavBar from "./Navbar.js"
-import Sidebar from "./Sidebar.js"
+import { parseCookies } from "nookies";
+import { useEffect } from "react";
+import Footer from "./Footer.js";
+import NavBar from "./Navbar.js";
+import Sidebar from "./Sidebar.js";
 
-import Head from "next/head.js"
+import Head from "next/head.js";
 
 // function loadWidget(){
 //   var url = 'https://biud.becon.com.br/wserver/widget/widget.js#/'
@@ -44,7 +45,7 @@ import Head from "next/head.js"
 //   x.parentNode.insertBefore(s, x);
 // }
 
-export default function Layout({children}) {
+export default function InteranlLayout({children}) {
 
 useEffect(() => {
   // loadWidget();
@@ -66,4 +67,29 @@ useEffect(() => {
       <Footer />  
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookies = parseCookies(context)
+  const token = cookies.authorization
+  try {
+    verifyToken(token)
+      return {
+        redirect: {
+          permanent: false,
+          destination: '/internal/dashboard'
+        },
+        props: {
+          authorizationCookie: token
+        }
+      }    
+  } catch (err) {     
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login'
+      },
+      props: {}
+    }
+  }
 }

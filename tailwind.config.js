@@ -32,6 +32,7 @@ module.exports = {
       "lavender": '#DAD9ED',
       "tropical-indigo": "#897AC2",
       'lavender-blush': "#FCF0F7",
+      'red': '#c61a09',
     }
   },
   plugins: [],
