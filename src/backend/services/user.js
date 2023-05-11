@@ -21,7 +21,6 @@ function readToken(token) {
 }
 
 export function verifyToken(token) {
-    console.log(readToken(token))
     return readToken(token)
 }
 
@@ -54,7 +53,7 @@ export async function loginUser(body) {
         if(!verifyPassword) {
             throw Error("Senha incorreta.")
         } else {
-            const token = createToken(body);
+            const token = createToken(verifyUser);
             return token;
         }        
     }

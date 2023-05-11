@@ -4,15 +4,23 @@ import * as dotenv from 'dotenv'
 dotenv.config()
 
 import axios from "axios"
+import { verifyToken } from '@/src/backend/services/user.js'
 
-export default async function handler(req, res) {
-  await axios.get(process.env.SENSEDATA_API + "customers/?limit=1000",{
-    headers: {
-      Authorization: `Bearer `+ process.env.SENSEDATA_TOKEN
-    }
-  })
-  .then(response => {
-      const customers = response.data;
-      res.status(200).json(customers);
+export default async function handler(req, res, context) {
+  const {authorization} = req.cookies
+  try {
+    verifyToken(authorization)
+    await axios.get(process.env.SENSEDATA_API + "customers/?limit=1000",{
+      headers: {
+        Authorization: `Bearer `+ process.env.SENSEDATA_TOKEN
+      }
     })
+    .then(response => {
+        const customers = response.data;
+        res.status(200).json(customers);
+      })
+  } catch (error) {
+    res.status(400).json(error.message)
+  }
+
 }
