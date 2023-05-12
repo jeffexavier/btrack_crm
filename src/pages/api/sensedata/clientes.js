@@ -1,8 +1,5 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
-import * as dotenv from 'dotenv'
-dotenv.config()
-
 import axios from "axios"
 import { verifyToken, readToken } from '@/src/backend/utils/token'
 
@@ -25,9 +22,7 @@ export default async function handler(req, res, context) {
     } catch (error) {
       res.status(400).json(error.message)
     }
-  } else if (req.method === "POST") {
-
-    
+  } else if (req.method === "POST") {    
     res.status(200).json("recebido");
   }
 

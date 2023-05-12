@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 
 import axios from "axios"
-import { verifyToken } from '@/src/backend/services/user.js'
+import { verifyToken } from '@/src/backend/utils/token'
 
 export default async function handler(req, res) {
   const {authorization} = req.cookies
