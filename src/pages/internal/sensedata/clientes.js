@@ -1,7 +1,7 @@
 // import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
 import { parseCookies } from "nookies";
-import { verifyToken } from "@/src/backend/services/user.js";
+import { verifyToken } from "@/src/backend/utils/token";
 import Layout from "@/src/components/sensedata/Layout.js";
 import axios from "axios";
 import { Card, Collapse, Container, Link, Text, textTransforms, Button } from "@nextui-org/react";

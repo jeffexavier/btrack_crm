@@ -1,5 +1,5 @@
 import { parseCookies } from "nookies";
-import { verifyToken } from "@/src/backend/services/user.js";
+import { verifyToken } from "@/src/backend/utils/token";
 
 import { Button, Input, Image, Card, Text, Modal, Link } from "@nextui-org/react";
 import { useEffect, useState } from "react";

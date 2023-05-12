@@ -1,27 +1,10 @@
 // adição funções de createUser, validate User, validate token JWT, etc...
 
 import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken";
 import databaseConnection from "../utils/database";
 import User from "../models/user";
 
-const SECRET = process.env.JWT_SECRET
-
-function createToken(user) {
-    return jwt.sign({id: user._id ,email: user.email, name: user.name}, SECRET)
-}
-
-function readToken(token) {
-    try {
-        return jwt.verify(token, SECRET)
-    } catch (error) {
-        throw new Error('Token inválido')        
-    }
-}
-
-export function verifyToken(token) {
-    return readToken(token)
-}
+import { createToken } from "@/src/backend/utils/token";
 
 export async function listUsers() {
     databaseConnection();

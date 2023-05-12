@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { parse } from "node-html-parser"
 import { Table, Modal, Text, Button } from "@nextui-org/react";
 import { parseCookies } from "nookies";
-import { verifyToken } from "@/src/backend/services/user.js";
+import { verifyToken } from "@/src/backend/utils/token";
 import Layout from "@/src/components/sensedata/Layout.js";
 import ModalCreateCustomerNote from '@/src/components/sensedata/modalCreateCustomerNote.js'
 import InternalLayout from '@/src/components/InternalLayout';

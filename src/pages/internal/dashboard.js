@@ -1,6 +1,6 @@
 import { Children } from "react";
 import { parseCookies } from "nookies";
-import { verifyToken } from "@/src/backend/services/user"
+import { verifyToken } from "@/src/backend/utils/token";
 import Lista from "./sensedata/notas_clientes.js"
 import InternalLayout from '@/src/components/InternalLayout';
 
