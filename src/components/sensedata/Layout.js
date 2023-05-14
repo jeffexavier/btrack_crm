@@ -9,7 +9,7 @@ export default function Layout({children}) {
       <Button.Group flat color="secondary" css={{p: "0", margin: "0"}}>
         <Button><Link className="text-rebecca-purple" href="/internal/sensedata/clientes">Clientes</Link></Button>
         <Button><Link className="text-rebecca-purple" href="/internal/sensedata/notas_clientes">Notas de clientes</Link></Button>
-        <Button><Link className="text-rebecca-purple" href="/internal/sensedata/atividades">Atividades</Link></Button>
+        {/* <Button><Link className="text-rebecca-purple" href="/internal/sensedata/atividades">Atividades</Link></Button> */}
       </Button.Group>       
       <main className="flex-1">{children}</main>
     </div>
