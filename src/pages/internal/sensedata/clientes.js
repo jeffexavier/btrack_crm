@@ -160,7 +160,7 @@ export default function Clientes() {
             <Text transform="uppercase" css={{overflow:'hidden', maxHeight: "30px"}}>{item.id_legacy}</Text>
             <Text css={{overflow:'hidden', maxHeight: "30px"}}>{item.industry ? item.industry : '--'}</Text>
             </div>
-            <ModalListNotes customerId={item.id} customerName={item.name_contract} customerObject={item}/>           
+            <ModalListNotes customerObject={item}/>           
           </Card.Header>
           <Card.Body>
           <Collapse.Group shadow>
