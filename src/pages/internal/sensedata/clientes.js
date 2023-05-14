@@ -88,7 +88,7 @@ export default function Clientes() {
 
   const [customers, setCustomers] = useState([])
   const [filteredCustomers, setFilteredCustomers] = useState([])
-  const [filteredCustomersByName, setFilteredCustomersByName] = useState([])
+  // const [filteredCustomersByName, setFilteredCustomersByName] = useState([])
   const [filteredCustomersByCS, setFilteredCustomersByCS] = useState([])
   const [usersSenseData, setUsersSenseData] = useState([])
   const [userName, setUserName] = useState('')
@@ -111,7 +111,14 @@ export default function Clientes() {
     <div className="flex justify-between">
       <div className="flex justify-start mb-3 gap-3">
       {/* <Button disabled>Criar nova empresa</Button> */}
-        <Input onChange={filterCustomerByName} clearable bordered color="secondary" placeholder="Search..." contentRight={<MagnifyingGlassIcon height="16px"/>} aria-label="hidden" aria-hidden></Input>
+        <Input
+          onChange={filterCustomerByName}
+          clearable
+          bordered
+          color="secondary"
+          placeholder="Search..."
+          contentRight={<MagnifyingGlassIcon height="16px"/>}
+          aria-hidden></Input>
         <Dropdown borderWeight="" shadow >
           <Dropdown.Button bordered color="secondary">
             CS Responsável
@@ -153,7 +160,7 @@ export default function Clientes() {
             <Text transform="uppercase" css={{overflow:'hidden', maxHeight: "30px"}}>{item.id_legacy}</Text>
             <Text css={{overflow:'hidden', maxHeight: "30px"}}>{item.industry ? item.industry : '--'}</Text>
             </div>
-            <ModalListNotes customerId={item.id}/>           
+            <ModalListNotes customerId={item.id} customerName={item.name_contract}/>           
           </Card.Header>
           <Card.Body>
           <Collapse.Group shadow>
