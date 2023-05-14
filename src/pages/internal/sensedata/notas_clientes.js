@@ -5,15 +5,14 @@ import { useEffect, useState } from "react"
 import { parse } from "node-html-parser"
 import { Table, Modal, Text, Button } from "@nextui-org/react";
 import { parseCookies } from "nookies";
-import { verifyToken } from "@/src/backend/utils/token";
+import { verifyToken, readToken } from "@/src/backend/utils/token";
 import { ArrowPathIcon, ArrowTopRightOnSquareIcon } from "@/public/icons.js";
 import Layout from "@/src/components/sensedata/Layout.js";
 import ModalCreateCustomerNote from '@/src/components/sensedata/modalCreateCustomerNote.js'
 import InternalLayout from '@/src/components/InternalLayout';
 
 
-export default function lista() {
-
+export default function lista({userData}) {
   async function getCustomersNotes() {
     await axios.get("/api/sensedata/notas")
       .then((response) => {
@@ -91,7 +90,7 @@ export default function lista() {
     <InternalLayout>
       <Layout>
       <div className="flex justify-between">
-        <ModalCreateCustomerNote />
+        <ModalCreateCustomerNote userData={userData}/>
         <Button bordered auto color="secondary" onPress={() => {getCustomersNotes()}}>
         <ArrowPathIcon height="24px"/>
         </Button>
@@ -185,8 +184,9 @@ export async function getServerSideProps(context) {
   const token = cookies.authorization
   try {
     verifyToken(token)
+    const verifiedToken = verifyToken(token)
     return {
-      props: {}
+      props: {userData: verifiedToken}
     }
   } catch (err) {     
     return {
