@@ -66,7 +66,7 @@ export default function ModalListNotes(props) {
   }
 
   async function getCustomerNotes() {
-    const filteredCustomersNotes = customersNotes.filter(item => item.customer.id === props.customerId)
+    const filteredCustomersNotes = customersNotes.filter(item => item.customer.id === props.customerObject.id)
     setCustomerNotes(filteredCustomersNotes)
     setVisible(true)
 
@@ -102,7 +102,7 @@ export default function ModalListNotes(props) {
           onClose={() => setVisible(false)}>
         <Modal.Header>
           <Text id="modal-title" size={18} weight="semibold">
-            Notas de {props.customerName}
+            Notas de {props.customerObject.name_contract}
           </Text>
         </Modal.Header>
         <Modal.Body>
