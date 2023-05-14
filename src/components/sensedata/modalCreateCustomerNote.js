@@ -1,9 +1,13 @@
-import { Modal, useModal, Button, Text, Input, Textarea } from "@nextui-org/react";
+import { Modal, Button, Text, Input, Textarea } from "@nextui-org/react";
+// import { parseCookies } from 'nookies'
 import { useEffect, useState } from "react";
-import axios from "axios";
-import {v4 as uuidv4} from 'uuid'
+import postSenseDataCustomerNote from "@/src/backend/utils/postSenseDataCustomerNote"
 
-export default function ModalCreateCustomerNote() {
+import axios from "axios";
+// import {v4 as uuidv4} from 'uuid'
+// import { parse } from "dotenv";
+
+export default function ModalCreateCustomerNote({userData}) {
   const [ visible, setVisible ] = useState();
 
   async function getCustomers() {
@@ -23,40 +27,14 @@ export default function ModalCreateCustomerNote() {
   }
 
   async function postCustomerNote(customer_id, noteDescription) {
-    const reqBodyCustomerNote = {
-      customers_notes: [
-        {
-          id_legacy: uuidv4(),
-          customer: {
-            id: customer_id
-          },
-          description: noteDescription,
-          created_on: new Date()
-        }
-      ]
-    }
-    console.log((reqBodyCustomerNote))
-    console.log(JSON.stringify(reqBodyCustomerNote))
-
-    await axios.post('/api/sensedata/notas', reqBodyCustomerNote, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(response => {
-      console.log(response.data)
-      alert('Nota criada com sucesso!')
-    })
-    .catch(error => {
-      console.log(error)
-      alert('Erro desconhecido na criaçãod a nota!')
-    })
-
-    setVisible(false)
+    await postSenseDataCustomerNote(customer_id, userData.name + " | " + noteDescription)
+    setTextArea('')
+    // setVisible(false)
   }
 
   const [customerNota, setCustomerNota] = useState({})
   const [customers, setCustomers] = useState([])
+  const [textArea, setTextArea] = useState('')
 
   useEffect(() => {
     if(localStorage.getItem('customers')) {
@@ -99,7 +77,7 @@ export default function ModalCreateCustomerNote() {
               <option key={index} className="text-[#11181c]" value={item.id}>{item.name_contract}</option>
             ))}
             </Input>        
-          <Textarea type="text" placeHolder="Descrição da nota"/>
+          <Textarea type="text" placeHolder="Descrição da nota" onChange={(e) => {setTextArea(e.target.value)}} value={textArea}/>
           <Input cursor="pointer" type="submit" value="Criar nota" css={{backgroundColor:"#654893"}}/>
         </form>
         </Modal.Body>

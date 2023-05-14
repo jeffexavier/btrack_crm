@@ -120,8 +120,8 @@ export default function Clientes() {
           contentRight={<MagnifyingGlassIcon height="16px"/>}
           aria-hidden></Input>
         <Dropdown borderWeight="" shadow >
-          <Dropdown.Button bordered color="secondary">
-            CS Responsável
+          <Dropdown.Button bordered color="secondary" css={{minWidth: "180px", textAlign: "left"}}>
+            {userName === "" ? "Todos" : userName}
           </Dropdown.Button>
           <Dropdown.Menu
             aria-label="Multiple selection actions"
@@ -130,7 +130,7 @@ export default function Clientes() {
             >
             <Dropdown.Item textValue="teste" color="none" css={{padding: 0}}>
               <button
-                className={`rounded-lg px-3 py-1 w-full text-left transition ease-in-out duration-1000 ${userName !== "Todos" ? "bg-white" : "bg-lavender"} hover:bg-lavender`}
+                className={`rounded-lg px-3 py-1 w-full text-left transition ease-in-out duration-1000 ${userName !== "" ? "bg-white" : "bg-lavender"} hover:bg-lavender`}
                 onClick={() => filterCustomerByCS("")}>
                 Todos
               </button>
