@@ -6,6 +6,7 @@ import { parse } from "node-html-parser"
 import { Table, Modal, Text, Button } from "@nextui-org/react";
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
+import { ArrowPathIcon, ArrowTopRightOnSquareIcon } from "@/public/icons.js";
 import Layout from "@/src/components/sensedata/Layout.js";
 import ModalCreateCustomerNote from '@/src/components/sensedata/modalCreateCustomerNote.js'
 import InternalLayout from '@/src/components/InternalLayout';
@@ -21,20 +22,20 @@ export default function lista() {
         const newCustomersNotes = JSON.stringify(customersNotesReverse)
 
         localStorage.setItem("customers_notes", newCustomersNotes)
-        setCustomers(customersNotesReverse);
+        setCustomersNotes(customersNotesReverse);
     })
       .catch(error => {
         console.log(error.response)
         if(localStorage.getItem('customers_notes')) {
-          setCustomers(JSON.parse(localStorage.getItem('customers_notes')))
+          setCustomersNotes(JSON.parse(localStorage.getItem('customers_notes')))
         } else {
-          setCustomers(customersNotes)
+          setCustomersNotes(customersNotesPreview)
         }
         
       })
   }
 
-  const customersNotes= [
+  const customersNotesPreview= [
         {
           customer: {
             cnpj: new Date(),
@@ -73,14 +74,14 @@ export default function lista() {
         }
       ]
 
-  const [customers, setCustomers] = useState([])
+  const [customersNotes, setCustomersNotes] = useState([])
 
-  const [customerNota, setCustomerNota] = useState({customer: "Boteco do jeffin", description: "testasdfasdfasdfasdfasdf", date: "2023-04-24"})
+  const [customerNote, setCustomerNote] = useState({})
   const [visible, setVisible] = useState(false)
 
   useEffect(()=> {  
     if(localStorage.getItem('customers_notes')) {
-      setCustomers(JSON.parse(localStorage.getItem('customers_notes')))
+      setCustomersNotes(JSON.parse(localStorage.getItem('customers_notes')))
     } else {
       getCustomersNotes()
     }
@@ -92,9 +93,7 @@ export default function lista() {
       <div className="flex justify-between">
         <ModalCreateCustomerNote />
         <Button bordered auto color="secondary" onPress={() => {getCustomersNotes()}}>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
-        </svg>
+        <ArrowPathIcon height="24px"/>
         </Button>
       </div>
         <Table color="secondary" borderWeight="" aria-label="Example static collection table" css={{minWidth: "100%", maxWidth: "100%"}}>
@@ -105,7 +104,7 @@ export default function lista() {
               <Table.Column >Nota</Table.Column>
           </Table.Header> 
           <Table.Body>
-          {customers.map((item, index) => (
+          {customersNotes.map((item, index) => (
             <Table.Row key={index}> 
               <Table.Cell css={{minWidth: "min-content", maxWidth: "min-content"}}> {
                 new Date(item.created_on).toLocaleDateString('pt-BR', {
@@ -122,7 +121,7 @@ export default function lista() {
               <Table.Cell css={{minWidth: "auto", maxWidth: "500px"}} className="hover:font-bold">
               <div className="cursor-pointer hover:font-bold max-w-[500px] flex text-rebecca-purple" onClick={() => {
                   console.log(item.description)
-                  setCustomerNota({
+                  setCustomerNote({
                     customer: item.customer.name_contract,
                     customer_id: item.customer.id,
                     description: parse(item.description).text,
@@ -164,18 +163,16 @@ export default function lista() {
             onClose={() => setVisible(false)}
           >
             <Modal.Header justify="flex-start" css={{alignItems: "center"}}>            
-              <Text as="a" href={"https://biud.sensedata.io/cliente/" + customerNota.customer_id} color="#5941a9" target="_blank" css={{cursor:"pointer", display:"flex", alignItems:"center"}} size={18} weight={"bold"}>
-              {customerNota.customer}
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 ml-1">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                </svg>
+              <Text as="a" href={"https://biud.sensedata.io/cliente/" + customerNote.customer_id} color="#5941a9" target="_blank" css={{cursor:"pointer", display:"flex", alignItems:"center"}} size={18} weight={"bold"}>
+              {customerNote.customer}
+              <ArrowTopRightOnSquareIcon className="pl-1" height="16px"/>
               </Text>                
             </Modal.Header>
             <Modal.Body>
-              <Text>{customerNota.description}</Text>
+              <Text>{customerNote.description}</Text>
             </Modal.Body>
             <Modal.Footer>
-              <Text weight={"medium"}>{customerNota.date}</Text>
+              <Text weight={"medium"}>{customerNote.date}</Text>
             </Modal.Footer>
           </Modal>
       </Layout>

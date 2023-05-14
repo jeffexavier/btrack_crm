@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import {v4 as uuidv4} from 'uuid'
 
-export default function App() {
+export default function ModalCreateCustomerNote() {
   const [ visible, setVisible ] = useState();
 
   async function getCustomers() {
@@ -55,6 +55,7 @@ export default function App() {
     setVisible(false)
   }
 
+  const [customerNota, setCustomerNota] = useState({})
   const [customers, setCustomers] = useState([])
 
   useEffect(() => {

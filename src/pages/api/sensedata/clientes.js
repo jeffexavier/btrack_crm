@@ -22,9 +22,8 @@ export default async function handler(req, res, context) {
     } catch (error) {
       res.status(400).json(error.message)
     }
-  } else if (req.method === "POST") {    
+  }
+  else if (req.method === "POST") {    
     res.status(200).json("recebido");
   }
-
-
 }

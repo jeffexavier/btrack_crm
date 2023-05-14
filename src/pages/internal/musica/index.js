@@ -5,7 +5,7 @@ import { verifyToken } from "@/src/backend/utils/token";
 import {useState } from "react";
 import { Input, Card, Text } from "@nextui-org/react";
 import axios from "axios";
-import { MagnifyingGlassIcon } from "@/public/icons/MagnifyingGlassIcon.js";
+import { MagnifyingGlassIcon } from "@/public/icons";
 import InternalLayout from '@/src/components/InternalLayout';
 
 export default function Index() {
@@ -34,7 +34,7 @@ const [musicas, setMusicas] = useState([])
           underlined
           placeholder="Trecho da música..."
           autoComplete="true"
-          contentRight={<MagnifyingGlassIcon />}
+          contentRight={<MagnifyingGlassIcon height="16px"/>}
           onChange={(e) => (e.target.value).length % 3 === 0 ? getMusicas(e.target.value) : ''} // garante que a chamada da função seja executada apenas com valores de índice 3.
         />
         <div className="grid grid-cols-1 gap-3 pt-5 md:grid-cols-2 lg:grid-cols-3">
