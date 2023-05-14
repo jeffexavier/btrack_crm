@@ -102,7 +102,7 @@ export default function ModalListNotes(props) {
           onClose={() => setVisible(false)}>
         <Modal.Header>
           <Text id="modal-title" size={18} weight="semibold">
-            Criar nota de cliente
+            Notas de {props.customerName}
           </Text>
         </Modal.Header>
         <Modal.Body>
