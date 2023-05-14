@@ -1,4 +1,4 @@
-import { Modal, useModal, Button, Text, Input, Textarea, Table } from "@nextui-org/react";
+import { Modal, useModal, Button, Text, Input, Textarea, Table, Header } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {v4 as uuidv4} from 'uuid'
@@ -106,6 +106,7 @@ export default function ModalListNotes(props) {
           </Text>
         </Modal.Header>
         <Modal.Body>
+          {/* <p>{props.customerObject.name_contract}</p> */}
           <ul className="divide-y-2">
           {customerNotes.map((item, index) => (
             <li key={index} className="">
