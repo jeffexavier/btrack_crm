@@ -2,11 +2,12 @@ import { Modal, useModal, Button, Text, Input, Textarea, Table, Header } from "@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {v4 as uuidv4} from 'uuid'
-import { QueueListIcon } from "@/public/icons.js";
+import { QueueListIcon, ArrowPathIcon } from "@/public/icons.js";
+import ModalCreateCustomerNote from "./modalCreateCustomerNote";
 import parse from "node-html-parser";
 
-export default function ModalListNotes(props) {
-  
+export default function ModalListNotes({customerObject, userData}) {
+
   const [customersNotes, setCustomersNotes] = useState([])
   const [customerNotes, setCustomerNotes] = useState([])
   const [ visible, setVisible ] = useState();
@@ -32,47 +33,52 @@ export default function ModalListNotes(props) {
       })
   }
 
-  async function postCustomerNote(customer_id, noteDescription) {
-    const reqBodyCustomerNote = {
-      customers_notes: [
-        {
-          id_legacy: uuidv4(),
-          customer: {
-            id: customer_id
-          },
-          description: noteDescription,
-          created_on: new Date()
-        }
-      ]
-    }
-    console.log((reqBodyCustomerNote))
-    console.log(JSON.stringify(reqBodyCustomerNote))
+  // async function postCustomerNote(customer_id, noteDescription) {
+  //   const reqBodyCustomerNote = {
+  //     customers_notes: [
+  //       {
+  //         id_legacy: uuidv4(),
+  //         customer: {
+  //           id: customer_id
+  //         },
+  //         description: noteDescription,
+  //         created_on: new Date()
+  //       }
+  //     ]
+  //   }
+  //   console.log((reqBodyCustomerNote))
+  //   console.log(JSON.stringify(reqBodyCustomerNote))
 
-    await axios.post('/api/sensedata/notas', reqBodyCustomerNote, {
-      headers: {
-        "Content-Type": "application/json"
-      }
-    })
-    .then(response => {
-      console.log(response.data)
-      alert('Nota criada com sucesso!')
-    })
-    .catch(error => {
-      console.log(error)
-      alert('Erro desconhecido na criaçãod a nota!')
-    })
+  //   await axios.post('/api/sensedata/notas', reqBodyCustomerNote, {
+  //     headers: {
+  //       "Content-Type": "application/json"
+  //     }
+  //   })
+  //   .then(response => {
+  //     console.log(response.data)
+  //     alert('Nota criada com sucesso!')
+  //   })
+  //   .catch(error => {
+  //     console.log(error)
+  //     alert('Erro desconhecido na criaçãod a nota!')
+  //   })
 
-    setVisible(false)
-  }
+  //   setVisible(false)
+  // }
 
   async function getCustomerNotes() {
-    const filteredCustomersNotes = customersNotes.filter(item => item.customer.id === props.customerObject.id)
+    const filteredCustomersNotes = customersNotes.filter(item => item.customer.id === customerObject.id)
     setCustomerNotes(filteredCustomersNotes)
     setVisible(true)
 
-    var today = new Date();
-    var day = today.getUTCDate();
-    console.log(day)
+    // var today = new Date();
+    // var day = today.getUTCDate();
+    // console.log(day)
+  }
+
+  async function attCustomerNotes() {
+    await getCustomersNotes();
+    getCustomerNotes();
   }
 
 
@@ -102,11 +108,16 @@ export default function ModalListNotes(props) {
           onClose={() => setVisible(false)}>
         <Modal.Header>
           <Text id="modal-title" size={18} weight="semibold">
-            Notas de {props.customerObject.name_contract}
+            Notas de {customerObject.name_contract}
           </Text>
         </Modal.Header>
         <Modal.Body>
-          {/* <p>{props.customerObject.name_contract}</p> */}
+          <div className="flex justify-between">
+          <ModalCreateCustomerNote customerId={customerObject.id} userData={userData}/>
+          <Button bordered auto color="secondary" onPress={() => {attCustomerNotes()}}>
+            <ArrowPathIcon height="24px"/>
+          </Button>
+          </div>
           <ul className="divide-y-2">
           {customerNotes.map((item, index) => (
             <li key={index} className="">

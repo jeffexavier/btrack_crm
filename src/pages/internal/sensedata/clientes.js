@@ -10,7 +10,7 @@ import InternalLayout from '@/src/components/InternalLayout';
 import { MagnifyingGlassIcon, ArrowPathIcon, QueueListIcon } from "@/public/icons";
 import ModalListNotes from "@/src/components/sensedata/modalListNotes.js";
 
-export default function Clientes() {
+export default function Clientes({userData}) {
 
   async function getCustomers() {
     await axios.get("/api/sensedata/clientes")
@@ -160,7 +160,7 @@ export default function Clientes() {
             <Text transform="uppercase" css={{overflow:'hidden', maxHeight: "30px"}}>{item.id_legacy}</Text>
             <Text css={{overflow:'hidden', maxHeight: "30px"}}>{item.industry ? item.industry : '--'}</Text>
             </div>
-            <ModalListNotes customerObject={item}/>           
+            <ModalListNotes customerObject={item} userData={userData}/>           
           </Card.Header>
           <Card.Body>
           <Collapse.Group shadow>
@@ -219,8 +219,9 @@ export async function getServerSideProps(context) {
   const token = cookies.authorization
   try {
     verifyToken(token)
+    const verifiedToken = verifyToken(token)
     return {
-      props: {}
+      props: {userData: verifiedToken}
     }
   } catch (err) {     
     return {

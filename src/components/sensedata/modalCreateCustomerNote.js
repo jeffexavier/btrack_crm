@@ -2,13 +2,19 @@ import { Modal, Button, Text, Input, Textarea } from "@nextui-org/react";
 // import { parseCookies } from 'nookies'
 import { useEffect, useState } from "react";
 import postSenseDataCustomerNote from "@/src/backend/utils/postSenseDataCustomerNote"
+import { ArrowPathIcon } from "@/public/icons";
 
 import axios from "axios";
 // import {v4 as uuidv4} from 'uuid'
 // import { parse } from "dotenv";
 
-export default function ModalCreateCustomerNote({userData}) {
+export default function ModalCreateCustomerNote({userData, customerId}) {
+
   const [ visible, setVisible ] = useState();
+  const [ formNota, setFormNota ] = useState({
+    idEmpresa: customerId ? customerId : '',
+    descriptionNote: ''
+  });
 
   async function getCustomers() {
     await axios.get("/api/sensedata/clientes")
@@ -26,13 +32,22 @@ export default function ModalCreateCustomerNote({userData}) {
       })
   }
 
-  async function postCustomerNote(customer_id, noteDescription) {
-    await postSenseDataCustomerNote(customer_id, userData.name + " | " + noteDescription)
-    setTextArea('')
-    // setVisible(false)
+  function changeForm(e, name) {
+    setFormNota({
+      ...formNota,
+      [name]: e.target.value
+    })
   }
 
-  const [customerNota, setCustomerNota] = useState({})
+  async function postCustomerNote() {
+    await postSenseDataCustomerNote(formNota.idEmpresa, userData.name + " | " + formNota.descriptionNote)
+    setTextArea('')
+    if(customerId) {
+      setVisible(false)
+    }
+  }
+
+  // const [customerNota, setCustomerNota] = useState({})
   const [customers, setCustomers] = useState([])
   const [textArea, setTextArea] = useState('')
 
@@ -67,19 +82,19 @@ export default function ModalCreateCustomerNote({userData}) {
           </Text>
         </Modal.Header>
         <Modal.Body>
-        <form className="flex flex-col gap-2" onSubmit={(e) => {
+          <form className="flex flex-col gap-2" onSubmit={(e) => {
           e.preventDefault();
-          postCustomerNote(e.target[0].value, e.target[1].value)
+          postCustomerNote(customerId ? customerId : e.target[0].value, e.target[1].value)
           }}>
-          <Input as="select" css={{color:"red", placeHolder:"red"}} className="text-rose placeholder:text-rose">
-          <option value="" className="text-[#11181c]">Escolha a empresa</option>
+              {customerId ? <></> : <select onChange={(e) => {changeForm(e, "idEmpresa")}} className="text-eerieblack placeholder:text-white bg-[#f1f1f1] p-2 rounded-lg">
+              <option value="" className="text-[#11181c]">Escolha a empresa</option>
             {customers.map((item, index) => (
               <option key={index} className="text-[#11181c]" value={item.id}>{item.name_contract}</option>
             ))}
-            </Input>        
-          <Textarea type="text" placeHolder="Descrição da nota" onChange={(e) => {setTextArea(e.target.value)}} value={textArea}/>
-          <Input cursor="pointer" type="submit" value="Criar nota" css={{backgroundColor:"#654893"}}/>
-        </form>
+              </select> }
+              <textarea onChange={(e) => {changeForm(e, "descriptionNote")}} placeholder="Descrição da nota" className="text-eerieblack placeholder:text-eerieblack bg-[#f1f1f1] p-2 rounded-lg"></textarea>
+              <Button type="submit" color="secondary">Criar nota de cliente</Button>
+          </form>
         </Modal.Body>
       </Modal>
     </div>
