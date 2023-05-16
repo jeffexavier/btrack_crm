@@ -16,7 +16,7 @@ export default function lista({userData}) {
   async function getCustomersNotes() {
     await axios.get("/api/sensedata/notas")
       .then((response) => {
-        const customersNotes = response.data.customers_notes
+        const customersNotes = response.data.customers_notes.filter(item => item.deleted !== true)
         const customersNotesReverse = customersNotes.reverse()
         const newCustomersNotes = JSON.stringify(customersNotesReverse)
 
