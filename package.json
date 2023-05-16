@@ -23,6 +23,7 @@
     "mongoose": "^7.1.0",
     "nex": "^2.0.22",
     "next": "^13.3.0",
+    "nextjs-progressbar": "^0.0.16",
     "node-html-parser": "^6.1.5",
     "nookies": "^2.5.2",
     "postcss": "8.4.21",
