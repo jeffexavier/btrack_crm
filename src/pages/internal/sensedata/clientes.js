@@ -12,6 +12,13 @@ import ModalListNotes from "@/src/components/sensedata/modalListNotes.js";
 
 export default function Clientes({userData}) {
 
+  const [customers, setCustomers] = useState([])
+  const [filteredCustomers, setFilteredCustomers] = useState([])
+  const [filteredCustomersByName, setFilteredCustomersByName] = useState([])
+  const [filteredCustomersByCS, setFilteredCustomersByCS] = useState([])
+  const [usersSenseData, setUsersSenseData] = useState([])
+  const [userName, setUserName] = useState('')
+
   async function getCustomers() {
     await axios.get("/api/sensedata/clientes")
       .then((response) => {
@@ -84,15 +91,6 @@ export default function Clientes({userData}) {
 
     setUserName(name)
   }
-
-
-  const [customers, setCustomers] = useState([])
-  const [filteredCustomers, setFilteredCustomers] = useState([])
-  // const [filteredCustomersByName, setFilteredCustomersByName] = useState([])
-  const [filteredCustomersByCS, setFilteredCustomersByCS] = useState([])
-  const [usersSenseData, setUsersSenseData] = useState([])
-  const [userName, setUserName] = useState('')
-
 
   useEffect(() => {
     if(localStorage.getItem('customers')) {

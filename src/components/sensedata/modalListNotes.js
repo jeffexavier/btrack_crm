@@ -28,67 +28,30 @@ export default function ModalListNotes({customerObject, userData}) {
           setCustomersNotes(JSON.parse(localStorage.getItem('customers_notes')))
         } else {
           setCustomersNotes(customersNotesPreview)
-        }
-        
+        }        
       })
   }
-
-  // async function postCustomerNote(customer_id, noteDescription) {
-  //   const reqBodyCustomerNote = {
-  //     customers_notes: [
-  //       {
-  //         id_legacy: uuidv4(),
-  //         customer: {
-  //           id: customer_id
-  //         },
-  //         description: noteDescription,
-  //         created_on: new Date()
-  //       }
-  //     ]
-  //   }
-  //   console.log((reqBodyCustomerNote))
-  //   console.log(JSON.stringify(reqBodyCustomerNote))
-
-  //   await axios.post('/api/sensedata/notas', reqBodyCustomerNote, {
-  //     headers: {
-  //       "Content-Type": "application/json"
-  //     }
-  //   })
-  //   .then(response => {
-  //     console.log(response.data)
-  //     alert('Nota criada com sucesso!')
-  //   })
-  //   .catch(error => {
-  //     console.log(error)
-  //     alert('Erro desconhecido na criaçãod a nota!')
-  //   })
-
-  //   setVisible(false)
-  // }
 
   async function getCustomerNotes() {
     const filteredCustomersNotes = customersNotes.filter(item => item.customer.id === customerObject.id)
     setCustomerNotes(filteredCustomersNotes)
-    setVisible(true)
-
-    // var today = new Date();
-    // var day = today.getUTCDate();
-    // console.log(day)
   }
 
   async function attCustomerNotes() {
     await getCustomersNotes();
-    getCustomerNotes();
+    await getCustomerNotes();
+    console.log("atualizar")
   }
 
 
   useEffect(()=> {  
     if(localStorage.getItem('customers_notes')) {
       setCustomersNotes(JSON.parse(localStorage.getItem('customers_notes')))
+      console.log("atualizou")
     } else {
       getCustomersNotes()
     }
-  }, [])
+  }, [visible, customerNotes])
 
   return (
     <div>
