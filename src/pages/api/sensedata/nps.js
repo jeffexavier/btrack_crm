@@ -1,9 +1,10 @@
 import axios from "axios"
+import { transformNps } from "@/src/backend/services/sensedata/nps.js";
 import { verifyToken } from "@/src/backend/utils/token.js";
 
 export default async function getUsersSenseData(req, res) {
   const { limit, page, updatedAtStart, updatedAtEnd } = req.query
-  console.log(updatedAtStart, updatedAtEnd)
+  // console.log(updatedAtStart, updatedAtEnd)
   try {
     // verifyToken(req.cookies.authorization)
     await axios.get(process.env.SENSEDATA_API + "nps",{
@@ -19,7 +20,8 @@ export default async function getUsersSenseData(req, res) {
     })
     .then(response => {
         const usersSenseData = response.data;
-        res.status(200).json(usersSenseData);
+        const teste = transformNps(usersSenseData.nps, usersSenseData.nps.limit, usersSenseData.nps.current_page, usersSenseData.nps.next_page)
+        res.status(200).json(teste);
       })
   } catch (error) {
     res.status(400).json(error.message)
