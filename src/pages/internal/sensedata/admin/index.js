@@ -13,8 +13,9 @@ export default function CandleStickChart(props) {
   const [npsNeutral, setNpsNeutral] = useState([]);
   const [npsPromoter, setNpsPromoter] = useState([]);
 
+
   async function getNpsSenseData() {
-    const npsResponse = await fetch(`http://localhost:3000/api/sensedata/nps/?updatedAtStart=${'2023-01-01'}&updatedAtEnd=${'2023-03-31'}`, {
+    const npsResponse = await fetch(`http://localhost:3000/api/sensedata/nps/?updatedAtStart=${'2023-04-01'}&updatedAtEnd=${'2023-06-30'}`, {
       method: 'GET'
     }).then(response => {
       return response.json();
@@ -63,7 +64,7 @@ export default function CandleStickChart(props) {
     },
     xaxis: {
       tickPlacement: "between",
-      categories: ["Janeiro", "Fevereiro", "Março", "Trimestre"],
+      categories: ["April", "May", "June", "Trimestre"],
       labels: 
       {
         formatter: function (val) {
@@ -97,15 +98,19 @@ export default function CandleStickChart(props) {
   const series = [
       {
         name: "Detrator",
-        data: [1, 2, 1 + 2]
+        data: [
+          (npsDetractor.filter(item => item.month === "April")).length,
+          (npsDetractor.filter(item => item.month === "May")).length,
+          (npsDetractor.filter(item => item.month === "June")).length,
+          npsDetractor.length]
       },
       {
         name: "Neutro",
-        data: [5, 4, 5 + 4]
+        data: [5, 4, 4, 5 + 4]
       },
       {
         name: "Promotor",
-        data: [10, 2, 10 + 2]
+        data: [10, 2, 4, 10 + 2]
       },
     ]
 
