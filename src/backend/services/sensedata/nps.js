@@ -118,7 +118,7 @@ const NPS = {
 }
 
 export function transformNps(nps, limit = 100, page = 1, nextPage) {
-  const transformedNps = {nps:[], count: nps.length, current_page: page, next_page: nextPage ? nextPage : null}  
+  const transformedNps = {nps:[], per_page: limit, current_page: page, count: nps.length, next_page: nextPage ? nextPage : null}  
     nps.map(item => {
       transformedNps.nps.push({
         id: item.id,
