@@ -118,8 +118,9 @@ const NPS = {
 }
 
 export function transformNps(nps, limit = 100, page = 1, nextPage) {
-  const transformedNps = {nps:[], per_page: limit, current_page: page, count: nps.length, next_page: nextPage ? nextPage : null}  
-    nps.map(item => {
+  const transformedNps = {nps:[], per_page: limit, current_page: page, count: nps.length, next_page: nextPage ? nextPage : null};
+  const npsScore = nps.filter(item => item.score !== null);
+    npsScore.map(item => {
       transformedNps.nps.push({
         id: item.id,
         id_legacy: item.id_legacy,

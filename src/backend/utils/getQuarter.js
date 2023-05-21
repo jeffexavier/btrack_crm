@@ -4,5 +4,5 @@ export default function getQuarter(date) {
   })
 
   switch (newDate) {
-    case "01": return "first";    case "02": return "first";    case "03": return "first";    case "04": return "second";    case "05": return "second";    case "06": return "second";    case "07": return "third";    case "08": return "third";    case "09": return "third";    case "10": return "fourth";    case "11": return "fourth";    case "12": return "fourth";  }
+    case "01": return "First";    case "02": return "First";    case "03": return "First";    case "04": return "Second";    case "05": return "Second";    case "06": return "Second";    case "07": return "Third";    case "08": return "Third";    case "09": return "Third";    case "10": return "Fourth";    case "11": return "Fourth";    case "12": return "Fourth";  }
 }

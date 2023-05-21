@@ -20,6 +20,7 @@ export default async function getUsersSenseData(req, res) {
     })
     .then(response => {
         const usersSenseData = response.data;
+        // console.log(usersSenseData)
         const teste = transformNps(usersSenseData.nps, usersSenseData.nps.limit, usersSenseData.nps.current_page, usersSenseData.nps.next_page)
         res.status(200).json(teste);
       })

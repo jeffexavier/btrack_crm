@@ -1,10 +1,13 @@
 'use-client'
 
-import { Button } from "@nextui-org/react";
-import { useState } from "react";
+import { Button, Input } from "@nextui-org/react";
+import { useEffect, useState } from "react";
 import dynamic from "next/dynamic.js";
+import { set } from "mongoose";
 const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false})
-
+import getQuarter from "@/src/backend/utils/getQuarter.js";
+import Layout from "@/src/components/sensedata/Layout.js";
+import InternalLayout from "@/src/components/InternalLayout.js";
 
 export default function CandleStickChart(props) {
 
@@ -12,25 +15,55 @@ export default function CandleStickChart(props) {
   const [npsDetractor, setNpsDetractor] = useState([]);
   const [npsNeutral, setNpsNeutral] = useState([]);
   const [npsPromoter, setNpsPromoter] = useState([]);
+  const [quarter, setQuarter] = useState({quarter: getQuarter(new Date()), months: ["January", "February", "March"]})
+  const [year, setYear] = useState(new Date().getFullYear().toString())
 
+  const years = ["2022", "2023"];
+
+  const quarterMonths = [
+    {
+      quarter: "First",
+      months: ["January", "February", "March"],
+    },
+    {
+      quarter: 'Second',
+      months: ["April", "May", "June"],
+    },
+    {
+      quarter: 'Third',
+      months: ["July", "August", "September"],
+    },
+    {
+      quarter: 'Fourth',
+      months: ["October", "November", "December"]
+    }
+  ]
+
+  function onChangeInputQuarter(e) {
+    const selectedQuarter = e.target.value;
+
+    switch (selectedQuarter) {
+      case "First": setQuarter(quarterMonths[0]); break;
+      case "Second": setQuarter(quarterMonths[1]); break;
+      case "Third": setQuarter(quarterMonths[2]); break;
+      case "Fourth": setQuarter(quarterMonths[3]); break;
+    }
+  }
+
+  function onChangeInputYear(e) {
+    console.log(e.target.value)
+    setYear(e.target.value)
+  }
 
   async function getNpsSenseData() {
-    const npsResponse = await fetch(`http://localhost:3000/api/sensedata/nps/?updatedAtStart=${'2023-04-01'}&updatedAtEnd=${'2023-06-30'}`, {
+    const npsResponse = await fetch(`http://localhost:3000/api/sensedata/nps/?limit=1000`, {
       method: 'GET'
     }).then(response => {
       return response.json();
   })
-    console.log(npsResponse)
     const newNps = npsResponse.nps;
-    setNps(newNps);
-    const newNpsDetractor = newNps.filter(item => item.nps_status === "detractor");
-    const newNpsNeutral = newNps.filter(item => item.nps_status === "neutral");
-    const newNpsPromoter = newNps.filter(item => item.nps_status === "promoter");
-    setNpsDetractor(newNpsDetractor);
-    setNpsNeutral(newNpsNeutral);
-    setNpsPromoter(newNpsPromoter);
+    localStorage.setItem("nps", JSON.stringify(newNps));
   }
-
 
   const options = {
     chart: {
@@ -63,8 +96,11 @@ export default function CandleStickChart(props) {
       text: 'NPS Trimestral'
     },
     xaxis: {
+      title: {
+        text: ((npsPromoter.length - npsDetractor.length) / (npsDetractor.length + npsNeutral.length + npsPromoter.length))*100
+      },
       tickPlacement: "between",
-      categories: ["April", "May", "June", "Trimestre"],
+      categories: [... quarter.months, "trimestre"],
       labels: 
       {
         formatter: function (val) {
@@ -75,7 +111,7 @@ export default function CandleStickChart(props) {
     yaxis: {
       tickAmout: 10,
       title: {
-        text: undefined
+        text: year
       },
     },
     tooltip: {
@@ -99,30 +135,71 @@ export default function CandleStickChart(props) {
       {
         name: "Detrator",
         data: [
-          (npsDetractor.filter(item => item.month === "April")).length,
-          (npsDetractor.filter(item => item.month === "May")).length,
-          (npsDetractor.filter(item => item.month === "June")).length,
-          npsDetractor.length]
+          (npsDetractor.filter(item => item.month === quarter.months[0] && item.year === year)).length,
+          (npsDetractor.filter(item => item.month === quarter.months[1] && item.year === year)).length,
+          (npsDetractor.filter(item => item.month === quarter.months[2] && item.year === year)).length,
+          (npsDetractor.filter(item => item.quarter === quarter.quarter && item.year === year)).length
+        ]
       },
       {
         name: "Neutro",
-        data: [5, 4, 4, 5 + 4]
+        data: [
+          (npsNeutral.filter(item => item.month === quarter.months[0] && item.year === year)).length,
+          (npsNeutral.filter(item => item.month === quarter.months[1] && item.year === year)).length,
+          (npsNeutral.filter(item => item.month === quarter.months[2] && item.year === year)).length,
+          (npsNeutral.filter(item => item.quarter === quarter.quarter && item.year === year)).length
+        ]
       },
       {
         name: "Promotor",
-        data: [10, 2, 4, 10 + 2]
+        data: [
+          (npsPromoter.filter(item => item.month === quarter.months[0] && item.year === year)).length,
+          (npsPromoter.filter(item => item.month === quarter.months[1] && item.year === year)).length,
+          (npsPromoter.filter(item => item.month === quarter.months[2] && item.year === year)).length,
+          (npsPromoter.filter(item => item.quarter === quarter.quarter && item.year === year)).length
+        ]
       },
     ]
 
+    useEffect(() => {
+      if(localStorage.getItem("nps")) {
+        const newNps = JSON.parse(localStorage.getItem("nps"))
+        setNps(newNps)
+        setNpsDetractor(newNps.filter(item => item.nps_status === "detractor"));
+        setNpsNeutral(newNps.filter(item => item.nps_status === "neutral"));
+        setNpsPromoter(newNps.filter(item => item.nps_status === "promoter"));
+      }
+      console.log(year)
+    }, [])
+
+
   return (
-    <>
-      <Button onPress={getNpsSenseData}>testar</Button>
+    <InternalLayout>
+    <Layout>
+      <div className="flex justify-between pb-3">
+        <Button id="buttonteste" onPress={getNpsSenseData} aria-label="button" color="secondary">Atualizar</Button>
+        <div className="flex gap-2">
+          <select onChange={onChangeInputYear} className="bg-lavender rounded-lg p-2 text-rebecca-purple font-semibold">
+            <option>Ano</option>
+            {years.map((item, index) => (
+              <option key={index} value={item}>{item}</option>
+            ))}
+          </select>
+          <select onChange={onChangeInputQuarter} className="bg-lavender rounded-lg p-2 text-rebecca-purple font-semibold">
+            <option>Trimestre</option>
+            {quarterMonths.map((item, index) => (
+              <option key={index} value={item.quarter}>{item.quarter}</option>
+            ))}
+          </select>
+        </div>
+      </div>
       <ApexChart 
         options={options}
         series={series}
         type="bar"
         height={480}
       />
-    </>
+      </Layout>
+      </InternalLayout>
   )
 }
