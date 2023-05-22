@@ -14,7 +14,7 @@ import getQuarter from "@/src/backend/utils/getQuarter.js";
 import Layout from "@/src/components/sensedata/Layout.js";
 import InternalLayout from "@/src/components/InternalLayout.js";
 
-const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false});
+// const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false});
 const ChartBarNps = dynamic(() => import("@/src/components/sensedata/nps/chartBarNps.js"), {ssr: false});
 const RadialBarsNps = dynamic(() => import("@/src/components/sensedata/nps/radialBarsNps.js"), {ssr: false});
 const RadialBarTaxResNps = dynamic(() => import("@/src/components/sensedata/nps/radialBarTaxResNps.js"), {ssr: false});
@@ -24,15 +24,19 @@ export default function CandleStickChart() {
   const [npsDetractor, setNpsDetractor] = useState([]);
   const [npsNeutral, setNpsNeutral] = useState([]);
   const [npsPromoter, setNpsPromoter] = useState([]);
-  const [quarter, setQuarter] = useState({quarter: getQuarter(new Date()), months: ["January", "February", "March"]})
-  const [year, setYear] = useState(new Date().getFullYear().toString())
+  const [quarter, setQuarter] = useState({
+    quarter: "First",
+    months: ["January", "February", "March"]
+})
+  const [year, setYear] = useState(new Date().getFullYear())
   const [aptos, setAptos] = useState([])
+  const [customers, setCustomers] = useState([])
 
   const filteredNps = nps.filter(item => item.year === year && item.quarter === quarter.quarter).length;
   const filteredDetractorNps = npsDetractor.filter(item => item.year === year && item.quarter === quarter.quarter).length;
-  const filteredNeutralNps = npsNeutral.filter(item => item.year === year && item.quarter === quarter.quarter).length;
+  // const filteredNeutralNps = npsNeutral.filter(item => item.year === year && item.quarter === quarter.quarter).length;
   const filteredPromoterNps = npsPromoter.filter(item => item.year === year && item.quarter === quarter.quarter).length;
-  const filteredAptos = aptos.filter(item => item.year_dt_cancel === year && item.dt_cancel === null && verifySubDate(new Date(item.dt_register)))
+  const newAptos = customers.filter(item => verifyIfApto(item.year_dt_cancel, item.quarter_dt_cancel, item.dt_cancel, item.dt_register));
 
   const totalNps = Math.round((filteredPromoterNps - filteredDetractorNps) / filteredNps * 100)
 
@@ -89,6 +93,17 @@ export default function CandleStickChart() {
     getCustomers()
   }
 
+  function verifyIfApto(year_dt_cancel, quarter_dt_cancel, dt_cancel, dt_register) {
+    const verify = year_dt_cancel === year && quarter_dt_cancel === quarter.quarter  && verifySubDate(dt_register) || dt_cancel === null && verifySubDate(dt_register)
+    return verify
+  }
+
+  // function getAptos(year_dt_cancel = year, quarter_dt_cancel = quarter.quarter) {
+  //   const newAptos = customers.filter(item => verifyIfApto(item.year_dt_cancel, item.quarter_dt_cancel, item.dt_cancel, item.dt_register))
+  //   console.log(newAptos)
+  //   setAptos(newAptos)
+  // }
+
     useEffect(() => {
       if(localStorage.getItem("nps")) {
         const newNps = JSON.parse(localStorage.getItem("nps"))
@@ -96,7 +111,7 @@ export default function CandleStickChart() {
         setNpsDetractor(newNps.filter(item => item.nps_status === "detractor"));
         setNpsNeutral(newNps.filter(item => item.nps_status === "neutral"));
         setNpsPromoter(newNps.filter(item => item.nps_status === "promoter"));
-        setAptos(JSON.parse(localStorage.getItem('customers')))
+        setCustomers(JSON.parse(localStorage.getItem('customers')))
       }
     }, [])
 
@@ -121,12 +136,12 @@ export default function CandleStickChart() {
           </select>
         </div>
       </div>
-      <div className="flex">
+      <div className="flex justify-evenly">
         <RadialBarsNps nps={nps} npsDetractor={npsDetractor} npsNeutral={npsNeutral} npsPromoter={npsPromoter} quarter={quarter} year={year}/>
-        <RadialBarTaxResNps nps={nps} npsDetractor={npsDetractor} npsNeutral={npsNeutral} npsPromoter={npsPromoter} quarter={quarter} year={year} aptos={filteredAptos}/>
       <div className="flex flex-col justify-center items-center p-10">
         <h1 className="text-rebecca-purple">{totalNps}</h1>
       </div>
+        <RadialBarTaxResNps nps={filteredNps} npsDetractor={npsDetractor} npsNeutral={npsNeutral} npsPromoter={npsPromoter} quarter={quarter} year={year} aptos={newAptos}/>
       </div>
         <ChartBarNps nps={nps} npsDetractor={npsDetractor} npsNeutral={npsNeutral} npsPromoter={npsPromoter} quarter={quarter} year={year}/>
       </Layout>

@@ -9,7 +9,7 @@ export default function ChartBarNps({nps, npsDetractor, npsNeutral, npsPromoter,
   const filteredDetractorNps = npsDetractor.filter(item => item.year === year && item.quarter === quarter.quarter)
   const filteredNeutralNps = npsNeutral.filter(item => item.year === year && item.quarter === quarter.quarter)
   const filteredPromoterNps = npsPromoter.filter(item => item.year === year && item.quarter === quarter.quarter)
-
+  
   const options = {
     chart: {
       stacked: true,
@@ -43,7 +43,7 @@ export default function ChartBarNps({nps, npsDetractor, npsNeutral, npsPromoter,
         text: (Math.round(((filteredPromoterNps.length - filteredDetractorNps.length) / (filteredDetractorNps.length + filteredNeutralNps.length + filteredPromoterNps.length))*100))
       },
       tickPlacement: "between",
-      categories: [... quarter.months, "trimestre"],
+      categories: [...quarter.months, "trimestre"],
       labels: 
       {
         formatter: function (val) {

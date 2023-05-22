@@ -12,11 +12,11 @@ export default function RadialBarTaxResNPS({nps, npsDetractor, npsNeutral, npsPr
     }
   }
 
-  const series = [(Math.round(nps.length / aptos.length))]
+  const series = [(Math.round(nps / aptos.length * 100))]
   
   return (
     <>
-    <h1>{nps.length} / {aptos.length}</h1>
+    {/* <h1>{nps} / {aptos.length}</h1> */}
       <ApexChart 
         options={options}
         series={series}
