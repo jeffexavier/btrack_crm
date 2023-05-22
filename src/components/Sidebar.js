@@ -15,10 +15,6 @@ const pages = [
   {
     page: "QRCODE",
     link: "/internal/qrcode"
-  },
-  {
-    page: "MÚSICAS",
-    link: "/internal/musica"
   }
 ]
 
