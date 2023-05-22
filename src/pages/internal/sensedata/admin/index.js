@@ -54,7 +54,7 @@ export default function CandleStickChart() {
   }
 
   async function getNpsSenseData() {
-    const npsResponse = await fetch(`http://localhost:3000/api/sensedata/nps/?limit=1000`, {
+    const npsResponse = await fetch(`/api/sensedata/nps/?limit=1000`, {
       method: 'GET'
     }).then(response => {
       return response.json();
