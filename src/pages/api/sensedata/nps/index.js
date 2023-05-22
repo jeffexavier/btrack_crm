@@ -21,8 +21,8 @@ export default async function getUsersSenseData(req, res) {
     .then(response => {
         const usersSenseData = response.data;
         // console.log(usersSenseData)
-        const teste = transformNps(usersSenseData.nps, usersSenseData.nps.limit, usersSenseData.nps.current_page, usersSenseData.nps.next_page)
-        res.status(200).json(teste);
+        const transformedNps = transformNps(usersSenseData.nps, usersSenseData.per_page, usersSenseData.current_page, usersSenseData.next_page)
+        res.status(200).json(transformedNps);
       })
   } catch (error) {
     res.status(400).json(error.message)

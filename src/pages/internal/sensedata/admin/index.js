@@ -1,43 +1,42 @@
+
 'use-client'
 
 import { Button, Input } from "@nextui-org/react";
 import { useEffect, useState } from "react";
+import { parseCookies } from "nookies";
+import { verifyToken } from "@/src/backend/utils/token.js";
+import { quarterMonths } from "@/src/backend/utils/constants.js";
+import { subDate, verifyQuarter, verifySubDate } from "@/src/backend/utils/dates.js";
+
+import axios from "axios";
 import dynamic from "next/dynamic.js";
-import { set } from "mongoose";
-const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false})
 import getQuarter from "@/src/backend/utils/getQuarter.js";
 import Layout from "@/src/components/sensedata/Layout.js";
 import InternalLayout from "@/src/components/InternalLayout.js";
 
-export default function CandleStickChart(props) {
+const ApexChart = dynamic(() => import('react-apexcharts'), { ssr: false});
+const ChartBarNps = dynamic(() => import("@/src/components/sensedata/nps/chartBarNps.js"), {ssr: false});
+const RadialBarsNps = dynamic(() => import("@/src/components/sensedata/nps/radialBarsNps.js"), {ssr: false});
+const RadialBarTaxResNps = dynamic(() => import("@/src/components/sensedata/nps/radialBarTaxResNps.js"), {ssr: false});
 
+export default function CandleStickChart() {
   const [nps, setNps] = useState([]);
   const [npsDetractor, setNpsDetractor] = useState([]);
   const [npsNeutral, setNpsNeutral] = useState([]);
   const [npsPromoter, setNpsPromoter] = useState([]);
   const [quarter, setQuarter] = useState({quarter: getQuarter(new Date()), months: ["January", "February", "March"]})
   const [year, setYear] = useState(new Date().getFullYear().toString())
+  const [aptos, setAptos] = useState([])
+
+  const filteredNps = nps.filter(item => item.year === year && item.quarter === quarter.quarter).length;
+  const filteredDetractorNps = npsDetractor.filter(item => item.year === year && item.quarter === quarter.quarter).length;
+  const filteredNeutralNps = npsNeutral.filter(item => item.year === year && item.quarter === quarter.quarter).length;
+  const filteredPromoterNps = npsPromoter.filter(item => item.year === year && item.quarter === quarter.quarter).length;
+  const filteredAptos = aptos.filter(item => item.year_dt_cancel === year && item.dt_cancel === null && verifySubDate(new Date(item.dt_register)))
+
+  const totalNps = Math.round((filteredPromoterNps - filteredDetractorNps) / filteredNps * 100)
 
   const years = ["2022", "2023"];
-
-  const quarterMonths = [
-    {
-      quarter: "First",
-      months: ["January", "February", "March"],
-    },
-    {
-      quarter: 'Second',
-      months: ["April", "May", "June"],
-    },
-    {
-      quarter: 'Third',
-      months: ["July", "August", "September"],
-    },
-    {
-      quarter: 'Fourth',
-      months: ["October", "November", "December"]
-    }
-  ]
 
   function onChangeInputQuarter(e) {
     const selectedQuarter = e.target.value;
@@ -51,7 +50,6 @@ export default function CandleStickChart(props) {
   }
 
   function onChangeInputYear(e) {
-    console.log(e.target.value)
     setYear(e.target.value)
   }
 
@@ -65,101 +63,31 @@ export default function CandleStickChart(props) {
     localStorage.setItem("nps", JSON.stringify(newNps));
   }
 
-  const options = {
-    chart: {
-      stacked: true,
-    },
-    plotOptions: {
-      bar: {
-        horizontal: true,
-        borderRadius: 20,
-        dataLabels: {
-          total: {
-            enabled: true,
-            offsetX: 0,
-            style: {
-              fontSize: '13px',
-              fontWeight: 900
-            }
-          }
+  async function getCustomers() {
+    await axios.get("/api/sensedata/customers")
+      .then((response) => {
+        const customers = response.data.customers
+        const customersReverse = customers.reverse()
+        const newCustomers = JSON.stringify(customersReverse)
+
+        localStorage.setItem("customers", newCustomers)
+        // setCustomers(customersReverse)
+        // setFilteredCustomers(customersReverse)
+    })
+      .catch(error => {
+        if(localStorage.getItem("customers")) {
+          // setCustomers(JSON.parse(localStorage.getItem('customers')))
+          // setFilteredCustomers(JSON.parse(localStorage.getItem('customers')))
         }
-      },
-      color: [
-        "#FF5964"
-      ]
-    },
-    stroke: {
-      width: 0,
-      colors: ['#fff']
-    },
-    title: {
-      text: 'NPS Trimestral'
-    },
-    xaxis: {
-      title: {
-        text: ((npsPromoter.length - npsDetractor.length) / (npsDetractor.length + npsNeutral.length + npsPromoter.length))*100
-      },
-      tickPlacement: "between",
-      categories: [... quarter.months, "trimestre"],
-      labels: 
-      {
-        formatter: function (val) {
-          return val      
-        }
-      }
-    },
-    yaxis: {
-      tickAmout: 10,
-      title: {
-        text: year
-      },
-    },
-    tooltip: {
-      y: {
-        formatter: function (val) {
-          return val
-        }
-      }
-    },
-    fill: {
-      opacity: 1
-    },
-    legend: {
-      position: 'top',
-      horizontalAlign: 'left',
-      offsetX: 40
-    }
+        console.log(error.response)
+        
+      })
   }
 
-  const series = [
-      {
-        name: "Detrator",
-        data: [
-          (npsDetractor.filter(item => item.month === quarter.months[0] && item.year === year)).length,
-          (npsDetractor.filter(item => item.month === quarter.months[1] && item.year === year)).length,
-          (npsDetractor.filter(item => item.month === quarter.months[2] && item.year === year)).length,
-          (npsDetractor.filter(item => item.quarter === quarter.quarter && item.year === year)).length
-        ]
-      },
-      {
-        name: "Neutro",
-        data: [
-          (npsNeutral.filter(item => item.month === quarter.months[0] && item.year === year)).length,
-          (npsNeutral.filter(item => item.month === quarter.months[1] && item.year === year)).length,
-          (npsNeutral.filter(item => item.month === quarter.months[2] && item.year === year)).length,
-          (npsNeutral.filter(item => item.quarter === quarter.quarter && item.year === year)).length
-        ]
-      },
-      {
-        name: "Promotor",
-        data: [
-          (npsPromoter.filter(item => item.month === quarter.months[0] && item.year === year)).length,
-          (npsPromoter.filter(item => item.month === quarter.months[1] && item.year === year)).length,
-          (npsPromoter.filter(item => item.month === quarter.months[2] && item.year === year)).length,
-          (npsPromoter.filter(item => item.quarter === quarter.quarter && item.year === year)).length
-        ]
-      },
-    ]
+  async function attNps() {
+    getNpsSenseData();
+    getCustomers()
+  }
 
     useEffect(() => {
       if(localStorage.getItem("nps")) {
@@ -168,8 +96,8 @@ export default function CandleStickChart(props) {
         setNpsDetractor(newNps.filter(item => item.nps_status === "detractor"));
         setNpsNeutral(newNps.filter(item => item.nps_status === "neutral"));
         setNpsPromoter(newNps.filter(item => item.nps_status === "promoter"));
+        setAptos(JSON.parse(localStorage.getItem('customers')))
       }
-      console.log(year)
     }, [])
 
 
@@ -177,7 +105,7 @@ export default function CandleStickChart(props) {
     <InternalLayout>
     <Layout>
       <div className="flex justify-between pb-3">
-        <Button id="buttonteste" onPress={getNpsSenseData} aria-label="button" color="secondary">Atualizar</Button>
+        <Button id="buttonteste" onPress={attNps} aria-label="button" color="secondary">Atualizar</Button>
         <div className="flex gap-2">
           <select onChange={onChangeInputYear} className="bg-lavender rounded-lg p-2 text-rebecca-purple font-semibold">
             <option>Ano</option>
@@ -193,13 +121,35 @@ export default function CandleStickChart(props) {
           </select>
         </div>
       </div>
-      <ApexChart 
-        options={options}
-        series={series}
-        type="bar"
-        height={480}
-      />
+      <div className="flex">
+        <RadialBarsNps nps={nps} npsDetractor={npsDetractor} npsNeutral={npsNeutral} npsPromoter={npsPromoter} quarter={quarter} year={year}/>
+        <RadialBarTaxResNps nps={nps} npsDetractor={npsDetractor} npsNeutral={npsNeutral} npsPromoter={npsPromoter} quarter={quarter} year={year} aptos={filteredAptos}/>
+      <div className="flex flex-col justify-center items-center p-10">
+        <h1 className="text-rebecca-purple">{totalNps}</h1>
+      </div>
+      </div>
+        <ChartBarNps nps={nps} npsDetractor={npsDetractor} npsNeutral={npsNeutral} npsPromoter={npsPromoter} quarter={quarter} year={year}/>
       </Layout>
       </InternalLayout>
   )
+}
+
+export async function getServerSideProps(context) {
+  const cookies = parseCookies(context)
+  const token = cookies.authorization
+  try {
+    verifyToken(token)
+    const verifiedToken = verifyToken(token)
+    return {
+      props: {userData: verifiedToken}
+    }
+  } catch (err) {     
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/login'
+      },
+      props: {}
+    }
+  }
 }
