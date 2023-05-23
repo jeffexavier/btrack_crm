@@ -1,5 +1,5 @@
 export function getDateCollectTask(tasks, limit, page, next_page) {
-  const newTasks = tasks.filter(item => item.description === "Coleta de Dados")
+  const newTasks = tasks.filter(item => item.description === "Coleta de Dados" || item.description === "Configuração Whatsapp")
   const newTasksObject = {tasks: [], per_page: limit, current_page: page, count: newTasks.length ,next_page: next_page }
 
   newTasks.map(item => {
