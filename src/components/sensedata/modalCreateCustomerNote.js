@@ -1,7 +1,7 @@
 import { Modal, Button, Text, Input, Textarea } from "@nextui-org/react";
 // import { parseCookies } from 'nookies'
 import { useEffect, useState } from "react";
-import postSenseDataCustomerNote from "@/src/backend/utils/postSenseDataCustomerNote"
+import postSenseDataCustomerNote from "@/src/backend/utils/postSenseDataCustomerNote.js"
 import { ArrowPathIcon } from "@/public/icons";
 
 import axios from "axios";
@@ -17,7 +17,7 @@ export default function ModalCreateCustomerNote({userData, customerId}) {
   });
 
   async function getCustomers() {
-    await axios.get("/api/sensedata/clientes")
+    await axios.get("/api/sensedata/customers")
       .then((response) => {
         const customers = response.data.customers
         const customersReverse = customers.reverse()

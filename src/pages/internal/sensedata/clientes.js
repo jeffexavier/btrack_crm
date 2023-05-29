@@ -20,7 +20,7 @@ export default function Clientes({userData}) {
   const [userName, setUserName] = useState('')
 
   async function getCustomers() {
-    await axios.get("/api/sensedata/clientes")
+    await axios.get("/api/sensedata/customers")
       .then((response) => {
         const customers = response.data.customers
         const customersReverse = customers.reverse()

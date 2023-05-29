@@ -4,8 +4,8 @@ import axios from "axios"
 import { verifyToken } from '@/src/backend/utils/token'
 
 export default async function handler(req, res) {
-  console.log(req.method)
-  console.log(req.body)
+  // console.log(req.method)
+  // console.log(req.body)
   const {authorization} = req.cookies
 try {
     // verifyToken(authorization);

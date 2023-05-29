@@ -10,7 +10,7 @@ export default function ModalListNotes({customerObject, userData}) {
 
   const [customersNotes, setCustomersNotes] = useState([])
   const [customerNotes, setCustomerNotes] = useState([])
-  const [ visible, setVisible ] = useState();
+  const [ visible, setVisible ] = useState(false);
 
   async function getCustomersNotes() {
     await axios.get("/api/sensedata/notas")
@@ -46,16 +46,17 @@ export default function ModalListNotes({customerObject, userData}) {
 
   useEffect(()=> {  
     if(localStorage.getItem('customers_notes')) {
+      // attCustomerNotes()
       setCustomersNotes(JSON.parse(localStorage.getItem('customers_notes')))
       console.log("atualizou")
     } else {
       getCustomersNotes()
     }
-  }, [visible, customerNotes])
+  }, [visible])
 
   return (
     <div>
-      <QueueListIcon onClick={getCustomerNotes} height="24px"  className="absolute top-4 right-4 cursor-pointer bg-white roudend-md"/>
+      <QueueListIcon onClick={() => {getCustomerNotes(), setVisible(true)}} height="24px"  className="absolute top-4 right-4 cursor-pointer bg-white roudend-md"/>
       <Modal
         scroll
           //blur

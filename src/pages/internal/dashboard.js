@@ -4,9 +4,9 @@ import { verifyToken } from "@/src/backend/utils/token";
 import Lista from "./sensedata/notas_clientes.js"
 import InternalLayout from '@/src/components/InternalLayout';
 
-export default function Home({ children }) {
+export default function Home({ userData, children }) {
   return (
-      <Lista />
+      <Lista userData={userData}/>
   )
 }
 
@@ -15,8 +15,9 @@ export async function getServerSideProps(context) {
   const token = cookies.authorization
   try {
     verifyToken(token)
+    const verifiedToken = verifyToken(token)
     return {
-      props: {}
+      props: {userData: verifiedToken}
     }
   } catch (err) {     
     return {
