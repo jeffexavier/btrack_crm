@@ -111,7 +111,7 @@ export default function CandleStickChart(props) {
 
   return (
     <>
-      <Button onPress={getNpsSenseData}>testar</Button>
+      <Button onPress={getNpsSenseData}>Testar</Button>
       <ApexChart 
         options={options}
         series={series}
