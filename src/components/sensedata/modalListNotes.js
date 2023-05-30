@@ -12,6 +12,8 @@ export default function ModalListNotes({customerObject, userData}) {
   const [customerNotes, setCustomerNotes] = useState([])
   const [ visible, setVisible ] = useState(false);
 
+  const filteredCustomerNotes = customersNotes.filter(item => item.customer.id === customerObject.id)
+
   async function getCustomersNotes() {
     await axios.get("/api/sensedata/notas")
       .then((response) => {
@@ -56,7 +58,10 @@ export default function ModalListNotes({customerObject, userData}) {
 
   return (
     <div>
-      <QueueListIcon onClick={() => {getCustomerNotes(), setVisible(true)}} height="24px"  className="absolute top-4 right-4 cursor-pointer bg-white roudend-md"/>
+      <div className="absolute top-4 right-4 flex gap-3">
+        <p>{filteredCustomerNotes.length}</p>
+        <QueueListIcon onClick={() => {getCustomerNotes(), setVisible(true)}} height="24px"  className="cursor-pointer bg-white roudend-md"/>
+      </div>
       <Modal
         scroll
           //blur
