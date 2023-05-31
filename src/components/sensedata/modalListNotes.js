@@ -1,8 +1,8 @@
-import { Modal, useModal, Button, Text, Input, Textarea, Table, Header } from "@nextui-org/react";
+import { Modal, useModal, Button, Text, Input, Textarea, Table, Header, Tooltip } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import {v4 as uuidv4} from 'uuid'
-import { QueueListIcon, ArrowPathIcon } from "@/public/icons.js";
+import { QueueListIcon, ArrowPathIcon,DocumentDuplicateIcon } from "@/public/icons.js";
 import ModalCreateCustomerNote from "./modalCreateCustomerNote";
 import parse from "node-html-parser";
 
@@ -45,7 +45,6 @@ export default function ModalListNotes({customerObject, userData}) {
     console.log("atualizar")
   }
 
-
   useEffect(()=> {  
     if(localStorage.getItem('customers_notes')) {
       // attCustomerNotes()
@@ -60,7 +59,14 @@ export default function ModalListNotes({customerObject, userData}) {
     <div>
       <div className="absolute top-4 right-4 flex gap-3">
         <p>{filteredCustomerNotes.length}</p>
+        <Tooltip content={filteredCustomerNotes[0] ? new Date(filteredCustomerNotes[0].created_on).toLocaleString("pt-BR",{
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"}
+        ) : "Sem notas!" }>
+        
         <QueueListIcon onClick={() => {getCustomerNotes(), setVisible(true)}} height="24px"  className="cursor-pointer bg-white roudend-md"/>
+        </Tooltip>
       </div>
       <Modal
         scroll
@@ -75,20 +81,25 @@ export default function ModalListNotes({customerObject, userData}) {
             cursor: "default"
           }}
           onClose={() => setVisible(false)}>
-        <Modal.Header>
+        <Modal.Header css={{display: "flex", justifyContent: "space-between", }}>
+        <div>
           <Text id="modal-title" size={18} weight="semibold">
             Notas de {customerObject.name_contract}
           </Text>
+          </div>
         </Modal.Header>
         <Modal.Body>
+          <div>
+
+          </div>
           <div className="flex justify-between">
           <ModalCreateCustomerNote customerId={customerObject.id} userData={userData}/>
           <Button bordered auto color="secondary" onPress={() => {attCustomerNotes()}}>
             <ArrowPathIcon height="24px"/>
           </Button>
-          </div>
+          </div>          
           <ul className="divide-y-2">
-          {customerNotes.map((item, index) => (
+          {filteredCustomerNotes.map((item, index) => (
             <li key={index} className="">
             <p>{new Date(item.created_on).toLocaleDateString('pt-BR', {
               day: '2-digit',
@@ -102,6 +113,9 @@ export default function ModalListNotes({customerObject, userData}) {
           ))}
         </ul>
         </Modal.Body>
+        <Modal.Footer>
+          <p>teste</p>
+        </Modal.Footer>
       </Modal>
     </div>
   );

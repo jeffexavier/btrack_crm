@@ -45,8 +45,12 @@ export default function Clientes({userData}) {
     await fetch('/api/sensedata/users')
     .then(async (response) => {
       const usersSense = await response.json()
+      console.log(usersSense)
       const usersCS = usersSense.users.filter(item => item.profile.role === "editor")
+      localStorage.setItem('usersSenseData', JSON.stringify(usersCS))
       setUsersSenseData(usersCS)
+    }).catch(error => {
+      console.log(error)
     })
     // setUsersSenseData(usersSense)
   }
@@ -78,17 +82,6 @@ export default function Clientes({userData}) {
         setFilteredCustomers(customers)
         setFilteredCustomersByCS(customers)
       }
-    // } else {
-    //   if (customers && name !== "") {
-    //     const customersFiltered = filteredCustomersByName.filter(item => item.cs.name === name)
-    //     setFilteredCustomers(customersFiltered)
-    //     setFilteredCustomersByCS(customersFiltered)
-    //   } else if (customers && name === "") {
-    //     setFilteredCustomers(filteredCustomersByName)
-    //     setFilteredCustomersByCS(filteredCustomersByName)
-    //   }
-    // }
-
     setUserName(name)
   }
 
@@ -100,7 +93,11 @@ export default function Clientes({userData}) {
       getCustomers()
     }
 
-    getUsersSenseData()
+    if(localStorage.getItem('usersSenseData')) {
+      setUsersSenseData(JSON.parse(localStorage.getItem('usersSenseData')))
+    } else {
+      getUsersSenseData()
+    }
   }, [])
 
   return (
@@ -149,7 +146,7 @@ export default function Clientes({userData}) {
         <ArrowPathIcon height="24px"/>
       </Button>
     </div>
-      <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {filteredCustomers.map((item, index) => (
         <Card key={index} borderWeight="" variant="shadow" isHoverable css={{display:"flex", minHeight:"300px", maxHeight:"600px", overflow:"hidden"}} >
           <Card.Header css={{display:"flex"}}>
