@@ -2,7 +2,7 @@ import axios from "axios"
 import { verifyToken } from "@/src/backend/utils/token.js";
 import { getDateCollectTask } from "@/src/backend/services/sensedata/tasks.js";
 
-export default async function getUsersSenseData(req, res) {
+export default async function getTasksSenseData(req, res) {
   const { limit, page, group } = req.query
   try {
     // verifyToken(req.cookies.authorization)
