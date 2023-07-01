@@ -56,7 +56,7 @@ export default function Login() {
         <input type="email" autoComplete="email" placeholder="E-mail" onChange={(e) => {handleFormEdit(e, 'email')}} className="p-2 rounded-md shadow-sm focus:shadow-inner"/>
         <input type="password" autoComplete="password" placeholder="Senha" onChange={(e) => {handleFormEdit(e, 'password')}} className="p-2 rounded-md shadow-sm focus:shadow-inner"/>
         {error && <p className="text-red text-sm">{error}</p> }
-        <button type="submit" className="p-2 bg-rose rounded-md shadow-md text-white">Login</button>
+        <button type="submit" className="p-2 bg-rose hover:bg-rebecca-purple active:bg-tropical-indigo rounded-md shadow-md text-white">Login</button>
         <Link href="/cadastro" className="text-eerie-black text-sm">Quero me cadastrar...</Link>
       </form>
     </div>
