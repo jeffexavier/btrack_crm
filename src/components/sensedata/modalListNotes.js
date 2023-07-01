@@ -113,9 +113,6 @@ export default function ModalListNotes({customerObject, userData}) {
           ))}
         </ul>
         </Modal.Body>
-        <Modal.Footer>
-          <p>teste</p>
-        </Modal.Footer>
       </Modal>
     </div>
   );
