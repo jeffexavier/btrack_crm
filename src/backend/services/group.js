@@ -39,10 +39,13 @@ export async function createGroup(body) {
   return createNewGroup
 }
 
-export async function listGroups(id) {
+export async function listGroups(id, id_legacy) {
   databaseConnection();
   if(id){
     const group = await Group.findById(id);
+    return group;
+  } else if(id_legacy){
+    const group = await Group.findOne({id_legacy});
     return group;
   }
 

@@ -16,8 +16,8 @@ export default async function group(req, res) {
     }
   } else if (req.method === "GET") {
     try {
-      const {id} = req.query
-      const listedGroups = await listGroups(id);
+      const {id, id_legacy} = req.query
+      const listedGroups = await listGroups(id, id_legacy);
       const responseListedGroups = {
         value: listedGroups,
         count: listedGroups.length ? (listedGroups.length) + 1 : (0 + 1) 
