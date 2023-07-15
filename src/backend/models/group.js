@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 
 const GroupSchema = new mongoose.Schema({
-  id_legacy: {type: String},
+  id_legacy: {type: String, unique: true},
   name_contract: {type: String},
   name: {type: String},
-  contract_cnpj: {type: String, required: true, unique: true},
+  contract_cnpj: {type: Number, required: true, unique: true},
   status: {type: String, default: "Ativo"},
-  cs: {type:String},
-  csm: {type: String},
+  cs: {type:String, default: "default@btrack.com.br"},
+  csm: {type: String, default: "default@btrack.com.br"},
   dt_register: {type: Date, default: Date.now},
+  dt_insert: {type: Date, default: Date.now},
   segment: {type: String},
   city: {type: String},
   state: {type: String},
