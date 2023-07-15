@@ -9,7 +9,7 @@ import { createToken } from "@/src/backend/utils/token";
 export async function listUsers() {
     databaseConnection();
     const usersList = await User.find();
-    return usersList
+    return usersList;
 }
 
 export async function registerUser(body) {
@@ -18,22 +18,22 @@ export async function registerUser(body) {
         email: body.email,
         name: body.name,
         password: await bcrypt.hash(body.password, 8)
-    }
-    const createNewUser = await User.create(newUser)
-    const token = createToken(createNewUser)
+    };
+    const createNewUser = await User.create(newUser);
+    const token = createToken(createNewUser);
     return token;
 }
 
 export async function loginUser(body) {
     databaseConnection();
-    const verifyUser = await User.findOne({email: body.email})
+    const verifyUser = await User.findOne({email: body.email});
 
     if(verifyUser === null) {
         throw Error("Email não encontrado.");
     } else {
         const verifyPassword = await bcrypt.compare(body.password, verifyUser.password);
         if(!verifyPassword) {
-            throw Error("Senha incorreta.")
+            throw Error("Senha incorreta.");
         } else {
             const token = createToken(verifyUser);
             return token;
