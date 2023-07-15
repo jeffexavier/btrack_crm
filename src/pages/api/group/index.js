@@ -22,7 +22,9 @@ export default async function group(req, res) {
     } catch (error) {
       res.status(400).json(error)
     }
-  } else if(req.method === "DELETE"){
+  } else if(req.method === "PUT"){
+
+  }else if(req.method === "DELETE"){
     try {
       const {id} = req.query
       const deletedGroup = await deleteGroup(id)
