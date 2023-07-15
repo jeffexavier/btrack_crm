@@ -18,6 +18,7 @@ const GroupSchema = new mongoose.Schema({
   adress_number: {type: String},
   stage: {type: String, default: "Onboarding"},
   dt_stage: {type: Date, default: Date.now},
+  size: {type: String},
   plan: {type: String, default: "Trial"},
   dt_cancel: {type: Date},
   cancel_tag: {type: String},

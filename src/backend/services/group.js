@@ -26,6 +26,7 @@ export async function createGroup(body) {
     adress_number: body.adress_number,
     stage: body.stage,
     dt_stage: body.dt_stage,
+    size: body.size,
     plan: body.plan,
     dt_cancel: body.dt_cancel,
     cancel_tag: body.cancel_tag,
@@ -39,6 +40,20 @@ export async function createGroup(body) {
 
 export async function listGroups() {
   databaseConnection();
-  const groupsList = await Group.find();
-  return groupsList;
+  const listGroups = await Group.find();
+  return listGroups;
+}
+
+export async function deleteGroup(id) {
+  databaseConnection();
+  const deleteGroup = await Group.findByIdAndDelete(id);
+  const deletedGroup = {
+    _id: deleteGroup._id,
+    id_legacy: deleteGroup.id_legacy,
+    name_contract: deleteGroup.name_contract,
+    contract_cnpj: deleteGroup.contract_cnpj,
+    status: "deleted"
+  }
+
+  return deletedGroup
 }
