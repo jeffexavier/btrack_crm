@@ -2,8 +2,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
-import Layout from "@/src/components/sensedata/Layout.js";
-import axios from "axios";
 import {
   Card,
   Collapse,
@@ -15,6 +13,8 @@ import {
   Input,
   Dropdown,
   Table,
+  Switch,
+  Tooltip,
 } from "@nextui-org/react";
 import { TEMPORARY_REDIRECT_STATUS } from "next/dist/shared/lib/constants.js";
 import InternalLayout from "@/src/components/InternalLayout";
@@ -22,8 +22,12 @@ import {
   MagnifyingGlassIcon,
   ArrowPathIcon,
   QueueListIcon,
+  TrashIcon,
 } from "@/public/icons";
+import Layout from "@/src/components/sensedata/Layout.js";
+import axios from "axios";
 import ModalListNotes from "@/src/components/sensedata/modalListNotes.js";
+import ChurnButton from "@/src/components/buttons/ChurnButton.js";
 
 export default function Clientes({ userData }) {
   const [groups, setGroups] = useState([]);
@@ -142,9 +146,9 @@ export default function Clientes({ userData }) {
             css={{
               height: "auto",
               minWidth: "100%",
+              hoverable: true
             }}
-            animated={false}
-            selectionMode="multiple"
+            animated={true}
             color="secondary"
             borderWeight={0}
           >
@@ -167,11 +171,11 @@ export default function Clientes({ userData }) {
             <Table.Body>
               {groups.map((item, index) => (
             <Table.Row>
-              <Table.Cell>{item.name_contract}</Table.Cell>
+              <Table.Cell><Tooltip content={item.contract_cnpj}>{item.name_contract}</Tooltip></Table.Cell>
               <Table.Cell>{item.size}</Table.Cell>
               <Table.Cell>{item.status}</Table.Cell>
               <Table.Cell>{item.stage}</Table.Cell>
-              <Table.Cell>teste</Table.Cell>
+              <Table.Cell><ChurnButton groupData={item}/></Table.Cell>
               </Table.Row>
                 ))}
             </Table.Body>
