@@ -2,20 +2,7 @@
 import { useEffect, useState, useMemo } from "react";
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
-import {
-  Card,
-  Collapse,
-  Container,
-  Link,
-  Text,
-  textTransforms,
-  Button,
-  Input,
-  Dropdown,
-  Table,
-  Switch,
-  Tooltip,
-} from "@nextui-org/react";
+import { Card, Text, Button, Grid, Row, Col } from "@nextui-org/react";
 import { TEMPORARY_REDIRECT_STATUS } from "next/dist/shared/lib/constants.js";
 import InternalLayout from "@/src/components/InternalLayout";
 import {
@@ -23,6 +10,10 @@ import {
   ArrowPathIcon,
   QueueListIcon,
   TrashIcon,
+  PlusIcon,
+  ArrowTopRightOnSquareIcon,
+  PencilIcon,
+  PencilSquareIcon,
 } from "@/public/icons";
 import Layout from "@/src/components/sensedata/Layout.js";
 import axios from "axios";
@@ -140,47 +131,66 @@ export default function Clientes({ userData }) {
             <ArrowPathIcon height="24px" />
           </Button>
         </div>
-        <div>
-          <Table
-            aria-label="Example no animated collection table"
-            css={{
-              height: "auto",
-              minWidth: "100%",
-              hoverable: true
-            }}
-            animated={true}
-            color="secondary"
-            borderWeight={0}
-          >
-            <Table.Header
-              aria-label="Example no animated collection table"
-              css={{
-                height: "auto",
-                minWidth: "100%",
-              }}
-              animated={false}
-              selectionMode="multiple"
-              color="secondary"
-            >
-              <Table.Column>EMPRESA</Table.Column>
-              <Table.Column>PORTE</Table.Column>
-              <Table.Column>STATUS</Table.Column>
-              <Table.Column>FASE</Table.Column>
-              <Table.Column></Table.Column>
-            </Table.Header>
-            <Table.Body>
-              {groups.map((item, index) => (
-            <Table.Row>
-              <Table.Cell><Tooltip content={item.contract_cnpj}>{item.name_contract}</Tooltip></Table.Cell>
-              <Table.Cell>{item.size}</Table.Cell>
-              <Table.Cell>{item.status}</Table.Cell>
-              <Table.Cell>{item.stage}</Table.Cell>
-              <Table.Cell><ChurnButton groupData={item}/></Table.Cell>
-              </Table.Row>
-                ))}
-            </Table.Body>
-          </Table>
-        </div>
+        <Grid.Container gap={2} justify="space-between">
+          {groups.map((item, index) => (
+            <Grid xs={10} sm={4}>
+              <Card borderWeight="0" isHoverable variant="shadow">
+                <Card.Header>
+                  <Row align="center">
+                    <Text b size="$xl">{item.name_contract}</Text>
+                  </Row>
+                </Card.Header>
+                <Card.Divider />
+                <Card.Body>
+                  <Text size="$sm">
+                    <b>Nome da empresa:</b> {item.name}
+                  </Text>
+                  <Text size="$sm">
+                    <b>CNPJ:</b> {item.contract_cnpj}
+                  </Text>
+                  <Text size="$sm">
+                    <b>Segmento:</b> {item.segment}
+                  </Text>
+                  <Text size="$sm">
+                    <b>Porte:</b> {item.size}
+                  </Text>
+                  <Text size="$sm">
+                    <b>Plano:</b> {item.plan}
+                  </Text>
+                </Card.Body>
+                <Card.Divider />
+                <Card.Footer justify="between">
+                  <Row justify="space-between">
+                  <Col>
+                    <Text>
+                      {new Date(item.dt_register).toLocaleDateString("pt-BR", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })}
+                      {item.dt_cancel !== null
+                        ? ` - ${new Date(item.dt_cancel).toLocaleDateString(
+                            "pt-BR",
+                            {
+                              day: "2-digit",
+                              month: "2-digit",
+                              year: "numeric",
+                            }
+                          )}`
+                        : ""}
+                    </Text>
+                    </Col>
+                    <div className="flex justify-between gap-2">
+                    <Button auto color="secondary" icon={<ArrowTopRightOnSquareIcon width={18} />}>Detalhes</Button>
+                    <Button auto color="warning" icon={<PencilSquareIcon width={18} />}>Editar</Button>
+                    </div>
+
+                  </Row>
+                </Card.Footer>
+              </Card>
+            </Grid>
+          ))}
+        </Grid.Container>
       </Layout>
     </InternalLayout>
   );
