@@ -19,6 +19,8 @@ import Layout from "@/src/components/sensedata/Layout.js";
 import axios from "axios";
 import ModalListNotes from "@/src/components/sensedata/modalListNotes.js";
 import ChurnButton from "@/src/components/buttons/ChurnButton.js";
+import DetailGroupButton from "@/src/components/buttons/DetailGroupButton.js";
+import EditGroupButton from "@/src/components/buttons/EditGroupButton.js"
 
 export default function Clientes({ userData }) {
   const [groups, setGroups] = useState([]);
@@ -181,10 +183,9 @@ export default function Clientes({ userData }) {
                     </Text>
                     </Col>
                     <div className="flex justify-between gap-2">
-                    <Button auto color="secondary" icon={<ArrowTopRightOnSquareIcon width={18} />}>Detalhes</Button>
-                    <Button auto color="warning" icon={<PencilSquareIcon width={18} />}>Editar</Button>
+                    <DetailGroupButton />
+                    <EditGroupButton groupData={item}/>
                     </div>
-
                   </Row>
                 </Card.Footer>
               </Card>
