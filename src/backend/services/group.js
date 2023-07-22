@@ -30,11 +30,11 @@ export async function listGroups(id, id_legacy) {
 export async function updateGroup(id, id_legacy, body) {
   databaseConnection();
   if(id) {
-    const group = await Group.findByIdAndUpdate(id, body);
+    const group = await Group.findByIdAndUpdate(id, {...body, dt_update: new Date()});
     const updatedGroup = await Group.findById(group._id)
     return updatedGroup;
   }
-  const group = await Group.findOneAndUpdate({id_legacy}, body);
+  const group = await Group.findOneAndUpdate({id_legacy}, {...body, dt_update: new Date()});
   const updatedGroup = await Group.findById(group._id)
   return updatedGroup;
 }

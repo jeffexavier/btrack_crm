@@ -5,10 +5,9 @@ export async function updateGroup(id, body) {
       "Content-Type": "application/json"
     },
     body: JSON.stringify(body)
-  }).then((res) => {
-    console.log(res.status)
-    console.log(res.ok)
-    return(res)
+  }).then((response) => {
+    return response.json()
   })
-  return(groupUpdate)
+  const updatedGroup = groupUpdate
+  return(updatedGroup)
 }

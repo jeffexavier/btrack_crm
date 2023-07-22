@@ -1,10 +1,14 @@
-import { useRouter } from "next/router.js"
+import { useRouter } from "next/router"
+import InternalLayout from "@/src/components/InternalLayout";
+import Layout from "@/src/components/sensedata/Layout.js";
+export default function GroupId() {
 
-
-export default function GroupPage() {
-const router = useRouter();
-
-  return (
-    <p>Post: {router.query.groupId}</p>
-  )
+    const router = useRouter()
+    return (
+        <InternalLayout>
+            <Layout>
+        <p>Post: {router.query.groupsId}</p>
+            </Layout>
+        </InternalLayout>
+    )
 }

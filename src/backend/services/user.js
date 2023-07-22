@@ -3,6 +3,7 @@
 import bcrypt from "bcrypt"
 import databaseConnection from "../utils/database";
 import User from "../models/user";
+import Profile from "../models/profile"
 
 import { createToken } from "@/src/backend/utils/token";
 
@@ -17,12 +18,20 @@ export async function registerUser(body) {
     const newUser = {
         email: body.email,
         name: body.name,
+        profile: await Profile.findOne({name: "Admin"}),
         password: await bcrypt.hash(body.password, 8)
     };
     const createNewUser = await User.create(newUser);
     const token = createToken(createNewUser);
     return token;
 }
+
+export async function updateUser(id, body) {
+    databaseConnection();
+    const user = await User.findByIdAndUpdate(id, body);
+    const updatedUser = await User.findById(user._id)
+    return updatedUser;
+  }
 
 export async function loginUser(body) {
     databaseConnection();

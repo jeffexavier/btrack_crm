@@ -184,7 +184,7 @@ export default function Clientes({ userData }) {
                     </Col>
                     <div className="flex justify-between gap-2">
                     <DetailGroupButton />
-                    <EditGroupButton groupData={item}/>
+                    <EditGroupButton groupId={item._id}/>
                     </div>
                   </Row>
                 </Card.Footer>
