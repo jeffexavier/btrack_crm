@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
 
-const ContractSchema = mongoose.Schema({
-  group: {type: 'ObjectId', ref: "Group"},
-  id_group: {type: String, required: true},
+const RevenueSchema = mongoose.Schema({
+  group: {type: 'ObjectId', ref: "Group", required: true},
   id_legacy: {type:String, unique: true},
   description: {type: String},
   link_contract: {type: String},
@@ -14,5 +13,9 @@ const ContractSchema = mongoose.Schema({
   status: {type: String, default: "Ativo"},
   plan: {type: String},
   license_qty: {type: Number, default: 1},
-  
+  register_reason: {type: String},
+  register_factor:{type: String},
+  register_description:{type: String}  
 })
+
+export default mongoose.models.Revenue || mongoose.model('Revenue', RevenueSchema);
