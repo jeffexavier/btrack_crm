@@ -5,116 +5,27 @@ import { verifyToken } from "@/src/backend/utils/token";
 import { Card, Text, Button, Grid, Row, Col } from "@nextui-org/react";
 import { TEMPORARY_REDIRECT_STATUS } from "next/dist/shared/lib/constants.js";
 import InternalLayout from "@/src/components/InternalLayout";
-import {
-  MagnifyingGlassIcon,
-  ArrowPathIcon,
-  QueueListIcon,
-  TrashIcon,
-  PlusIcon,
-  ArrowTopRightOnSquareIcon,
-  PencilIcon,
-  PencilSquareIcon,
-} from "@/public/icons";
+import { ArrowPathIcon } from "@/public/icons";
 import Layout from "@/src/components/sensedata/Layout.js";
 import axios from "axios";
-import ModalListNotes from "@/src/components/sensedata/modalListNotes.js";
-import ChurnButton from "@/src/components/buttons/ChurnButton.js";
 import DetailGroupButton from "@/src/components/buttons/DetailGroupButton.js";
 import EditGroupButton from "@/src/components/buttons/EditGroupButton.js"
 
-export default function Clientes({ userData }) {
+export default function Clientes() {
   const [groups, setGroups] = useState([]);
-  const [filteredGroups, setFilteredGroups] = useState([]);
-  const [filteredGroupsByName, setFilteredGroupsByName] = useState([]);
-  const [filteredGroupsByCS, setFilteredGroupsByCS] = useState([]);
-  const [usersSenseData, setUsersSenseData] = useState([]);
-  const [userName, setUserName] = useState("");
 
   async function getGroups() {
-    await axios
-      .get("/api/group")
-      .then((response) => {
-        const groups = response.data.value;
-        const groupsReverse = groups.reverse();
-        const newgroups = JSON.stringify(groupsReverse);
+    const listGroups = await fetch('/api/group').then((response) => {
+      return response.json()
+    })
 
-        localStorage.setItem("groups", newgroups);
-
-        setGroups(groupsReverse);
-        setFilteredgroups(groupsReverse);
-      })
-      .catch((error) => {
-        if (localStorage.getItem("groups")) {
-          setGroups(JSON.parse(localStorage.getItem("groups")));
-          setFilteredGroups(JSON.parse(localStorage.getItem("groups")));
-        }
-        console.log(error.response);
-      });
+    const listedGroups = listGroups
+    setGroups(listGroups.value)
+    console.log(listGroups)
   }
 
-  // async function getUsersSenseData() {
-  //   await fetch("/api/sensedata/group")
-  //     .then(async (response) => {
-  //       const listGroups = await response.json();
-  //       console.log(listGroups);
-  //       localStorage.setItem("groups", JSON.stringify(listGroups));
-  //       setUsersSenseData(listGroups);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  //   // setUsersSenseData(usersSense)
-  // }
-
-  // async function filterCustomerByName(e) {
-  //   if (customers && userName === "") {
-  //     const searchTerm = e.target.value;
-  //     const regex = new RegExp(searchTerm, "i");
-  //     const customersFiltered = customers.filter((item) =>
-  //       regex.test(item.name_contract)
-  //     );
-  //     setFilteredCustomers(customersFiltered);
-  //     setFilteredCustomersByName(customersFiltered);
-  //   } else if (filteredCustomersByCS && userName !== "") {
-  //     const searchTerm = e.target.value;
-  //     const regex = new RegExp(searchTerm, "i");
-  //     const customersFiltered = filteredCustomersByCS.filter((item) =>
-  //       regex.test(item.name_contract)
-  //     );
-  //     setFilteredCustomers(customersFiltered);
-  //     setFilteredCustomersByName(customersFiltered);
-  //   }
-  // }
-
-  // function filterCustomerByCS(name) {
-  //   // if (customers && setFilteredCustomersByName.length === customers.length) {
-  //   if (customers && name !== "") {
-  //     console.log(name);
-  //     const customersFiltered = customers.filter(
-  //       (item) => item.cs.name === name
-  //     );
-  //     setFilteredCustomers(customersFiltered);
-  //     setFilteredCustomersByCS(customersFiltered);
-  //   } else if (customers && name === "") {
-  //     setFilteredCustomers(customers);
-  //     setFilteredCustomersByCS(customers);
-  //   }
-  //   setUserName(name);
-  // }
-
   useEffect(() => {
-    if (localStorage.getItem("groups")) {
-      setGroups(JSON.parse(localStorage.getItem("groups")));
-      setFilteredGroups(JSON.parse(localStorage.getItem("groups")));
-    } else {
-      getGroups();
-    }
-
-    // if (localStorage.getItem("usersSenseData")) {
-    //   setUsersSenseData(JSON.parse(localStorage.getItem("usersSenseData")));
-    // } else {
-    //   getUsersSenseData();
-    // }
+    getGroups()
   }, []);
 
   return (
@@ -133,7 +44,7 @@ export default function Clientes({ userData }) {
             <ArrowPathIcon height="24px" />
           </Button>
         </div>
-        <Grid.Container gap={2} justify="space-between">
+        <Grid.Container gap={2} justify="flex-start">
           {groups.map((item, index) => (
             <Grid xs={10} sm={4}>
               <Card borderWeight="0" isHoverable variant="shadow">
@@ -183,7 +94,7 @@ export default function Clientes({ userData }) {
                     </Text>
                     </Col>
                     <div className="flex justify-between gap-2">
-                    <DetailGroupButton />
+                    <DetailGroupButton groupId={item._id}/>
                     <EditGroupButton groupId={item._id}/>
                     </div>
                   </Row>

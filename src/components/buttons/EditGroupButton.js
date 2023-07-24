@@ -54,37 +54,9 @@ export default function DetailGroupButton({groupId}) {
   }
 
   async function handleFormSubmit(id, body) {
-  //   const submitData = await fetch(`/api/group?id=${groupId}`, {
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     method: 'PUT',
-  //     body: JSON.stringify(formData)
-  //   }).then((response) => {
-  //     return response.json()
-  //   })
-  //   const submitedData = submitData;
-  //   console.log(submitedData)  
-  const updatedGroup = await updateGroup(id, body)
+    const updatedGroup = await updateGroup(id, body)
   }
     
-  // function formatDate(date){
-  //   const newDate = new Date(date);
-  //   let day = newDate.getDate();
-  //   let month = newDate.getMonth() + 1;
-  //   const year = newDate.getFullYear();
-
-  //   if(day < 10) {
-  //     day = '0' + day
-  //   }
-
-  //   if(month < 10) {
-  //     month = '0' + month
-  //   }
-
-  //   return `${year}-${month}-${day}`
-  // }
-
   useEffect(() => {
   }, [])
 
