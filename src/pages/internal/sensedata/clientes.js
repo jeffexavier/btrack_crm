@@ -192,7 +192,7 @@ export default function Clientes({userData}) {
               month: '2-digit',
               year: 'numeric',
               })
-            }{item.dt_cancel !== null ? `- ${new Date(item.dt_cancel).toLocaleDateString('pt-BR', {
+            }{item.dt_cancel !== null ? ` - ${new Date(item.dt_cancel).toLocaleDateString('pt-BR', {
               day: '2-digit',
               month: '2-digit',
               year: 'numeric',

@@ -12,7 +12,7 @@ export default async function group(req, res) {
       const createdGroup = await createGroup(req.body);
       res.status(201).json(createdGroup);
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).json(error.message);
     }
   } else if (req.method === "GET") {
     try {
@@ -24,7 +24,7 @@ export default async function group(req, res) {
       };
       res.status(200).json(responseListedGroups);
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).json(error.message);
     }
   } else if (req.method === "PUT") {
     try {
@@ -32,7 +32,7 @@ export default async function group(req, res) {
       const updatedGroup = await updateGroup(id, id_legacy, req.body);
       res.status(200).json(updatedGroup);
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).json(error.message);
     }
   } else if (req.method === "DELETE") {
     try {
@@ -40,7 +40,7 @@ export default async function group(req, res) {
       const deletedGroup = await deleteGroup(id);
       res.status(200).json(deletedGroup);
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).json(error.message);
     }
   }
 }
