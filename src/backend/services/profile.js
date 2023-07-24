@@ -33,12 +33,6 @@ export async function updateProfile(id, body) {
 export async function deleteProfile(id) {
   databaseConnection();
   const deleteProfile = await Profile.findByIdAndDelete(id);
-  const deletedProfile = {
-    _id: deleteProfile._id,
-    name: deleteProfile.name,
-    role: deleteProfile.role,
-    status: "deleted"
-  }
-
+  const deletedProfile = { ...deleteProfile._doc, status: "deleted"}
   return deletedProfile
 }

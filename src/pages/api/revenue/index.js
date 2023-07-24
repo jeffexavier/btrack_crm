@@ -12,19 +12,19 @@ export default async function revenue(req, res) {
       const createdRevenue = await createRevenue(req.body);
       res.status(201).json(createdRevenue);
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).json(error.message);
     }
   } else if (req.method === "GET") {
     try {
-      const {id, id_legacy} = req.query
-      const listedRevenues = await listRevenues(id, id_legacy);
+      const {id, id_legacy, id_group} = req.query
+      const listedRevenues = await listRevenues(id, id_legacy, id_group);
       const responseListedRevenues = {
         value: listedRevenues,
         count: listedRevenues.length ? (listedRevenues.length) + 1 : (0 + 1) 
       };
       res.status(200).json(responseListedRevenues);
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).json(error.message);
     }
   } else if (req.method === "PUT") {
     try {
@@ -32,7 +32,7 @@ export default async function revenue(req, res) {
       const updatedRevenue = await updateRevenue(id, id_legacy, req.body);
       res.status(200).json(updatedRevenue);
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).json(error.message);
     }
   } else if (req.method === "DELETE") {
     try {
@@ -40,7 +40,7 @@ export default async function revenue(req, res) {
       const deletedRevenue = await deleteRevenue(id);
       res.status(200).json(deletedRevenue);
     } catch (error) {
-      res.status(400).json(error);
+      res.status(400).json(error.message);
     }
   }
 }
