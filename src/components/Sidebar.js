@@ -15,6 +15,10 @@ const pages = [
   {
     page: "QRCODE",
     link: "/internal/qrcode"
+  },
+  {
+    page: "CONTADOR SMS",
+    link: "/internal/sendersms"
   }
 ]
 
