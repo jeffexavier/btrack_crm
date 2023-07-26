@@ -30,7 +30,7 @@ export default function SenderSms() {
   }
 
   function verifyText() {
-    console.log(message, message.length);
+    window.alert(`${message} Quantidade de caracteres: ${message.length}`)
   }
 
   return (
@@ -40,25 +40,29 @@ export default function SenderSms() {
           <div className="flex gap-4 flex-row w-full">
             <div className="flex gap-y-2 flex-col w-full">
               <Input
+              bordered
+              color="secondary"
                 label="Nome da empresa"
                 onChange={(e) => getBusinessName(e)}
               />
               <Textarea
                 css={{ marginBottom: "10px" }}
+                bordered
+              color="secondary"
                 type="text"
-                label="Messagem"
+                label="Mensagem"
                 onChange={(e) => getTextInput(e)}
                 value={textInput}
               />
             </div>
             <div className="flex gap-y-2 flex-col w-full h-full">
               <Textarea
-                css={{ marginBottom: "10px" }}
+                css={{ marginBottom: "10px"}}
                 readOnly
                 fullWidth
                 type="text"
                 label="Pré-visualização"
-                onChange={(e) => console.log(e.target.value)}
+                color={"secondary"}
                 value={message}
               />
             </div>
