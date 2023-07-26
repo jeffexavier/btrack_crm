@@ -1,4 +1,3 @@
-import { useRouter } from "next/router"
 import InternalLayout from "@/src/components/InternalLayout";
 import Layout from "@/src/components/sensedata/Layout.js";
 import { useEffect, useState } from "react";
@@ -8,28 +7,19 @@ import { Input } from "@nextui-org/react";
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
 
-export default function GroupId({groupData}) {
+export default function GroupId({listedGroups}) {
 
-    const router = useRouter()
-
-    const newGroupId = router.query.groupId
-
-    const [formData, setFormData] = useState(groupData)
+    const [groupData, setGroupData] = useState(listedGroups)
 
     async function getGroup(_id) {
-        // const getGroupData = await fetch(`/api/group?id=${_id}`).then(response => {
-        // return response.json()
-        // })
-        // const newGroupData = getGroupData
-        // console.log(newGroupData.value)
-        // setFormData(newGroupData.value)
-
-        // console.log(_id)
-        // console.log(router.query.groupId)
+        const getGroupData = await fetch(`/api/group?id=${_id}`).then(response => {
+        return response.json()
+        })
+        const newGroupData = getGroupData
+        setGroupData(newGroupData.value)
       }
 
       useEffect(() => {
-        // console.log(newGroupId)
       }, [])
 
 
@@ -63,7 +53,7 @@ export async function getServerSideProps(context) {
       verifyToken(token);
       const verifiedToken = verifyToken(token);
       return {
-        props: { userData: verifiedToken, groupData: listGroup.value },
+        props: { userData: verifiedToken, listedGroups: listGroup.value },
       };
     } catch (err) {
       return {
