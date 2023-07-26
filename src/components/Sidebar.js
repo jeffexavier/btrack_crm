@@ -9,16 +9,16 @@ const pages = [
     link: "/internal/dashboard"
   },
   {
-    page: "SENSEDATA",
-    link: "/internal/sensedata/notas_clientes"
-  },
-  {
-    page: "QRCODE",
-    link: "/internal/qrcode"
+    page: "EMPRESAS",
+    link: "/internal/group"
   },
   {
     page: "CONTADOR SMS",
     link: "/internal/sendersms"
+  },
+  {
+    page: "QRCODE",
+    link: "/internal/qrcode"
   }
 ]
 
