@@ -8,6 +8,8 @@ const GroupSchema = new mongoose.Schema({
   status: {type: String, default: "Ativo"},
   cs: {type: String, default: "default@btrack.com.br"},
   csm: {type: String, default: "default@btrack.com.br"},
+  has_partner: {type: Boolean, default: false},
+  partner: {type: 'ObjectId', ref: "Partner"},
   dt_register: {type: Date, default: Date.now},
   dt_insert: {type: Date, default: Date.now},
   dt_update: {type: Date},

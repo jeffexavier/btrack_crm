@@ -1,6 +1,7 @@
 import InternalLayout from "@/src/components/InternalLayout";
 import Layout from "@/src/components/sensedata/Layout.js";
 import { Input, Textarea, Text, Button } from "@nextui-org/react";
+import { parseCookies } from "nookies";
 import { useState } from "react";
 
 export default function SenderSms() {
@@ -26,6 +27,7 @@ export default function SenderSms() {
     <InternalLayout>
       <Layout>
         <div className="flex-col justify-between w-full gap-2">
+        <Input />
           <Textarea
             css={{ marginBottom: "10px" }}
             fullWidth
@@ -41,4 +43,24 @@ export default function SenderSms() {
       </Layout>
     </InternalLayout>
   );
+}
+
+export async function getServerSideProps(context) {
+  const cookies = parseCookies(context);
+  const token = cookies.authorization;
+  try {
+    verifyToken(token);
+    const verifiedToken = verifyToken(token);
+    return {
+      props: { userData: verifiedToken },
+    };
+  } catch (err) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login",
+      },
+      props: {},
+    };
+  }
 }
