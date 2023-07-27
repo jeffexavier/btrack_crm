@@ -12,12 +12,8 @@ export default function GroupId({listedGroups}) {
 
   const [groupData, setGroupData] = useState(listedGroups)
 
-  // const [groupData, setGroupData] = useState({});
   const [isEditable, setIsEditable] = useState(false)
   const [editButton, setEditButton] = useState(isEditable === false ? "Editar" : "Salvar")
-
-
-
 
   const [formData, setFormData] = useState({
     name_contract: groupData.name_contract,
