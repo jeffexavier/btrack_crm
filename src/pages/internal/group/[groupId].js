@@ -7,7 +7,12 @@ import { Input } from "@nextui-org/react";
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
 
+import { useSearchParams } from 'next/navigation'
+
 export default function GroupId({listedGroups}) {
+
+    const searchParams = useSearchParams()
+    const search = searchParams.get('id')
 
     const [groupData, setGroupData] = useState(listedGroups)
 
@@ -27,6 +32,7 @@ export default function GroupId({listedGroups}) {
         <InternalLayout>
             <Layout>
         <p>Post: {groupData.name_contract}</p>
+        <p>Param: {search}</p>
         <div>
             <div>
                 <Input type="text" label="ID" initialValue={groupData._id}/>

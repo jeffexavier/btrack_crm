@@ -10,7 +10,7 @@ const pages = [
   },
   {
     page: "EMPRESAS",
-    link: "/internal/group"
+    link: "/internal/group/list"
   },
   {
     page: "CONTADOR SMS",
