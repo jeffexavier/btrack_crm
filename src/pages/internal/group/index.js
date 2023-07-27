@@ -145,7 +145,7 @@ export default function GroupId({groupData}) {
 
 export async function getServerSideProps(context) {
   const groupId = context.query.id;
-  const listGroup = await fetch(`http://localhost:3000/api/group?id=${groupId}`).then((response) => {
+  const listGroup = await fetch(`${process.env.APP_URL}/api/group/?id=${groupId}`).then((response) => {
       return response.json()
   })
 
