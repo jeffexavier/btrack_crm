@@ -8,9 +8,10 @@ import { useSearchParams } from "next/navigation";
 import formatDate from "@/src/backend/utils/formatDate.js";
 import { updateGroup } from "@/src/backend/utils/group.js";
 
-export default function GroupId({groupData}) {
+export default function GroupId({listedGroups}) {
   const urlParams = useSearchParams();
   const groupId = urlParams.get("id");
+  const [groupData, setGroupData] = useState(listedGroups)
 
   // const [groupData, setGroupData] = useState({});
   const [isEditable, setIsEditable] = useState(false)
@@ -144,10 +145,16 @@ export default function GroupId({groupData}) {
 }
 
 export async function getServerSideProps(context) {
-  const groupId = context.query.id;
-  const listGroup = await fetch(`${process.env.APP_URL}/api/group/?id=${groupId}`).then((response) => {
+  const {id} = context.query
+
+  const listGroup = await fetch(`${process.env.APP_URL}/api/group?id=${id}`).then((response) => {
       return response.json()
+  }).catch((error) => {
+    console.log(error)
+    return error
   })
+
+  console.log(listGroup)
 
   const cookies = parseCookies(context);
   const token = cookies.authorization;
@@ -155,7 +162,7 @@ export async function getServerSideProps(context) {
     verifyToken(token);
     const verifiedToken = verifyToken(token);
     return {
-      props: { userData: verifiedToken, groupData: listGroup.value },
+      props: { userData: verifiedToken, listedGroups: listGroup.value },
     };
   } catch (err) {
     return {
