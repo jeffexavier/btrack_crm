@@ -5,11 +5,12 @@ import { verifyToken } from "@/src/backend/utils/token";
 import { Card, Text, Button, Grid, Row, Col } from "@nextui-org/react";
 import { TEMPORARY_REDIRECT_STATUS } from "next/dist/shared/lib/constants.js";
 import InternalLayout from "@/src/components/InternalLayout";
-import { ArrowPathIcon } from "@/public/icons";
-import Layout from "@/src/components/sensedata/Layout.js";
+import { ArrowPathIcon, TrashIcon } from "@/public/icons";
+import Layout from "@/src/components/group/Layout.js";
 import axios from "axios";
 import DetailGroupButton from "@/src/components/buttons/DetailGroupButton.js";
 import EditGroupButton from "@/src/components/buttons/EditGroupButton.js"
+import DeleteGroupButton from "@/src/components/buttons/DeleteGroupButton.js";
 
 export default function Clientes() {
   const [groups, setGroups] = useState([]);
@@ -18,8 +19,10 @@ export default function Clientes() {
     const listGroups = await fetch('/api/group').then((response) => {
       return response.json()
     })
-    setGroups(listGroups.value)
-    console.log(listGroups)
+
+    const listedGroups = listGroups.value.reverse()
+    setGroups(listedGroups)
+    // console.log(listGroups)
   }
 
   useEffect(() => {
@@ -42,14 +45,14 @@ export default function Clientes() {
             <ArrowPathIcon height="24px" />
           </Button>
         </div> */}
-        <Grid.Container gap={2} justify="flex-start">
+        <div className="grid w-full gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
           {groups.map((item, index) => (
-            <Grid xs={10} sm={4}>
               <Card borderWeight="0" isHoverable variant="shadow">
                 <Card.Header>
-                  <Row align="center">
+                <div className="flex justify-between w-full align-middle">
                     <Text b size="$xl">{item.name_contract}</Text>
-                  </Row>
+                    <DeleteGroupButton groupId={item._id} groupName={item.name_contract}/>
+                    </div>
                 </Card.Header>
                 <Card.Divider />
                 <Card.Body>
@@ -71,7 +74,6 @@ export default function Clientes() {
                 </Card.Body>
                 <Card.Divider />
                 <Card.Footer justify="between">
-                  <Row justify="space-between" align="center">
                   <Col>
                     <Text h6>
                       {new Date(item.dt_register).toLocaleDateString("pt-BR", {
@@ -91,37 +93,17 @@ export default function Clientes() {
                         : ""}
                     </Text>
                     </Col>
-                    <div className="flex justify-between gap-2">
+                    <div className="flex md:flex-col lg:flex-row gap-2">
                     <DetailGroupButton groupId={item._id}/>
                     <EditGroupButton groupId={item._id}/>
                     </div>
-                  </Row>
                 </Card.Footer>
               </Card>
-            </Grid>
           ))}
-        </Grid.Container>
+          </div>
       </Layout>
     </InternalLayout>
   );
 }
 
-export async function getServerSideProps(context) {
-  const cookies = parseCookies(context);
-  const token = cookies.authorization;
-  try {
-    verifyToken(token);
-    const verifiedToken = verifyToken(token);
-    return {
-      props: { userData: verifiedToken },
-    };
-  } catch (err) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/login",
-      },
-      props: {},
-    };
-  }
-}
+

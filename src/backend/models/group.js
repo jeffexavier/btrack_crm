@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const GroupSchema = new mongoose.Schema({
-  id_legacy: {type: String, unique: true},
+  id_legacy: {type: String, required: true, unique: true},
   name_contract: {type: String},
   name: {type: String},
   contract_cnpj: {type: Number, required: true, unique: true},

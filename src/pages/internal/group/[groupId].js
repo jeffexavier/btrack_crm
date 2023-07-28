@@ -1,5 +1,5 @@
 import InternalLayout from "@/src/components/InternalLayout";
-import Layout from "@/src/components/sensedata/Layout.js";
+import Layout from "@/src/components/group/Layout.js";
 import { useEffect, useState } from "react";
 import { Input, Card, Text, Container, Row, Col, Textarea, Button } from "@nextui-org/react";
 import { parseCookies } from "nookies";
@@ -23,8 +23,8 @@ export default function GroupId({listedGroups}) {
     status: groupData.status,
     cs: groupData.cs,
     csm: groupData.csm,
-    dt_register: formatDate(groupData.dt_register),
-    dt_insert: formatDate(groupData.dt_insert),
+    dt_register: groupData.dt_register ? formatDate(groupData.dt_register) : "",
+    dt_insert: groupData.dt_insert ? formatDate(groupData.dt_insert) : "",
     segment: groupData.segment,
     city: groupData.city,
     state: groupData.state,
@@ -32,10 +32,10 @@ export default function GroupId({listedGroups}) {
     address: groupData.address,
     address_number: groupData.address_number,
     stage: groupData.stage,
-    dt_stage: formatDate(groupData.dt_stage),
+    dt_stage: groupData.dt_stage ? formatDate(groupData.dt_stage) : "",
     size: groupData.size,
     plan: groupData.plan,
-    dt_cancel: formatDate(groupData.dt_cancel),
+    dt_cancel: groupData.dt_cancel ? formatDate(groupData.dt_cancel) : "",
     cancel_tag: groupData.cancel_tag,
     cancel_factor: groupData.cancel_factor,
     cancel_description: groupData.cancel_description
@@ -125,13 +125,14 @@ export default function GroupId({listedGroups}) {
                 <Card.Footer css={{justifyContent:"flex-end"}}>
                 <div className="flex gap-2 align-middle">
                   {isEditable === true ? <Button auto flat onPress={() => cancelEdit()} color="error">Cancelar</Button> : ""}                
-                  <Button auto type="submit" onPress={() => handleFormSubmit(groupId, formData)} color={isEditable === false ? "secondary" : "success"}>{editButton}</Button>
+                  <Button auto onPress={() => handleFormSubmit(groupData._id, formData)} color={isEditable === false ? "secondary" : "success"}>{editButton}</Button>
                   </div>                
                 </Card.Footer>
               </Card>
               </div>
               <Card variant="bordered">
-                <Card.Body>TESTE</Card.Body>
+              <Card.Header><Text h4>Comentários</Text></Card.Header>
+                <Card.Body></Card.Body>
               </Card>
         </div>
       </Layout>

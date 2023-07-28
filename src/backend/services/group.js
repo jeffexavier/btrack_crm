@@ -8,9 +8,13 @@ import { createToken } from "@/src/backend/utils/token";
 
 export async function createGroup(body) {
   await databaseConnection();
-  const newGroup = body
-  const createNewGroup = await Group.create(newGroup);
-  return createNewGroup
+  try {
+    const newGroup = body
+    const createNewGroup = await Group.create(newGroup);
+    return createNewGroup     
+  } catch (error) {
+    return error
+  }
 }
 
 export async function listGroups(id, id_legacy) {
@@ -40,15 +44,18 @@ export async function updateGroup(id, id_legacy, body) {
 }
 
 export async function deleteGroup(id) {
-  databaseConnection();
-  const deleteGroup = await Group.findByIdAndDelete(id);
-  const deletedGroup = {
-    _id: deleteGroup._id,
-    id_legacy: deleteGroup.id_legacy,
-    name_contract: deleteGroup.name_contract,
-    contract_cnpj: deleteGroup.contract_cnpj,
-    status: "deleted"
+  try {
+    databaseConnection();
+    const deleteGroup = await Group.findByIdAndDelete(id);
+    const deletedGroup = {
+      _id: deleteGroup._id,
+      id_legacy: deleteGroup.id_legacy,
+      name_contract: deleteGroup.name_contract,
+      contract_cnpj: deleteGroup.contract_cnpj,
+      status: "deleted"
+    }  
+    return deletedGroup    
+  } catch (error) {
+    return error
   }
-
-  return deletedGroup
 }
