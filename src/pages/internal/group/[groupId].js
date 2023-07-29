@@ -6,6 +6,7 @@ import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
 import formatDate from "@/src/backend/utils/formatDate.js";
 import { updateGroup } from "@/src/backend/utils/group.js";
+import { AreaComment } from "@/src/components/comment/index.js";
 
 
 export default function GroupId({listedGroups}) {
@@ -142,7 +143,7 @@ export default function GroupId({listedGroups}) {
               </div>
               <Card variant="bordered">
               <Card.Header><Text h4>Comentários</Text></Card.Header>
-                <Card.Body></Card.Body>
+                <Card.Body><AreaComment /></Card.Body>
               </Card>
         </div>
       </Layout>
