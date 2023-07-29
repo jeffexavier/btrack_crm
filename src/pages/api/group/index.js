@@ -12,7 +12,7 @@ export default async function group(req, res) {
       const createdGroup = await createGroup(req.body);
       res.status(201).json(createdGroup);
     } catch (error) {
-      res.status(400).json(error.message);
+      res.status(400).json(error);
     }
   } else if (req.method === "GET") {
     try {

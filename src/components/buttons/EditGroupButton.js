@@ -87,8 +87,8 @@ export default function DetailGroupButton({groupId}) {
         <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'cs')}} label="CS" initialValue={formData.cs} />
         <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'csm')}} label="CSM" initialValue={formData.csm} />
         <div className="grid grid-cols-2 gap-4">
-        <Input bordered animated color="secondary" type="date" onChange={(e) => {handleFormEdit(e, 'dt_register')}} label="Data registro" initialValue={formatDate(formData.dt_register)} />
-        <Input bordered animated color="secondary" type="date" onChange={(e) => {handleFormEdit(e, 'dt_insert')}} label="Data inserção" initialValue={formatDate(formData.dt_insert)} />
+        <Input bordered animated color="secondary" type="date" onChange={(e) => {handleFormEdit(e, 'dt_register')}} label="Data registro" initialValue={formData.dt_register} />
+        <Input bordered animated color="secondary" type="date" onChange={(e) => {handleFormEdit(e, 'dt_insert')}} label="Data inserção" initialValue={formData.dt_insert} />
         </div>
         <Divider/>
         <div className="grid grid-cols-2 gap-4">
@@ -101,7 +101,7 @@ export default function DetailGroupButton({groupId}) {
         <Divider/>
         <div className="grid grid-cols-2 gap-4">
         <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'stage')}} label="Fase" initialValue={formData.stage} />
-        <Input bordered animated color="secondary" type="date" onChange={(e) => {handleFormEdit(e, 'dt_stage')}} label="Data fase" initialValue={formatDate(formData.dt_stage)} />
+        <Input bordered animated color="secondary" type="date" onChange={(e) => {handleFormEdit(e, 'dt_stage')}} label="Data fase" initialValue={formData.dt_stage} />
         </div>
         <Divider/>
         <div className="grid grid-cols-2 gap-4">
@@ -115,7 +115,7 @@ export default function DetailGroupButton({groupId}) {
         </div>
         <Collapse title="Cancelamento">
         <div className="flex flex-col p-1">
-        <Input bordered animated color="secondary" type="date" onChange={(e) => {handleFormEdit(e, 'dt_cancel')}} label="Data cancelamento" initialValue={formatDate(formData.dt_cancel)} />
+        <Input bordered animated color="secondary" type="date" onChange={(e) => {handleFormEdit(e, 'dt_cancel')}} label="Data cancelamento" initialValue={formData.dt_cancel} />
         <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'cancel_tag')}} label="Motivo cancelamento" initialValue={formData.cancel_tag} />
         <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'cancel_factor')}} label="Fator cancelamento" initialValue={formData.cancel_factor} />
         <Textarea bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'cancel_description')}} label="Descrição cancelamento" initialValue={formData.cancel_description} />

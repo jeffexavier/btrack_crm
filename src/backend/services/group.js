@@ -3,18 +3,21 @@
 import bcrypt from "bcrypt"
 import databaseConnection from "../utils/database";
 import Group from "../models/group";
+import Partner from "../models/partner";
 
 import { createToken } from "@/src/backend/utils/token";
 
 export async function createGroup(body) {
   await databaseConnection();
-  try {
     const newGroup = body
     const createNewGroup = await Group.create(newGroup);
-    return createNewGroup     
-  } catch (error) {
-    return error
-  }
+    if(body.partner) {
+      const partner = await Partner.findById(body.partner)
+      partner.groups.push(createNewGroup._id) 
+      await partner.save();
+    }
+
+    return createNewGroup;     
 }
 
 export async function listGroups(id, id_legacy) {
