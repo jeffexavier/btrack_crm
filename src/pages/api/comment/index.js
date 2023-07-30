@@ -16,8 +16,8 @@ export default async function comment(req, res) {
     }
   } else if (req.method === "GET") {
     try {
-      const {id, id_legacy} = req.query
-      const listedComments = await listComments(id, id_legacy);
+      const {id, id_partner, id_group, id_user} = req.query
+      const listedComments = await listComments(id, id_partner, id_group, id_user);
       const responseListedComments = {
         value: listedComments,
         count: listedComments.length ? (listedComments.length) + 1 : (0 + 1) 
@@ -28,8 +28,8 @@ export default async function comment(req, res) {
     }
   } else if (req.method === "PUT") {
     try {
-      const { id, id_legacy } = req.query;
-      const updatedComment = await updateComment(id, id_legacy, req.body);
+      const { id } = req.query;
+      const updatedComment = await updateComment(id, req.body);
       res.status(200).json(updatedComment);
     } catch (error) {
       res.status(400).json(error.message);

@@ -143,7 +143,7 @@ export default function GroupId({listedGroups}) {
               </div>
               <Card variant="bordered">
               <Card.Header><Text h4>Comentários</Text></Card.Header>
-                <Card.Body><AreaComment /></Card.Body>
+                <Card.Body><AreaComment groupId={groupData._id}/></Card.Body>
               </Card>
         </div>
       </Layout>
