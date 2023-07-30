@@ -5,6 +5,7 @@ import databaseConnection from "../utils/database";
 import Comment from "../models/comment";
 
 import { createToken } from "@/src/backend/utils/token";
+import comment from "@/src/pages/api/comment/index.js";
 
 export async function createComment(body) {
   await databaseConnection();
@@ -13,31 +14,57 @@ export async function createComment(body) {
 
     if(body.parent) {
       const parent = await Comment.findById(body.parent)
-      parent.children.push(createNewComment._id)
-      await parent.save()
+      if(parent.children){
+        parent.children.push(createNewComment._id)
+        await parent.save()
+      }
     }
 
     return createNewComment     
 }
 
-export async function listComments(id) {
+export async function listComments(id, id_partner, id_group, id_user, id_parent) {
   databaseConnection();
-  if(id){
-    const comment = await Comment.findById(id).populate('children').populate('parent');
-    return comment;
+  // if(id){
+  //   const comment = await Comment.findById(id).populate('children').populate('parent');
+  //   return comment;
+  // }
+
+  const query = {parent: null};
+
+  if(id) {
+    query._id = id;
   }
-  const listComments = await Comment.find().populate("children").populate('parent');
+
+  if(id_partner) {
+  query.partner = id_partner;
+  }
+
+  if(id_group) {
+    query.group = id_group;
+  }
+
+  if(id_user) {
+    query.created_by = id_user;
+  }
+
+  if(id_parent) {
+    query.parent = id_parent;
+  }
+
+  const listComments = await Comment.find(query).populate("children").populate('parent').populate("created_by").populate({path: 'children', populate: {path: 'created_by'}});
+  // const listComments = await Comment.find(query).populate({path: 'children', populate: {path: 'created_by'}});
   return listComments;
 }
 
 export async function updateComment(id, body) {
   databaseConnection();
   if(id) {
-    const comment = await Comment.findByIdAndUpdate(id, {...body, dt_update: new Date()});
+    const comment = await Comment.findByIdAndUpdate(id, {...body, dt_update: new Date(), edited: true});
     const updatedComment = await Comment.findById(comment._id)
     return updatedComment;
   }
-  const comment = await Comment.findOneAndUpdate({id_legacy}, {...body, dt_update: new Date()});
+  const comment = await Comment.findOneAndUpdate({id_legacy}, {...body, dt_update: new Date(), edited: true});
   const updatedComment = await Comment.findById(comment._id)
   return updatedComment;
 }

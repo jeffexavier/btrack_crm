@@ -20,7 +20,7 @@ export default function DeleteGroupButton({groupId, groupName}) {
       setTimeout(() => {
         setInputMessage()
         setIsVisible(false)
-      }, 3000);
+      }, 2000);
     }
   else {
     setInputMessage("Verifique a palavra inserida.")
@@ -28,7 +28,7 @@ export default function DeleteGroupButton({groupId, groupName}) {
     setTimeout(() => {
       setInputMessage()
       // setIsVisible(false)
-    }, 3000);
+    }, 2000);
   }
 }
 

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const CommentSchema = new mongoose.Schema({
   partner: {type: "ObjectId", red: "Partner"},
   group: {type: "ObjectId", ref: "Group"},
-  created_by: {type: "ObjectId", ref: "user", required: true},
+  created_by: {type: "ObjectId", ref: "User"},
   description: {type: String, required: true},
   dt_register: {type: Date, default: Date.now},
   dt_update: {type: Date},
