@@ -38,8 +38,9 @@ export function AreaComment({groupId}) {
     setComments(listedComments)
 
     console.log(listedComments)
-
   }
+
+  
 
   useEffect(() => {
     getComments(groupId)
