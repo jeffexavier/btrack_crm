@@ -1,7 +1,7 @@
 'use-client'
 
 import { Collapse, Input, User, Button, Textarea, Divider } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUturnLeftIcon, ChatBubbleBottomCenterTextIcon, PencilIcon, TrashIcon } from "@/public/icons.js";
 
 export function AreaComment({groupId}) {
@@ -40,6 +40,17 @@ export function AreaComment({groupId}) {
     console.log(listedComments)
   }
 
+  const testJeff = useRef({})
+
+  function testeClick() {
+
+    // const { readOnly,  } = testJeff.current
+    
+
+    // testJeff.current.readOnly = !readOnly
+    
+    console.log(testJeff)
+  }
   
 
   useEffect(() => {
@@ -68,23 +79,27 @@ export function AreaComment({groupId}) {
         </div>
 
         {comments.map((comment, index) => (
-        <div key={index} className="flex flex-col w-full gap-2 pt-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
+        <div key={index} ref={testJeff} className="flex flex-col w-full gap-2 pt-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
         <User src="https://github.com/jeffexavier.png" name={comment.created_by.email} />
         <div className="flex justify-between gap-4 pr-4 ml-4 h-fit rounded-md shadow-md mb-6">
-          <Textarea key={index} minRows={1} helperText={comment.dt_update ? `Editado em ${formatDateToLocaleString(comment.dt_update)}` : ""}
-            maxRows={5}  bordered borderWeight="0" fullWidth aria-label="textarea" initialValue={comment.description}/>
-          <Button key={index} light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<ArrowUturnLeftIcon width="18px" />}></Button>
-          <Button key={index} light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<TrashIcon width="18px" />}></Button>
-          <Button key={index} light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<PencilIcon width="18px" />}></Button>
+          <Textarea minRows={1}  helperText={comment.dt_update ? `Editado em ${formatDateToLocaleString(comment.dt_update)}` : ""}
+            maxRows={5} readOnly bordered borderWeight="0" fullWidth aria-label="textarea" initialValue={comment.description}/>
+          <Button light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<ArrowUturnLeftIcon width="18px" />}></Button>
+          <Button light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<TrashIcon width="18px" />}></Button>
+          <Button light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<PencilIcon width="18px" />}></Button>
+          <Button  light auto color="success" onPress={() => {testeClick()}} iconRight={<PencilIcon width="18px" />}></Button>
+
         </div>
         {comment.children.map((child, index) => (
           <div key={index} className="flex flex-col w-full gap-0 pb-6 pl-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
             <User src="https://github.com/jeffexavier.png" name={child.created_by.email} />
             <div className="flex justify-between gap-4 pr-4 ml-4 h-fit rounded-md shadow-md">
-            <Textarea key={index} minRows={1} helperText={child.dt_update ? `Editado em ${formatDateToLocaleString(child.dt_update)}` : ""}
+            <Textarea minRows={1} helperText={child.dt_update ? `Editado em ${formatDateToLocaleString(child.dt_update)}` : ""}
             maxRows={5} readOnly bordered borderWeight="0" fullWidth aria-label="textarea" initialValue={child.description}/>
-              <Button key={index} light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<TrashIcon width="18px" />}></Button>
-              <Button key={index} light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<PencilIcon width="18px" />}></Button>
+              <Button  light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<TrashIcon width="18px" />}></Button>
+              <Button  light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<PencilIcon width="18px" />}></Button>
+              <Button  light auto color="success" onPress={() => {testeClick()}} iconRight={<PencilIcon width="18px" />}></Button>
+
             </div>
           </div>
           ))
