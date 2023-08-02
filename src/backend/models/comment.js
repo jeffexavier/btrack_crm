@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import User from "./user.js";
 
 const CommentSchema = new mongoose.Schema({
   partner: {type: "ObjectId", red: "Partner"},
   group: {type: "ObjectId", ref: "Group"},
-  created_by: {type: "ObjectId", ref: "User"},
+  created_by: {type: "ObjectId", ref: User},
   description: {type: String, required: true},
   dt_register: {type: Date, default: Date.now},
   dt_update: {type: Date},

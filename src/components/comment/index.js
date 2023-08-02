@@ -3,22 +3,13 @@
 import { Collapse, Input, User, Button, Textarea, Divider } from "@nextui-org/react";
 import { useEffect, useRef, useState } from "react";
 import { ArrowUturnLeftIcon, ChatBubbleBottomCenterTextIcon, PencilIcon, TrashIcon } from "@/public/icons.js";
+import CommentInput from "./CommentInput.js";
+
 
 export function AreaComment({groupId}) {
-  console.log(groupId)
-  // const [isEditable, setIsEditable] = useState(false)
+
   const [formData, setFormData] = useState({});
   const [comments, setComments] = useState([])
-
-  function formatDateToLocaleString(date) {
-    return new Date(date).toLocaleDateString('pt-br', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    })
-  }
 
   const groupData = { valor: "jeff" };
 
@@ -37,21 +28,8 @@ export function AreaComment({groupId}) {
     const listedComments = listComments.value.reverse()
     setComments(listedComments)
 
-    console.log(listedComments)
+    // console.log(listedComments)
   }
-
-  const testJeff = useRef({})
-
-  function testeClick() {
-
-    // const { readOnly,  } = testJeff.current
-    
-
-    // testJeff.current.readOnly = !readOnly
-    
-    console.log(testJeff)
-  }
-  
 
   useEffect(() => {
     getComments(groupId)
@@ -79,34 +57,16 @@ export function AreaComment({groupId}) {
         </div>
 
         {comments.map((comment, index) => (
-        <div key={index} ref={testJeff} className="flex flex-col w-full gap-2 pt-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
-        <User src="https://github.com/jeffexavier.png" name={comment.created_by.email} />
-        <div className="flex justify-between gap-4 pr-4 ml-4 h-fit rounded-md shadow-md mb-6">
-          <Textarea minRows={1}  helperText={comment.dt_update ? `Editado em ${formatDateToLocaleString(comment.dt_update)}` : ""}
-            maxRows={5} readOnly bordered borderWeight="0" fullWidth aria-label="textarea" initialValue={comment.description}/>
-          <Button light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<ArrowUturnLeftIcon width="18px" />}></Button>
-          <Button light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<TrashIcon width="18px" />}></Button>
-          <Button light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<PencilIcon width="18px" />}></Button>
-          <Button  light auto color="success" onPress={() => {testeClick()}} iconRight={<PencilIcon width="18px" />}></Button>
-
-        </div>
-        {comment.children.map((child, index) => (
-          <div key={index} className="flex flex-col w-full gap-0 pb-6 pl-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
-            <User src="https://github.com/jeffexavier.png" name={child.created_by.email} />
-            <div className="flex justify-between gap-4 pr-4 ml-4 h-fit rounded-md shadow-md">
-            <Textarea minRows={1} helperText={child.dt_update ? `Editado em ${formatDateToLocaleString(child.dt_update)}` : ""}
-            maxRows={5} readOnly bordered borderWeight="0" fullWidth aria-label="textarea" initialValue={child.description}/>
-              <Button  light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<TrashIcon width="18px" />}></Button>
-              <Button  light auto color="secondary" onPress={() => {getComments(groupId)}} iconRight={<PencilIcon width="18px" />}></Button>
-              <Button  light auto color="success" onPress={() => {testeClick()}} iconRight={<PencilIcon width="18px" />}></Button>
-
-            </div>
-          </div>
-          ))
-        }
-        <Divider />
-      </div>
-      
+          <div key={index} className="flex flex-col w-full gap-2 pt-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
+            <CommentInput comment={comment}/>
+            {comment.children.map((child, index) => (
+              <div key={index} className="flex flex-col w-full gap-2 pl-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
+              <CommentInput comment={child} />
+              </div>
+              ))
+            }
+            <Divider />
+          </div>      
         ))
         }
     </div>
