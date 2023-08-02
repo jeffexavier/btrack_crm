@@ -19,19 +19,18 @@ export async function createPartner(body) {
 export async function listPartners(id) {
   databaseConnection();
   if(id){
-    const partner = await Partner.findById(id);
+    const partner = await Partner.findById(id).populate("groups");
     const listedPartner = {
       ...partner._doc, business_qty: await Group.countDocuments({partner: partner._id})}
     return listedPartner;
   }
   
-  const partners = await Partner.find();  
+  const partners = await Partner.find().populate("groups");  
 
   const getGroupsOfPartners = async item => {
     const data = await Group.countDocuments({partner: item._id})
     return data
   }
-
 
   const result = await partners.map(async (item) => {
     const listGroups = await getGroupsOfPartners(item);
