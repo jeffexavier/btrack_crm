@@ -16,8 +16,8 @@ export default async function comment(req, res) {
     }
   } else if (req.method === "GET") {
     try {
-      const {id, id_partner, id_group, id_user} = req.query
-      const listedComments = await listComments(id, id_partner, id_group, id_user);
+      const {id, id_partner, id_group, id_user, id_parent} = req.query
+      const listedComments = await listComments(id, id_partner, id_group, id_user, id_parent);
       const responseListedComments = {
         value: listedComments,
         count: listedComments.length ? (listedComments.length) + 1 : (0 + 1) 

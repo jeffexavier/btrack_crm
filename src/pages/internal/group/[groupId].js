@@ -9,7 +9,7 @@ import { updateGroup } from "@/src/backend/utils/group.js";
 import { AreaComment } from "@/src/components/comment/index.js";
 
 
-export default function GroupId({listedGroups}) {
+export default function GroupId({userData, listedGroups}) {
 
   const [groupData, setGroupData] = useState(listedGroups)
 
@@ -143,7 +143,7 @@ export default function GroupId({listedGroups}) {
               </div>
               <Card variant="bordered">
               <Card.Header><Text h4>Comentários</Text></Card.Header>
-                <Card.Body><AreaComment groupId={groupData._id}/></Card.Body>
+                <Card.Body><AreaComment groupId={groupData._id} userId={userData.id}/></Card.Body>
               </Card>
         </div>
       </Layout>
