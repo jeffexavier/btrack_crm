@@ -20,7 +20,7 @@ export default async function group(req, res) {
       const listedGroups = await listGroups(id, id_legacy);
       const responseListedGroups = {
         value: listedGroups,
-        count: listedGroups.length ? (listedGroups.length) + 1 : (0 + 1) 
+        count: listedGroups.length ? (listedGroups.length) : 0 
       };
       res.status(200).json(responseListedGroups);
     } catch (error) {

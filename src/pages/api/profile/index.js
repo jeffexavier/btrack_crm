@@ -20,7 +20,7 @@ export default async function profile(req, res) {
       const listedProfiles = await listProfiles(id);
       const responseListedProfiles = {
         value: listedProfiles,
-        count: listedProfiles.length ? (listedProfiles.length) + 1 : (0 + 1) 
+        count: listedProfiles.length ? (listedProfiles.length): 0
       };
       res.status(200).json(responseListedProfiles);
     } catch (error) {
