@@ -1,23 +1,105 @@
-import { PlusCircleIcon } from "@/public/icons.js";
-import { Card, Input, Text, Divider, Collapse, Link, Button } from "@nextui-org/react";
+import { PlusCircleIcon, UserIcon, EnvelopeIcon, PhoneIcon, BuildingOffice2Icon, PlusIcon } from "@/public/icons.js";
+import { Card, Input, Text, Divider, Collapse, Link, Button, Tooltip, Avatar  } from "@nextui-org/react";
+import { useEffect, useState } from "react";
+import AddContactButton from "./addContactButton.js";
 
-export default function ContactsList() {
+export default function ContactsList({groupId}) {
+
+
+  const [contactData, setContactData] = useState([])
+
+  async function getContactsList(groupId) {
+    const listContacts = await fetch(`/api/contact?id_group=${groupId}`).then((response) => {
+      return response.json()
+    }).catch((error) => {
+      return error
+    })
+
+
+    const listedContacts = listContacts.value
+    console.log(listedContacts)
+    setContactData(listedContacts)
+  }
+
+  useEffect(() => {
+    getContactsList(groupId)
+  }, [])
+
+  function contactInput(contact) {
+    return (
+      <div className="flex flex-col gap-4 p-2 w-[250px]">
+        <div className="flex gap-2 justify-start items-center min-h-full">
+            <Avatar color="secondary" text={contact.name} textColor="white"/>
+            <Link><Text h4>{contact.name}</Text></Link>
+        </div>
+
+        {contact.email.length !== 0 ? 
+        <div className="flex justify-start gap-4">
+          <div className="p-1">
+            <EnvelopeIcon width="18px"></EnvelopeIcon>
+          </div>
+          <div className="flex flex-col gap-1">
+            {contact.email.map((item, index) => (
+            <Link href={`mailto:${item.value}`} target="_blank"><Text size={14}>{item.value}</Text></Link>
+            ))}
+          </div>
+        </div>
+        : ""
+        }
+        
+        {contact.phone.length !== 0 ?
+        <div className="flex justify-start items-start gap-4">
+        <div className="p-1">
+          <PhoneIcon width="18px"></PhoneIcon>
+        </div>
+          <div className="flex flex-col gap-1">
+            {contact.phone.map((item, index) => (
+                <Link href={`https://wa.me/${item.value}`} target="_blank"><Text size={14}>{item.value}</Text></Link>
+            ))}
+          </div>
+        </div>
+        : ""
+      }
+
+      {contact.groups.length !== 0 ?
+        <div className="flex justify-start items-start gap-4">
+        <div className="p-1">
+          <BuildingOffice2Icon width="18px"></BuildingOffice2Icon>
+        </div>
+          <div className="flex flex-col gap-1">
+            {contact.groups.map((item, index) => (
+              <Link href={`/internal/group/${item._id}`} target="_blank"><Text size={14}>{item.name_contract}</Text></Link>                
+            ))}
+          </div>
+        </div>
+        : ""
+      }
+
+      </div>
+    )
+  }
+
   return (
     <>
-      <Card variant="bordered">
-        <Card.Header>
-          <div className="flex justify-between min-w-full">
-            <Text h4>Contatos</Text>
-            <Button light auto color="secondary">
-              <PlusCircleIcon width="20px" />
-            </Button>
+    <Collapse bordered title={
+      <div className="flex justify-start gap-0 items-center">
+        <div>
+          <Text h4>Contatos</Text>
+        </div>
+        <div>
+          <AddContactButton groupId={groupId} />
+        </div>
+      </div>
+    }>
+      {contactData.map((contact, index) => (
+          <div className="flex justify-start min-w-full gap-2">
+          <UserIcon color="secondary" width="18px"/>
+          <Tooltip placement="rightEnd" content={contactInput(contact)}>
+            <Link color="secondary" href="https://google.com" target="_blank">{contact.name}</Link>
+          </Tooltip>
           </div>
-        </Card.Header>
-        <Divider />
-        <Card.Body>
-          <Link src="texte"/>
-        </Card.Body>
-      </Card>
+      ))}
+    </Collapse>
     </>
   );
 }
