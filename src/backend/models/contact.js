@@ -8,12 +8,12 @@ const ContactSchema = new mongoose.Schema({
   phone: [{
     value: {type: String, required: true},
     primary: {type: Boolean, default: false},
-    label: {type: String}
+    label: {type: String, default: 'Outro'}
   }],
   email: [{
     value: {type: String, required: true},
     primary: {type: Boolean, default: false},
-    label: {type: String}
+    label: {type: String, default: 'Outro'}
   }],
   dt_register: {type: Date, default: Date.now},
   dt_update: {type: Date}

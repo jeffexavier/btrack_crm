@@ -1,7 +1,8 @@
-import { PlusCircleIcon, UserIcon, EnvelopeIcon, PhoneIcon, BuildingOffice2Icon, PlusIcon } from "@/public/icons.js";
+import { PlusCircleIcon, UserIcon, EnvelopeIcon, PhoneIcon, BuildingOffice2Icon, PlusIcon, PencilIcon } from "@/public/icons.js";
 import { Card, Input, Text, Divider, Collapse, Link, Button, Tooltip, Avatar  } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import AddContactButton from "./addContactButton.js";
+import AddContactButton from "./AddContactButton.js";
+import EditContactButton from "./EditContactButton.js";
 
 export default function ContactsList({groupId}) {
 
@@ -17,7 +18,7 @@ export default function ContactsList({groupId}) {
 
 
     const listedContacts = listContacts.value
-    console.log(listedContacts)
+    // console.log(listedContacts)
     setContactData(listedContacts)
   }
 
@@ -28,9 +29,14 @@ export default function ContactsList({groupId}) {
   function contactInput(contact) {
     return (
       <div className="flex flex-col gap-4 p-2 w-[250px]">
-        <div className="flex gap-2 justify-start items-center min-h-full">
-            <Avatar color="secondary" text={contact.name} textColor="white"/>
-            <Link><Text h4>{contact.name}</Text></Link>
+        <div className="flex justify-between items-center min-h-full">
+          <div className="flex flex-grow gap-2 justify-start items-center min-h-full">
+            <Avatar color="secondary" text={contact.name} textColor="white"/>           
+            <Link> <Text b size={18}>{contact.name}</Text></Link>
+          </div>
+          <div className="flex justify-end">
+            <EditContactButton contactData={contact} getContactsList={getContactsList}/>
+          </div>
         </div>
 
         {contact.email.length !== 0 ? 
@@ -87,7 +93,7 @@ export default function ContactsList({groupId}) {
           <Text h4>Contatos</Text>
         </div>
         <div>
-          <AddContactButton groupId={groupId} />
+          <AddContactButton groupId={groupId} getContactsList={getContactsList}/>
         </div>
       </div>
     }>

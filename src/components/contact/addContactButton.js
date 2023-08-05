@@ -1,12 +1,12 @@
 
-import { Tooltip, Button, Modal, Text, Divider, Input } from "@nextui-org/react"
+import { Tooltip, Button, Modal, Text, Divider, Input, Radio } from "@nextui-org/react"
 import { PlusIcon, UserPlusIcon } from "@/public/icons.js"
 import { useState } from "react"
+import { createContact } from "@/src/backend/utils/contact.js"
 
-export default function addContactButton({groupId}) {
+export default function AddContactButton({groupId, getContactsList}) {
 
   const [isVisible, setIsVisible] = useState(false)
-  const [isEditable, setIsEditable] = useState(false)
 
   const [formData, setFormData] = useState({})
 
@@ -16,8 +16,33 @@ export default function addContactButton({groupId}) {
     })
   }
 
+  function handleFormRadioEdit(e, name) {
+    setFormData({
+      ...formData, [name] : e
+    })
+  }
+
+
   async function handleFormSubmit(groupId, body) {
-    console.log(formData)
+    const newBody = {
+      groups: groupId,
+      name: body.name,
+      email: {
+        value: body.emailValue,
+        label: body.emailLabel
+      },
+      phone: {
+        value: body.phoneValue,
+        label: body.phoneLabel
+      }
+
+    }
+    
+    const contactUpdate = await createContact(newBody)
+    getContactsList(groupId) // Atualiza a lista de contatos no componente pai.
+
+    setIsVisible(false)
+
   }
 
   return (
@@ -35,9 +60,19 @@ export default function addContactButton({groupId}) {
         </Modal.Header>
         <Divider />
         <Modal.Body>
-        <Input bordered animated color="secondary" type="text" placeholder="Lohane Vêkanandre Sthephany Smith Bueno de HA HA HA de Raio Laser bala de Icekiss" onChange={(e) => {handleFormEdit(e, 'name')}} label="Nome" value={formData.name} />
-        <Input bordered animated color="secondary" type="email" placeholder="val@disnei.com" onChange={(e) => {handleFormEdit(e, 'phone')}} label="E-mail" value={formData.phone} />
-        <Input bordered animated color="secondary" type="tel" placeholder="61999999999" onChange={(e) => {handleFormEdit(e, 'email')}} label="Telefone" value={formData.email} />
+        <Input aria-label="input" bordered animated color="secondary" type="text" placeholder="Lohane Vêkanandre Sthephany Smith Bueno de HA HA HA de Raio Laser bala de Icekiss" onChange={(e) => {handleFormEdit(e, 'name')}} label="Nome" value={formData.name} />
+        <Input aria-label="input"bordered animated color="secondary" type="email" placeholder="val@disnei.com" onChange={(e) => {handleFormEdit(e, 'phoneValue')}} label="E-mail" value={formData.phoneValue} />
+        <Radio.Group aria-label="input" orientation="horizontal" onChange={(e) => {handleFormRadioEdit(e, 'emailLabel')}}>
+          <Radio value="trabalho">Trabalho</Radio>
+          <Radio value="comercial">Comercial</Radio>
+          <Radio value="pessoal">Pessoal</Radio>
+        </Radio.Group>
+        <Input aria-label="input" bordered animated color="secondary" type="tel" placeholder="61999999999" onChange={(e) => {handleFormEdit(e, 'emailValue')}} label="Telefone" value={formData.emailValue} />
+        <Radio.Group aria-label="input" orientation="horizontal"onChange={(e) => {handleFormRadioEdit(e, 'phoneLabel')}}>
+          <Radio value="trabalho">Trabalho</Radio>
+          <Radio value="comercial">Comercial</Radio>
+          <Radio value="pessoal">Pessoal</Radio>
+        </Radio.Group>
         <Divider />
         </Modal.Body>
         <Modal.Footer>
