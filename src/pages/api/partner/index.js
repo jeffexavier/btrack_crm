@@ -20,7 +20,7 @@ export default async function partner(req, res) {
       const listedPartners = await listPartners(id);
       const responseListedPartners = {
         value: listedPartners,
-        count: listedPartners.length ? (listedPartners.length) + 1 : (0 + 1) 
+        count: listedPartners.length ? (listedPartners.length): 0
       };
       res.status(200).json(responseListedPartners);
     } catch (error) {

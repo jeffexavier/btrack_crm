@@ -20,7 +20,7 @@ export default async function revenue(req, res) {
       const listedRevenues = await listRevenues(id, id_legacy, id_group);
       const responseListedRevenues = {
         value: listedRevenues,
-        count: listedRevenues.length ? (listedRevenues.length) + 1 : (0 + 1) 
+        count: listedRevenues.length ? (listedRevenues.length) : 0
       };
       res.status(200).json(responseListedRevenues);
     } catch (error) {

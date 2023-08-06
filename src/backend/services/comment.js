@@ -25,10 +25,6 @@ export async function createComment(body) {
 
 export async function listComments(id, id_partner, id_group, id_user, id_parent) {
   databaseConnection();
-  // if(id){
-  //   const comment = await Comment.findById(id).populate('children').populate('parent');
-  //   return comment;
-  // }
 
   const query = {parent: null};
 

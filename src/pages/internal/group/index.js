@@ -81,7 +81,7 @@ export default function Clientes() {
                         month: "2-digit",
                         year: "numeric",
                       })}
-                      {item.dt_cancel !== null
+                      {item.dt_cancel
                         ? ` - ${new Date(item.dt_cancel).toLocaleDateString(
                             "pt-BR",
                             {
