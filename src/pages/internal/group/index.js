@@ -96,7 +96,7 @@ export default function Clientes() {
                     </Col>
                     <div className="flex md:flex-col lg:flex-row gap-2">
                     <DetailGroupButton groupId={item._id}/>
-                    <EditGroupButton groupId={item._id}/>
+                    <EditGroupButton groupId={item._id} getGroups={getGroups}/>
                     </div>
                 </Card.Footer>
               </Card>
