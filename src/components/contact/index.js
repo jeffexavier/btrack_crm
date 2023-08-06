@@ -1,7 +1,7 @@
 import { PlusCircleIcon, UserIcon, EnvelopeIcon, PhoneIcon, BuildingOffice2Icon, PlusIcon, PencilIcon, TrashIcon } from "@/public/icons.js";
 import { Card, Input, Text, Divider, Collapse, Link, Button, Tooltip, Avatar  } from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import AddContactButton from "./AddContactButton.js";
+import AddContactButton from "./AddContactButtonTest.js";
 import EditContactButton from "./EditContactButton.js";
 import DeleteContactButton from "./DeleteContactButton.js"
 
