@@ -11,8 +11,9 @@ import { useState } from "react";
 import { updateGroup, createGroup } from "@/src/backend/utils/group.js";
 import formatDate from "@/src/backend/utils/formatDate.js";
 
-export default function AddGroupButton() {
+export default function AddGroupButton({getGroups}) {
   const [isVisible, setIsVisible] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false)
   const [inputMessage, setInputMessage] = useState("Criar grupo");
   const [colorMessage, setColorMessage] = useState("secondary");
   const [errorMessage, setErrorMessage] = useState();
@@ -20,29 +21,6 @@ export default function AddGroupButton() {
   const [inputIdLegacyColor, setInputIdLegacyColor] = useState("secondary");
 
   const [formData, setFormData] = useState({
-    // name_contract: "",
-    // name: "",
-    // id_legacy: "",
-    // contract_cnpj: "",
-    // status: "",
-    // cs: "",
-    // csm: "",
-    // dt_register: "",
-    // dt_insert: "",
-    // segment: "",
-    // city: "",
-    // state: "",
-    // country: "",
-    // address: "",
-    // address_number: "",
-    // stage: "",
-    // dt_stage: "",
-    // size: "",
-    // plan: "",
-    // dt_cancel: "",
-    // cancel_tag: "",
-    // cancel_factor: "",
-    // cancel_description: "",
   });
 
   function handleFormEdit(e, name) {
@@ -58,73 +36,48 @@ export default function AddGroupButton() {
     }
   }
 
-  async function handleFormSubmit(body) {
-    const createdGroup = await createGroup(body);
-    console.log(createdGroup);
+  async function handleFormSubmit(body) {    
+    if(isDisabled === false) {
+      
+      const createdGroup = await createGroup(body);
+      
+      console.log(createdGroup);
+      
+      setIsDisabled(true)
 
-    if (formData.id_legacy === "") {
-      setInputIdLegacyColor("error");
-    }
+      if (formData.id_legacy === "") {
+        setInputIdLegacyColor("error");
+      }
+  
+      if (formData.contract_cnpj === "") {
+        setInputCnpjColor("error");
+      }
+  
+      if (createdGroup._id) {
+        setColorMessage("success");
+        setInputMessage("Grupo criado");
+        getGroups()
+        setTimeout(() => {
+          setColorMessage("secondary");
+          setIsVisible(false)
+        }, 1000);
+      } else {
+        setColorMessage("error");
+        setInputMessage("Erro");
+        setErrorMessage("Verique os campos novamente.")
+        setTimeout(() => {
+          setColorMessage("secondary");
+          setInputMessage("Criar grupo");
+        }, 2000);
+        setTimeout(() => {
+          setErrorMessage();
+        }, 4000);
+      }
 
-    if (formData.contract_cnpj === "") {
-      setInputCnpjColor("error");
-    }
-
-    if (createdGroup._id) {
-      setColorMessage("success");
-      setInputMessage("Grupo criado");
       setTimeout(() => {
-        setColorMessage("secondary");
-        setIsVisible(false)
+        setIsDisabled(false)
       }, 1000);
-    } else {
-      setColorMessage("error");
-      setInputMessage("Erro");
-      setErrorMessage("Verique os campos novamente.")
-      setTimeout(() => {
-        setColorMessage("secondary");
-        setInputMessage("Criar grupo");
-      }, 2000);
-      setTimeout(() => {
-        setErrorMessage();
-      }, 4000);
     }
-
-    // if (createdGroup._id) {
-    //   setColorMessage("success");
-    //   setInputMessage("Grupo criado");
-    //   setTimeout(() => {
-    //     setColorMessage("secondary");
-    //     // setInputMessage("Criar grupo")
-    //     // setIsVisible(false)
-    //   }, 1000);
-    // } else if (createdGroup.errors) {
-    //   setErrorMessage("CNPJ não pode ser vazio!");
-    // } else if (createdGroup.keyValue) {
-    //   if (createdGroup.keyValue.id_legacy) {
-    //     if (createdGroup.keyValue.id_legacy === "") {
-    //       setErrorMessage("ID Legado não pode ser vazio!");
-    //     } else if (createdGroup.keyValue.id_legacy !== "") {
-    //       setErrorMessage("ID legado já existe!");
-    //     }
-    //     setColorMessage("error");
-    //     setInputMessage("Erro");
-    //     setTimeout(() => {
-    //       setColorMessage("secondary");
-    //       setInputMessage("Criar grupo");
-    //     }, 2000);
-    //   } else if (createdGroup.keyValue.contract_cnpj) {
-    //     if (createdGroup.keyValue.contract_cnpj !== "") {
-    //       setErrorMessage("CNPJ já existe!");
-    //     }
-    //     setColorMessage("error");
-    //     setInputMessage("Erro");
-    //     setTimeout(() => {
-    //       setColorMessage("secondary");
-    //       setInputMessage("Criar grupo");
-    //     }, 2000);
-    //   }
-    // }
   }
 
   function openCreateGroupModal() {

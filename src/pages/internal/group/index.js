@@ -7,7 +7,6 @@ import { TEMPORARY_REDIRECT_STATUS } from "next/dist/shared/lib/constants.js";
 import InternalLayout from "@/src/components/InternalLayout";
 import { ArrowPathIcon, TrashIcon } from "@/public/icons";
 import Layout from "@/src/components/group/Layout.js";
-import axios from "axios";
 import DetailGroupButton from "@/src/components/buttons/DetailGroupButton.js";
 import EditGroupButton from "@/src/components/buttons/EditGroupButton.js"
 import DeleteGroupButton from "@/src/components/buttons/DeleteGroupButton.js";
@@ -18,6 +17,8 @@ export default function Clientes() {
   async function getGroups() {
     const listGroups = await fetch('/api/group').then((response) => {
       return response.json()
+    }).catch((error) => {
+      return error
     })
 
     const listedGroups = listGroups.value.reverse()
@@ -31,7 +32,7 @@ export default function Clientes() {
 
   return (
     <InternalLayout>
-      <Layout>
+      <Layout getGroups={getGroups}>
         {/* <div className="flex justify-between">
           <Button
             bordered
@@ -51,7 +52,7 @@ export default function Clientes() {
                 <Card.Header>
                 <div className="flex justify-between w-full align-middle">
                     <Text b size="$xl">{item.name_contract}</Text>
-                    <DeleteGroupButton groupId={item._id} groupName={item.name_contract}/>
+                    <DeleteGroupButton groupId={item._id} groupName={item.name_contract} getGroups={getGroups}/>
                     </div>
                 </Card.Header>
                 <Card.Divider />
@@ -95,7 +96,7 @@ export default function Clientes() {
                     </Col>
                     <div className="flex md:flex-col lg:flex-row gap-2">
                     <DetailGroupButton groupId={item._id}/>
-                    <EditGroupButton groupId={item._id}/>
+                    <EditGroupButton groupId={item._id} getGroups={getGroups}/>
                     </div>
                 </Card.Footer>
               </Card>
@@ -106,4 +107,22 @@ export default function Clientes() {
   );
 }
 
-
+export async function getServerSideProps(context) {
+  const cookies = parseCookies(context);
+  const token = cookies.authorization;
+  try {
+    verifyToken(token);
+    const verifiedToken = verifyToken(token);
+    return {
+      props: { userData: verifiedToken },
+    };
+  } catch (err) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login",
+      },
+      props: {},
+    };
+  }
+}
