@@ -7,7 +7,7 @@ import CommentInput from "./CommentInput.js";
 import AreaCreateComment from "./AreaCreateComment.js";
 
 
-export function AreaComment({userId, groupId}) {
+export function AreaComment({userData, groupId}) {
 
   const [formData, setFormData] = useState({});
   const [comments, setComments] = useState([])
@@ -41,10 +41,10 @@ export function AreaComment({userId, groupId}) {
 
   return (
     <div className="flex flex-col gap-4">
-        <AreaCreateComment userId={userId} groupId={groupId} getComments={getComments} />
+        <AreaCreateComment userId={userData.id} groupId={groupId} getComments={getComments} />
       {comments.map((comment, index) => (
         <div key={comments.length - index} className="flex flex-col w-full gap-2 pt-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
-          <CommentInput comment={comment} commentType="comment" groupId={groupId} getComments={getComments}/>
+          <CommentInput comment={comment} commentType="comment" groupId={groupId} getComments={getComments} userData={userData}/>
             {comment.children.map((child, index) => (
               <div key={comment.children.length - index} className="flex flex-col w-full gap-2 pl-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
                 <CommentInput comment={child} commentType="child" groupId={groupId} getComments={getComments}/>
