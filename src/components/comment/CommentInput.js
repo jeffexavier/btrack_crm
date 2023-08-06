@@ -4,9 +4,9 @@ import { ArrowUturnLeftIcon, PencilIcon, TrashIcon, CheckIcon, XMarkIcon} from "
 import formatDateToLocaleString from "@/src/backend/utils/formatDateToLocalString.js";
 import { updateComment } from "@/src/backend/utils/comment.js";
 import DeleteCommentButton from "./DeleteCommentButton.js";
-import GroupId from "@/src/pages/internal/group/[groupId].js";
+import AddAnswerButton from "./AddAnswerButton.js";
 
-export default function CommentInput({ comment, commentType, getComments, groupId }) {
+export default function CommentInput({ comment, commentType, getComments, groupId, userData }) {
   
   const [isEditable, setIsEditable] = useState(false)
   const [commentDescription, setCommentDescription] = useState({
@@ -78,7 +78,7 @@ export default function CommentInput({ comment, commentType, getComments, groupI
       <User
         bordered
         color="secondary"
-        src="https://github.com/jeffexavier.png"
+        src={comment.created_by.avatar || ""}
         name={comment.created_by.email}
       />
       <div className="flex justify-between gap-4 pr-4 py-2 ml-4 h-fit rounded-md shadow-md mb-6 mt-1">
@@ -102,7 +102,7 @@ export default function CommentInput({ comment, commentType, getComments, groupI
           value={isEditable === true ? commentDescription.description : comment.description}
         />
         {
-          isEditable === false ? <>{commentType === "comment" ? <Button light auto color="secondary" iconRight={<ArrowUturnLeftIcon width="18px" />} /> : ""}
+          isEditable === false ? <>{commentType === "comment" ? <AddAnswerButton groupId={groupId} getComments={getComments} comment={comment} userData={userData} /> : ""}
           <DeleteCommentButton commentId={comment._id} groupId={groupId} getComments={getComments}/> </> :  "" 
         }   
         {isEditable === true ? <Button light auto color="error" onPress={() => {cancelEdit()}} iconRight={<XMarkIcon width="20px" />}></Button> : ""}
