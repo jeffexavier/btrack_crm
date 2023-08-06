@@ -4,9 +4,12 @@ import { useEffect, useState } from "react";
 import { updateGroup } from "@/src/backend/utils/group.js";
 import formatDate from "@/src/backend/utils/formatDate.js";
 
-export default function DetailGroupButton({groupId}) {
+export default function DetailGroupButton({groupId, getGroups}) {
 
   const [isVisible, setIsVisible] = useState(false)
+  const [messageButton, setMessageButton] = useState('Atualizar grupo')
+  const [colorButton, setColorButton] = useState('secondary')
+  const [isDisabled, setIsDisabled] = useState(false)
   const [groupData, setGroupData] = useState({})
   const [nameContract, setNameContract] = useState(groupData.name_contract)
 
@@ -44,7 +47,23 @@ export default function DetailGroupButton({groupId}) {
   }
   
   async function handleFormSubmit(id, body) {
-    const updatedGroup = await updateGroup(id, body)
+
+    if(isDisabled === false) {
+      setIsDisabled(true)
+
+      const updatedGroup = await updateGroup(id, body)
+      setColorButton('success')
+      setMessageButton('Grupo atualizado')
+  
+      setTimeout(() => {
+        setColorButton('secondary')
+        setMessageButton('Atualizar grupo')
+        setIsDisabled(false)
+      }, 2000);
+  
+      getGroups()
+    }
+
   }
   
   async function getGroup(_id) {
@@ -133,7 +152,7 @@ export default function DetailGroupButton({groupId}) {
           >
             Cancelar
           </Button>
-        <Button icon={<ArrowPathRoundedSquareIcon width="18px" />} onPress={() => handleFormSubmit(groupId, formData)} color="secondary">Atualizar grupo</Button>
+        <Button icon={<ArrowPathRoundedSquareIcon width="18px" />} onPress={() => handleFormSubmit(groupId, formData)} color={colorButton}>{messageButton}</Button>
       </Modal.Footer>
     </Modal>
     </>
