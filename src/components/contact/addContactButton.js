@@ -6,6 +6,8 @@ import { createContact } from "@/src/backend/utils/contact.js"
 
 export default function AddContactButton({groupId, getContactsList}) {
 
+  const teste ='teste'
+
   const bodyFormat = {
     groups: groupId,
     name: "",
