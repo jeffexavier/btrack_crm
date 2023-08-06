@@ -6,7 +6,7 @@ import EditContactButton from "./EditContactButton.js";
 import DeleteContactButton from "./DeleteContactButton.js"
 
 export default function ContactsList({groupId}) {
-
+  const teste = "teste"
 
   const [contactData, setContactData] = useState([])
 
