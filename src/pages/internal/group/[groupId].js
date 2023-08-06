@@ -13,6 +13,8 @@ import ContactsList from "@/src/components/contact/index.js";
 
 export default function GroupId({userData, listedGroups}) {
 
+  console.log(userData)
+
   const [groupData, setGroupData] = useState(listedGroups)
   return (
     <InternalLayout>
@@ -24,7 +26,7 @@ export default function GroupId({userData, listedGroups}) {
           </div>
           <Card variant="bordered">
             <Card.Header><Text h4>Comentários</Text></Card.Header>
-            <Card.Body><AreaComment groupId={groupData._id} userId={userData.id}/></Card.Body>
+            <Card.Body><AreaComment groupId={groupData._id} userData={userData}/></Card.Body>
           </Card>
 
         </div>
