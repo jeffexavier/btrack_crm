@@ -1,10 +1,10 @@
 
-import { deleteComment } from "@/src/backend/utils/comment.js"
-import { Button, Modal, Popover, Text, Tooltip } from "@nextui-org/react"
+import { deleteContact } from "@/src/backend/utils/contact.js"
 import { useState } from "react"
+import { Popover, Button, Tooltip } from "@nextui-org/react"
 import { TrashIcon, XMarkIcon } from "@/public/icons.js"
 
-export default function DeleteCommentButton({commentId}){
+export default function DeleteContactButton({contactId, getContactsList, groupId}) {
 
   const [verify, setVerify] = useState(false)
   const [buttonColor, setButtonColor] = useState('secondary')
@@ -17,33 +17,35 @@ export default function DeleteCommentButton({commentId}){
     console.log(boolean)
   }
 
-  async function commentDelete(id) {
-    const deletedComment = await deleteComment(id)
-    console.log(deletedComment)
+  async function contactDelete(id) {
+    const deletedContact = await deleteContact(id)
+    console.log(deletedContact)
     cancelDelete()
+
+    getContactsList(groupId)
+
   }
-
-
 
   function cancelDelete() {
     setVerify(false)
     setButtonColor('secondary')
   }
 
-  return (
-    <>
-    {/* {verify === true ? <Button light auto color="error" onPress={() => {cancelDelete()}} iconRight={<XMarkIcon width="20px" />}></Button> : ""} */}
-    <Popover borderWeight={0} placement="top" isOpen={verify} onClose={() => cancelDelete()}>
+  return(
+    <Tooltip content="Excluir contato">
+    <Popover borderWeight={0} placement="right" isOpen={verify} onClose={() => cancelDelete()}>
       <Popover.Trigger>
+      
         <Button light auto color={buttonColor} iconRight={<TrashIcon width="18px" />} onPress={() => openPopover(true)}/>
+      
       </Popover.Trigger>
       <Popover.Content>
         <div className="flex justify-end">
           <Button light auto color="error" onPress={() => {cancelDelete()}} iconRight={<XMarkIcon width="20px" />} />
-            <Button flat auto color="error" iconRight={<TrashIcon width="18px" />} onPress={() => commentDelete(commentId)}/>
+            <Button flat auto color="error" iconRight={<TrashIcon width="18px" />} onPress={() => contactDelete(contactId)}/>
         </div>
       </Popover.Content>
     </Popover>
-    </>
+    </Tooltip>
   )
 }

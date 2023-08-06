@@ -1,8 +1,9 @@
-import { PlusCircleIcon, UserIcon, EnvelopeIcon, PhoneIcon, BuildingOffice2Icon, PlusIcon, PencilIcon } from "@/public/icons.js";
+import { PlusCircleIcon, UserIcon, EnvelopeIcon, PhoneIcon, BuildingOffice2Icon, PlusIcon, PencilIcon, TrashIcon } from "@/public/icons.js";
 import { Card, Input, Text, Divider, Collapse, Link, Button, Tooltip, Avatar  } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import AddContactButton from "./AddContactButton.js";
 import EditContactButton from "./EditContactButton.js";
+import DeleteContactButton from "./DeleteContactButton.js"
 
 export default function ContactsList({groupId}) {
 
@@ -35,7 +36,7 @@ export default function ContactsList({groupId}) {
             <Link> <Text b size={18}>{contact.name}</Text></Link>
           </div>
           <div className="flex justify-end">
-            <EditContactButton contactData={contact} getContactsList={getContactsList}/>
+            <EditContactButton contactData={contact} getContactsList={getContactsList} groupId={groupId}/>
           </div>
         </div>
 
@@ -92,19 +93,31 @@ export default function ContactsList({groupId}) {
         <div>
           <Text h4>Contatos</Text>
         </div>
-        <div>
+        {/* <div>
           <AddContactButton groupId={groupId} getContactsList={getContactsList}/>
-        </div>
+        </div> */}
       </div>
     }>
+      <div className="flex justify-start mb-4">
+          <AddContactButton groupId={groupId} getContactsList={getContactsList}/>
+        </div>
       {contactData.map((contact, index) => (
-          <div className="flex justify-start min-w-full gap-2">
+        <div className="flex justify-between">
+          <div className="flex justify-start gap-2">
           <UserIcon color="secondary" width="18px"/>
           <Tooltip placement="rightEnd" content={contactInput(contact)}>
             <Link color="secondary" href="https://google.com" target="_blank">{contact.name}</Link>
           </Tooltip>
           </div>
+            <div className="flex">
+              <DeleteContactButton contactId={contact._id} getContactsList={getContactsList} groupId={groupId}/>
+              <EditContactButton contactData={contact} getContactsList={getContactsList} groupId={groupId}/>
+            </div>
+          </div>
       ))}
+      <div className="flex justify-start mt-4">
+          <AddContactButton groupId={groupId} getContactsList={getContactsList}/>
+        </div>
     </Collapse>
     </>
   );

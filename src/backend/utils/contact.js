@@ -32,8 +32,7 @@ export async function updateContact(id, body) {
 }
 
 
-export async function deleteContact(id, textValidator) {
-  if(textValidator === "EXCLUIR") {
+export async function deleteContact(id) {
     const contactDelete = await fetch(`/api/contact?id=${id}`, {
       method: "DELETE"
     }).then((response) => {
@@ -43,7 +42,4 @@ export async function deleteContact(id, textValidator) {
     })    
     const deletedContact = contactDelete
     return deletedContact
-  } else {
-    return "Palavra incorreta!"
-  }
 }
