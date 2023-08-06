@@ -18,7 +18,7 @@ export default function GroupId({userData, listedGroups}) {
     <InternalLayout>
       <Layout>
         <div className="flex justify-around gap-4">
-          <div className="grid gap-4">
+          <div className="grid gap-4 place-content-start">
             <EditGroup groupData={groupData} />
             <ContactsList groupId={groupData._id} />
           </div>

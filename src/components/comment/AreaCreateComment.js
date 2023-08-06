@@ -4,7 +4,7 @@ import { ChatBubbleBottomCenterTextIcon } from "@/public/icons.js";
 import { useState } from "react";
 import { createComment } from "@/src/backend/utils/comment.js";
 
-export default function AreaCreateComment({groupId, userId}) {
+export default function AreaCreateComment({groupId, userId, getComments}) {
 
   const [helperText, setHelperText] = useState("")
 
@@ -19,9 +19,8 @@ export default function AreaCreateComment({groupId, userId}) {
       setHelperText("Você precisa inserir ao menos um caractere!")
     } else {
       const createdComment = await createComment(body)
-      console.log(createdComment)
-      console.log(formData)
-      // console.log(userId)
+      
+      getComments(groupId)
     }
   }
 

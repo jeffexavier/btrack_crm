@@ -1,11 +1,12 @@
 import { User, Button, Textarea } from "@nextui-org/react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUturnLeftIcon, PencilIcon, TrashIcon, CheckIcon, XMarkIcon} from "@/public/icons.js";
 import formatDateToLocaleString from "@/src/backend/utils/formatDateToLocalString.js";
 import { updateComment } from "@/src/backend/utils/comment.js";
 import DeleteCommentButton from "./DeleteCommentButton.js";
+import GroupId from "@/src/pages/internal/group/[groupId].js";
 
-export default function CommentInput({ comment, commentType }) {
+export default function CommentInput({ comment, commentType, getComments, groupId }) {
   
   const [isEditable, setIsEditable] = useState(false)
   const [commentDescription, setCommentDescription] = useState({
@@ -47,6 +48,7 @@ export default function CommentInput({ comment, commentType }) {
     } else if(body.description.length !== 0) {
       const updatedComment = await updateComment(id, body)
       console.log(updatedComment)
+      getComments(groupId)
       
       updateRef()
     } else {
@@ -54,17 +56,19 @@ export default function CommentInput({ comment, commentType }) {
       parentRef.borderColor = "#f31260";
     }
 
+
     console.log(commentDescription.description)
    }
 
-   function commentDelete(id) {
-
-   }
 
   function cancelEdit() {
     setCommentDescription({description: comment.description})
     updateRef()
   }
+
+  useEffect(() => {
+    console.log(comment.description)
+  }, [])
 
   return (
     <>
@@ -90,12 +94,13 @@ export default function CommentInput({ comment, commentType }) {
           readOnly={!isEditable}
           fullWidth
           aria-label="textarea"
+          initialValue={comment.description}
           onChange={(e) => setCommentDescription({description: e.target.value})}
           value={commentDescription.description}
         />
         {
           isEditable === false ? <>{commentType === "comment" ? <Button light auto color="secondary" iconRight={<ArrowUturnLeftIcon width="18px" />} /> : ""}
-          <DeleteCommentButton commentId={comment._id} /> </> :  "" 
+          <DeleteCommentButton commentId={comment._id} groupId={groupId} getComments={getComments}/> </> :  "" 
         }   
         {isEditable === true ? <Button light auto color="error" onPress={() => {cancelEdit()}} iconRight={<XMarkIcon width="20px" />}></Button> : ""}
         <Button light={!isEditable} flat={isEditable} auto color={isEditable === false ? "secondary" : "success"} onPress={() => {commentUpdate(comment._id, commentDescription)}} iconRight={ isEditable === false ? <PencilIcon width="18px" /> : <CheckIcon width="20px" />} />
