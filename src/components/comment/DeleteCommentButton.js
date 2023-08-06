@@ -4,7 +4,7 @@ import { Button, Modal, Popover, Text, Tooltip } from "@nextui-org/react"
 import { useState } from "react"
 import { TrashIcon, XMarkIcon } from "@/public/icons.js"
 
-export default function DeleteCommentButton({commentId}){
+export default function DeleteCommentButton({commentId, getComments, groupId}){
 
   const [verify, setVerify] = useState(false)
   const [buttonColor, setButtonColor] = useState('secondary')
@@ -20,6 +20,7 @@ export default function DeleteCommentButton({commentId}){
   async function commentDelete(id) {
     const deletedComment = await deleteComment(id)
     console.log(deletedComment)
+    getComments(groupId)
     cancelDelete()
   }
 

@@ -12,7 +12,6 @@ export function AreaComment({userId, groupId}) {
   const [formData, setFormData] = useState({});
   const [comments, setComments] = useState([])
 
-  const groupData = { valor: "jeff" };
 
   function handleFormEdit(e, name) {
     setFormData({
@@ -26,10 +25,14 @@ export function AreaComment({userId, groupId}) {
       return response.json()
     })
 
-    const listedComments = listComments.value.reverse()
+    const listedComments = listComments.value.slice(0).reverse()
     setComments(listedComments)
+    console.log(listedComments)
 
-    // console.log(listedComments)
+  }
+
+  function setConsoleLog(groupId) {
+    console.log(groupId)
   }
 
   useEffect(() => {
@@ -38,13 +41,13 @@ export function AreaComment({userId, groupId}) {
 
   return (
     <div className="flex flex-col gap-4">
-      <AreaCreateComment groupId={groupId} userId={userId} />
+        <AreaCreateComment userId={userId} groupId={groupId} getComments={getComments} />
       {comments.map((comment, index) => (
-        <div key={index} className="flex flex-col w-full gap-2 pt-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
-          <CommentInput comment={comment} commentType="comment"/>
+        <div key={comments.length - index} className="flex flex-col w-full gap-2 pt-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
+          <CommentInput comment={comment} commentType="comment" groupId={groupId} getComments={getComments}/>
             {comment.children.map((child, index) => (
-              <div key={index} className="flex flex-col w-full gap-2 pl-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
-                <CommentInput comment={child} commentType="child"/>
+              <div key={comment.children.length - index} className="flex flex-col w-full gap-2 pl-4 bg-[#fff] rounded-xl border-[0px] border-[#d9d9d9]">
+                <CommentInput comment={child} commentType="child" groupId={groupId} getComments={getComments}/>
               </div>
               ))
             }
