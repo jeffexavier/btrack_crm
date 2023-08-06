@@ -43,12 +43,14 @@ export default function CommentInput({ comment, commentType, getComments, groupI
    }
    
    async function commentUpdate(id, body) {
-    if(isEditable === false) {
-      updateRef()
-    } else if(body.description.length !== 0) {
-      const updatedComment = await updateComment(id, body)
-      console.log(updatedComment)
-      getComments(groupId)
+     if(isEditable === false) {
+       setCommentDescription({description: comment.description})
+       updateRef()
+      } else if(body.description.length !== 0) {
+        const updatedComment = await updateComment(id, body)
+        console.log(updatedComment)
+        getComments(groupId)
+      
       
       updateRef()
     } else {
@@ -67,6 +69,7 @@ export default function CommentInput({ comment, commentType, getComments, groupI
   }
 
   useEffect(() => {
+    setCommentDescription({description: comment.description})
     console.log(comment.description)
   }, [])
 
@@ -96,7 +99,7 @@ export default function CommentInput({ comment, commentType, getComments, groupI
           aria-label="textarea"
           initialValue={comment.description}
           onChange={(e) => setCommentDescription({description: e.target.value})}
-          value={commentDescription.description}
+          value={isEditable === true ? commentDescription.description : comment.description}
         />
         {
           isEditable === false ? <>{commentType === "comment" ? <Button light auto color="secondary" iconRight={<ArrowUturnLeftIcon width="18px" />} /> : ""}
