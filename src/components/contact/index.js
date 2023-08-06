@@ -116,7 +116,7 @@ export default function ContactsList({groupId}) {
           </div>
       ))}
       <div className="flex justify-start mt-4">
-          <AddContactButton groupId={groupId} getContactsList={getContactsList}/>
+          {contactData.length > 0 ? <AddContactButton groupId={groupId} getContactsList={getContactsList}/> : "" }
         </div>
     </Collapse>
     </>
