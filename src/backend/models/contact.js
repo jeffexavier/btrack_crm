@@ -5,6 +5,7 @@ const ContactSchema = new mongoose.Schema({
   groups: [{type: 'ObjectId', ref: 'Group', required: true}],
   partners: [{type: 'ObjectId', ref: 'Group'}],
   name: {type: String, required: true},
+  occupation: {type: String},
   phone: [{
     value: {type: String, required: true},
     primary: {type: Boolean, default: false},
