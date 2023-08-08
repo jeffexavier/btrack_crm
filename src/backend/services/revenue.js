@@ -3,6 +3,7 @@
 import bcrypt from "bcrypt"
 import databaseConnection from "../utils/database";
 import Revenue from "../models/revenue";
+import revenueRequestReason from "../models/revenueRequestReason.js";
 import Group from "../models/group";
 
 import { createToken } from "@/src/backend/utils/token";
@@ -25,11 +26,16 @@ export async function listRevenues(id, id_legacy, id_group) {
 
 export async function createRevenue(body) {
   await databaseConnection();
-  const createNewRevenue = await Revenue.create({...body, group: await Group.findById(body.id_group), id_group: body.id_group});
+
+  if(body.revenueRequestReason.value) {
+    const getRevenueRequestReason = await revenueRequestReason.findOne({value: body.revenueRequestReason.value})
+  }
+
+  const createNewRevenue = await Revenue.create(body);
   return createNewRevenue
 }
 
-export async function updateRevenue(id, id_legacy, id_group, body) {
+export async function updateRevenue(id, id_legacy, body) {
   databaseConnection();
   if(id) {
     const revenue = await Revenue.findByIdAndUpdate(id, {...body, dt_update: new Date()});
