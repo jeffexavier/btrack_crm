@@ -5,7 +5,6 @@ import databaseConnection from "../utils/database";
 import Comment from "../models/comment";
 
 import { createToken } from "@/src/backend/utils/token";
-import comment from "@/src/pages/api/comment/index.js";
 
 export async function createComment(body) {
   await databaseConnection();
@@ -69,13 +68,7 @@ export async function deleteComment(id) {
   try {
     databaseConnection();
     const deleteComment = await Comment.findByIdAndDelete(id);
-    const deletedComment = {
-      _id: deleteComment._id,
-      id_legacy: deleteComment.id_legacy,
-      name_contract: deleteComment.name_contract,
-      contract_cnpj: deleteComment.contract_cnpj,
-      status: "deleted"
-    }  
+    const deletedComment = { ...deleteComment, status: "deleted" }  
     return deletedComment    
   } catch (error) {
     return error

@@ -3,6 +3,7 @@
 import bcrypt from "bcrypt"
 import databaseConnection from "../utils/database";
 import Revenue from "../models/revenue";
+import RevenueRequestReason from "../models/revenueRequestReason.js";
 import Group from "../models/group";
 
 import { createToken } from "@/src/backend/utils/token";
@@ -25,11 +26,26 @@ export async function listRevenues(id, id_legacy, id_group) {
 
 export async function createRevenue(body) {
   await databaseConnection();
-  const createNewRevenue = await Revenue.create({...body, group: await Group.findById(body.id_group), id_group: body.id_group});
-  return createNewRevenue
+
+  const newBody = body
+
+  if(body.request_reason._id) {
+    const getRevenueRequestReason = await RevenueRequestReason.findById(body.request_reason._id)
+    newBody.request_reason = getRevenueRequestReason._id
+    
+  } else if(body.request_reason.value) {
+    const getRevenueRequestReason = await RevenueRequestReason.findOne({value: body.request_reason.value})
+    console.log(getRevenueRequestReason)
+    newBody.request_reason = getRevenueRequestReason._id
+  }
+
+  const createNewRevenue = await Revenue.create(newBody);
+  const createdNewRevenue = await Revenue.findById(createNewRevenue._id).populate('group').populate('request_reason')
+  return createdNewRevenue
+
 }
 
-export async function updateRevenue(id, id_legacy, id_group, body) {
+export async function updateRevenue(id, id_legacy, body) {
   databaseConnection();
   if(id) {
     const revenue = await Revenue.findByIdAndUpdate(id, {...body, dt_update: new Date()});
