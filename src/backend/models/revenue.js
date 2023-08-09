@@ -1,9 +1,11 @@
 import mongoose from "mongoose";
+import Group from "./group.js"
 
 const RevenueSchema = new mongoose.Schema({
-  group: {type: 'ObjectId', ref: 'Group', required: true},
+  group: {type: 'ObjectId', ref: Group, required: true},
   id_legacy: {type: String},
   type: {type: String, default: "Entrada", required: true},
+  plan: {type: String},
   dt_request: {type: Date, default: Date.now},
   value: {type: Number, default: 0},
   license_qty: {type: Number, default: 0},

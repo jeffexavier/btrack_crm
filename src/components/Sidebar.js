@@ -43,7 +43,7 @@ export default function SideBar() {
       </div>
       <div className="flex flex-col gap-2 p-4 w-full">
         {pages.map((item, index) => (
-          <Link href={item.link}>
+          <Link key={index} href={item.link}>
           <div className="flex justify-start  hover:bg-[#e0cbf5] gap-2 py-2.5 px-4 rounded-xl items-center cursor-pointer transition-colors ease-linear">
             <div>{<item.icon stroke="red"/>}</div>
             <div>
