@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
-const RevenueSchema = mongoose.Schema({
-  group: {type: 'ObjectId', ref: "Group", required: true},
+const RevenueSchema = new mongoose.Schema({
+  group: {type: 'ObjectId', ref: 'Group', required: true},
   id_legacy: {type: String},
   type: {type: String, default: "Entrada", required: true},
   dt_request: {type: Date, default: Date.now},

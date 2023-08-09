@@ -1,7 +1,8 @@
 
-import bcrypt from "bcrypt"
 import databaseConnection from "../utils/database";
+
 import RevenueRequestReason from "../models/revenueRequestReason";
+
 
 import { createToken } from "@/src/backend/utils/token";
 
@@ -22,7 +23,7 @@ export async function createRevenueRequestReason(body) {
 }
 
 export async function listRevenueRequestReasons(id, value) {
-  databaseConnection();
+  await databaseConnection();
 
   const query = {};
 
@@ -38,7 +39,7 @@ export async function listRevenueRequestReasons(id, value) {
 
 export async function updateRevenueRequestReason(id, value, body) {
   try {
-    databaseConnection();
+    await databaseConnection();
     if(id) {
       const revenueRequestReason = await RevenueRequestReason.findByIdAndUpdate(id, body);
       const updatedRevenueRequestReason = await RevenueRequestReason.findById(revenueRequestReason._id)
@@ -55,7 +56,7 @@ export async function updateRevenueRequestReason(id, value, body) {
 
 export async function deleteRevenueRequestReason(id) {
   try {
-    databaseConnection();
+    await databaseConnection();
     const deleteRevenueRequestReason = await RevenueRequestReason.findByIdAndDelete(id);
     const deletedRevenueRequestReason = { ...deleteRevenueRequestReason._id, status: "deleted" }  
     return deletedRevenueRequestReason    
