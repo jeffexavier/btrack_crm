@@ -4,6 +4,7 @@ import InternalLayout from "@/src/components/InternalLayout";
 import Layout from "@/src/components/group/Layout.js";
 import formatDateToLocaleDateString from "@/src/backend/utils/formatDateToLocaleDateString.js";
 import EditRevenueButton from "@/src/components/revenue/EditRevenueButton.js";
+import OpenEditRevenueModalButton from "@/src/components/revenue/OpenEditRevenueModalButton.js";
 
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
@@ -57,12 +58,12 @@ export default function RevenueList({listedRevenuess}) {
                 <Table.Cell>{item.value}</Table.Cell>
                 <Table.Cell>{item.license_qty}</Table.Cell>
                 <Table.Cell>{formatDateToLocaleDateString(item.dt_request)}</Table.Cell>
-                <Table.Cell>{item.request_reason.value}</Table.Cell>
+                <Table.Cell>{item.request_reason ? item.request_reason.value : ''}</Table.Cell>
                 <Table.Cell>{item.request_factor}</Table.Cell>
                 <Table.Cell>{item.request_description}</Table.Cell>
                 <Table.Cell>
                   <div className="flex justify-between">
-                    <EditRevenueButton revenueData={item} />
+                    <OpenEditRevenueModalButton revenueData={item} getRevenues={getRevenues} />
                     <Tooltip color="error" placement="right" content="Excluir registro">
                       <Button auto light color="error" icon={<TrashIcon width="18px"/>} />
                     </Tooltip>
