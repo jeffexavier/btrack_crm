@@ -104,7 +104,7 @@ export default function lista({userData}) {
           </Table.Header> 
           <Table.Body>
           {customersNotes.map((item, index) => (
-            <Table.Row key={index}> 
+            <Table.Row key={index} onRowAction={(e) => console.log(e) }> 
               <Table.Cell css={{minWidth: "min-content", maxWidth: "min-content"}}> {
                 new Date(item.created_on).toLocaleDateString('pt-BR', {
                 day: '2-digit',
