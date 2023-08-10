@@ -16,9 +16,9 @@ export default function EditRevenueButton({revenueRegisterId, formData, getReven
       newBody.value = body.value,
       newBody.license_qty = body.license_qty,
       newBody.dt_request = body.dt_request,
-      newBody.request_reason = {
+      newBody.request_reason = body.request_reason ? {
         _id: body.request_reason._id
-      },
+      } : null,
       newBody.request_factor = body.request_factor,
       newBody.request_description = body. request_description
     } else {
