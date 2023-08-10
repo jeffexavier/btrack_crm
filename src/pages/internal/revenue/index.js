@@ -9,12 +9,51 @@ import OpenEditRevenueModalButton from "@/src/components/revenue/OpenEditRevenue
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
 import { useEffect, useState } from "react";
-import { Button, Table, Tooltip } from "@nextui-org/react";
-import { PencilIcon, TrashIcon } from "@/public/icons.js";
+import { Button, Table, Text, Textarea, Tooltip } from "@nextui-org/react";
+import { PencilIcon, PlusCircleIcon, PlusIcon, TrashIcon } from "@/public/icons.js";
 
 export default function RevenueList({listedRevenuess}) {
 
   const [listedRevenues, setListedRevenues] = useState([]);
+
+  function changeRowColor(type) {
+
+    let color = {}
+
+    switch(type) {
+        case "Entrada":
+          color = {
+            colorFlat: 'primary-flat',
+            colorFlatHover: 'primary-flat-hover',
+            colorFull: 'primary-full'
+          }; break;
+        case "Upsell":
+          color = {
+            colorFlat: 'success-flat',
+            colorFlatHover: 'success-flat-hover',
+            colorFull: 'success-full'
+          }; break;
+        case 'Migração':
+          color = {
+            colorFlat: 'secondary-flat',
+            colorFlatHover: 'secondary-flat-hover',
+            colorFull: 'secondary-full'
+          }; break;
+        case 'Downsell':
+          color = {
+            colorFlat: 'warning-flat',
+            colorFlatHover: 'warning-flat-hover',
+            colorFull: 'warning-full'
+          }; break;
+        case 'Churn':
+          color = {
+            colorFlat: 'error-flat',
+            colorFlatHover: 'error-flat-hover',
+            colorFull: 'error-full'
+          }; break;
+       }
+       return color;
+    }
 
 
   async function getRevenues() {
@@ -33,46 +72,57 @@ export default function RevenueList({listedRevenuess}) {
   return (
     <InternalLayout>
       <Layout>
-      <div className="flex min-w-full">
-          <Table aria-label="Select All" striped borderWeight={0} css={{padding: "0"}}
-            shadow="false" color="secondary"
-          >
-          <Table.Header>
-            <Table.Column>Empresa</Table.Column>
-            <Table.Column>Porte</Table.Column>
-            <Table.Column>Tipo</Table.Column>
-            <Table.Column>Valor</Table.Column>
-            <Table.Column>Assinaturas</Table.Column>
-            <Table.Column>Data</Table.Column>
-            <Table.Column>Motivo</Table.Column>
-            <Table.Column>Fator</Table.Column>
-            <Table.Column>Descrição</Table.Column>
-            <Table.Column></Table.Column>
-            </Table.Header>
-            <Table.Body>
-        {listedRevenues.map((item, index) => (
-              <Table.Row key={index}>
-                <Table.Cell>{item.group.name_contract}</Table.Cell>
-                <Table.Cell>{item.group.size}</Table.Cell>
-                <Table.Cell>{item.type}</Table.Cell>
-                <Table.Cell>{item.value}</Table.Cell>
-                <Table.Cell>{item.license_qty}</Table.Cell>
-                <Table.Cell>{formatDateToLocaleDateString(item.dt_request)}</Table.Cell>
-                <Table.Cell>{item.request_reason ? item.request_reason.value : ''}</Table.Cell>
-                <Table.Cell>{item.request_factor}</Table.Cell>
-                <Table.Cell>{item.request_description}</Table.Cell>
-                <Table.Cell>
-                  <div className="flex justify-between">
-                    <OpenEditRevenueModalButton revenueData={item} getRevenues={getRevenues} />
-                    <Tooltip color="error" placement="right" content="Excluir registro">
-                      <Button auto light color="error" icon={<TrashIcon width="18px"/>} />
-                    </Tooltip>
-                  </div>
-                </Table.Cell>
-              </Table.Row>
-        ))}
-            </Table.Body>
-          </Table>
+      <div className="grid max-w-screen-2xl min-w-min">
+      <div className="grid grid-cols-11 bg-[#f1f3f5] p-4 gap-2 rounded-xl">
+            <Text b size={14}>Empresa</Text>
+            <Text b size={14}>Porte</Text>
+            <Text b size={14}>Plano</Text>
+            <Text b size={14}>Tipo</Text>
+            <Text b size={14}>Valor</Text>
+            <Text b size={14}>Assinaturas</Text>
+            <Text b size={14}>Data</Text>
+            <Text b size={14}>Motivo</Text>
+            <Text b size={14}>Fator</Text>
+            <Text b size={14}>Descrição</Text>
+            <Text b size={14}></Text>
+      </div>
+
+      <div className="grid mt-2 gap-2">
+      <div className="flex justify-center hover:cursor-pointer hover:bg-opacity-30 hover:bg-black p-1 rounded-lg transition-colors ease-linear">
+       <PlusIcon className="stroke-[#fff]" width="20px"/>
+      </div>
+      {listedRevenues.reverse().map((item, index) => (
+      <div key={index} className={`grid grid-cols-11 hover:bg-[#f1f3f5] transition-colors ease-linear items-center py-1 px-4 gap-2 rounded-xl`}>
+          <p className={`font-normal`}>{item.group.name_contract}</p>
+          <p className={`font-normal`}>{item.group.size}</p>
+          <p className={`font-normal`}>{item.plan}</p>
+          <p className={`text-${changeRowColor(item.type).colorFull} font-medium`}>{item.type}</p>
+          <p className={`truncate font-normal`}>{item.value}</p>
+          <p className={`font-normal`}>{item.license_qty}</p>
+          <p className={`font-medium`}>{formatDateToLocaleDateString(item.dt_request)}</p>
+          <p className={`font-normal`}>{item.request_reason ? item.request_reason.value : ''}</p>
+          <p className={`font-normal`}>{item.request_factor}</p>
+          <Tooltip content={item.request_description} placement="left">
+            <div className="max-w-[150px]">
+              <p className={`truncate font-normal`}>{item.request_description}</p>
+            </div>
+          </Tooltip>
+          <div>
+            <div className="flex justify-end">
+              <OpenEditRevenueModalButton revenueData={item} getRevenues={getRevenues} />
+              <Tooltip color="error" placement="top" content="Excluir registro">
+                <Button auto light color="error" icon={<TrashIcon width="18px"/>} onPress={() => console.log(changeRowColor(item.type).colorFlat)}/>
+              </Tooltip>
+            </div>
+          </div>
+      </div>
+      ))}
+
+      <div className="flex justify-center hover:cursor-pointer hover:bg-opacity-30 hover:bg-black p-1 rounded-lg transition-colors ease-linear">
+       <PlusIcon className="stroke-[#fff]" width="20px"/>
+      </div>
+
+      </div>
       </div>
       </Layout>
     </InternalLayout>

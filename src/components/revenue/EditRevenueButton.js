@@ -34,7 +34,7 @@ export default function EditRevenueButton({revenueRegisterId, formData, getReven
 
     }
     
-    console.log(newBody)
+    // console.log(newBody)
     const updatedRevenue = await updateRevenue(revenueRegisterId, newBody)
     console.log(updatedRevenue)
     getRevenues()

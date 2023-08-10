@@ -30,11 +30,11 @@ export async function createRevenue(body) {
   
   const newBody = body
 
-  if(body.request_reason._id) {
+  if(body.request_reason && body.request_reason._id) {
     const getRevenueRequestReason = await RevenueRequestReason.findById(body.request_reason._id)
     newBody.request_reason = getRevenueRequestReason._id
     
-  } else if(body.request_reason.value) {
+  } else if(body.request_reason && body.request_reason.value) {
     const getRevenueRequestReason = await RevenueRequestReason.findOne({value: body.request_reason.value})
     
     newBody.request_reason = getRevenueRequestReason._id

@@ -34,11 +34,12 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
   }
   
   function onHandleFormDataInputEdit(e, name) {
-    const newFormData = {...formData, 
+    e.preventDefault()
+    setFormData( {...formData, 
       [name]: e.target.value
-    }
+    })
 
-    setFormData(newFormData)
+    console.log(e.target.value)
   }
 
   function openModal(){
@@ -72,7 +73,6 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
   }
 
   function onChangeSelectPlan(index) {
-
     setSelectedPlan(revenuePlans[index])    
     setFormData({...formData, plan: revenuePlans[index].value})
     console.log(revenuePlans[index])
@@ -103,7 +103,6 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
   }
   
   function onChangeSelectRequestReason(index) {
-
     setFormData({
       ...formData,
       request_reason: {...listedRevenueRequestReasons[index]}
@@ -112,7 +111,6 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
   }
 
   function onChangeSelectRequestFactor(e) {
-
     setFormData({...formData, request_factor: e})
     onChangeSelectRequestFactorColor(e)
   }
@@ -132,16 +130,14 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
     getRevenueRequestReasons();
     onChangeSelectTypeColor(selectedType)
     onChangeSelectRequestFactorColor(selectedRequestFactor)
-
-    onChangeSelectPlanColor(formData.plan)
   }, [])
 
   
   return (
     <>
-      <Tooltip color="secondary" placement="left" content="Editar registro" >
+      <Tooltip color="secondary" placement="top" content="Editar registro" >
         <Button auto light color="secondary" icon={<PencilIcon width="18px"/>} onPress={() => openModal()}/>
-
+      </Tooltip>
       <Modal
         aria-labelledby="modal-edit-revenue"
         closeButton
@@ -212,7 +208,7 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
                     <Dropdown.Item color="error" icon={<HandThumbDownIcon width="18px" />} key="Controlável">Controlável</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-          <Textarea bordered color={selectedTypeColor} type="text" label="Descrição" onChange={(e) => onHandleFormDataInputEdit(e, "request_description")} initialValue={revenueData.request_description}></Textarea>
+            <Textarea bordered color={selectedTypeColor} type="text" label="Descrição" onChange={(e) => onHandleFormDataInputEdit(e, "request_description")} initialValue={formData.request_description}></Textarea>
           </> :
           "" }
         </Modal.Body>
@@ -223,7 +219,7 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
           </div>
         </Modal.Footer>
       </Modal>
-      </Tooltip>
+      
     </>
   )
 }
