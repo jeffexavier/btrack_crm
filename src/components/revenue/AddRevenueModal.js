@@ -7,21 +7,23 @@ import EditRevenueButton from "./EditRevenueButton.js"
 
 import revenuePlans from './revenuePlans.js'
 
-export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
+export default function RevenueModal({getRevenues, setIsVisible, isVisible}) {
 
-  const [isVisible, setIsVisible] = useState(false)
-  const [formData, setFormData] = useState({...revenueData, group: revenueData.group._id})
+  const [formData, setFormData] = useState({})
+  
   const [listedRevenueRequestReasons, setListedRevenueRequestReasons] = useState([])
+  const [listedGroups, setListedGroups] = useState([])
 
-  const [selectedType, setSelectedType] = useState(revenueData.type)
+
+  const [selectedType, setSelectedType] = useState('')
   const [selectedTypeColor, setSelectedTypeColor] = useState('secondary')
 
-  const [selectedPlan, setSelectedPlan] = useState(revenueData.plan)
+  const [selectedPlan, setSelectedPlan] = useState('')
   const [selectedPlanColor, setSelectedPlanColor] = useState('secondary')
 
-  const [selectedRequestReason, setSelectedRequestReason] = useState(revenueData.request_reason)
+  const [selectedRequestReason, setSelectedRequestReason] = useState('')
 
-  const [selectedRequestFactor, setSelectedRequestFactor] = useState(revenueData.request_factor || 'Incontrolável')
+  const [selectedRequestFactor, setSelectedRequestFactor] = useState('Incontrolável')
   const [selectedRequestFactorColor, setSelectedRequestFactorColor] = useState('')
 
   async function getRevenueRequestReasons() {
@@ -29,6 +31,15 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
       return response.json()
     })
     setListedRevenueRequestReasons(revenueRequestReasonList.value)
+  }
+
+  async function getGroups() {
+    const groupList = await fetch('/api/group').then((response) => {
+      return response.json();
+    })
+
+    console.log(groupList)
+    setListedGroups(groupList.value)
   }
   
   function onHandleFormDataInputEdit(e, name) {
@@ -196,16 +207,14 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
 
   useEffect(() => {
     getRevenueRequestReasons();
-    onChangeSelectTypeColor(selectedType)
-    onChangeSelectRequestFactorColor(selectedRequestFactor)
+    getGroups();
+    onChangeSelectTypeColor(selectedType);
+    onChangeSelectRequestFactorColor(selectedRequestFactor);
   }, [])
 
   
   return (
     <>
-      <Tooltip color="secondary" placement="top" content="Editar registro" >
-        <Button auto light color="secondary" icon={<PencilIcon width="18px"/>} onPress={() => openModal()}/>
-      </Tooltip>
       <Modal
         aria-labelledby="modal-edit-revenue"
         closeButton
@@ -213,11 +222,24 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
         open={isVisible}
       >
         <Modal.Header>
-          <Text h5>Edição de registro referente à {revenueData.group.name_contract}</Text>
+          <Text h5>Novo registro</Text>
         </Modal.Header>
         <Modal.Body>
-          <Input bordered color="secondary" type="text" readOnly label="Empresa" onChange={(e) => onHandleFormDataInputEdit(e, "name_contract")} initialValue={revenueData.group.name_contract}></Input>
-          <Input bordered color="secondary" type="text" readOnly label="Porte" onChange={(e) => onHandleFormDataInputEdit(e, "size")} initialValue={revenueData.group.size}></Input>
+        <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={selectedTypeColor}>Empresa</Text>
+              <Dropdown isBordered>
+                <Dropdown.Trigger>
+                  <Button auto color="secondary" bordered>-</Button>
+                </Dropdown.Trigger>
+                <Dropdown.Menu onAction={(e) => console.log(e)}>
+                  {listedGroups.map((item, index) => (
+                    <Dropdown.Item color="secondary" key={index}>{item.name_contract}</Dropdown.Item>
+                    )
+                  )}
+                  <Dropdown.Item withDivider color="secondary" icon={<PlusIcon width="18px"/>}>Adicionar outro motivo</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+          <Input bordered color="secondary" type="text" readOnly label="Empresa" onChange={(e) => onHandleFormDataInputEdit(e, "name_contract")}></Input>
+          <Input bordered color="secondary" type="text" readOnly label="Porte" onChange={(e) => onHandleFormDataInputEdit(e, "size")}></Input>
           <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={selectedTypeColor}>Tipo</Text>
           <Dropdown isBordered>
             <Dropdown.Trigger>
@@ -248,10 +270,10 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
           }
       
           <div className="flex gap-4">
-            <Input bordered color={selectedTypeColor} type="number" label="Valor" onChange={(e) => onHandleFormDataInputValueEdit(e, "value")} step={.01} initialValue={revenueData.value}></Input>
-            <Input bordered color={selectedTypeColor} type="number" label="Assinaturas" onChange={(e) => onHandleFormDataInputEdit(e, "license_qty")} initialValue={revenueData.license_qty}></Input>
+            <Input bordered color={selectedTypeColor} type="number" label="Valor" onChange={(e) => onHandleFormDataInputValueEdit(e, "value")} step={.01}></Input>
+            <Input bordered color={selectedTypeColor} type="number" label="Assinaturas" onChange={(e) => onHandleFormDataInputEdit(e, "license_qty")}></Input>
           </div>
-          <Input bordered color={selectedTypeColor} type="date" label="Data do registro" onChange={(e) => onHandleFormDataInputEdit(e, "dt_request")} initialValue={formatDate(revenueData.dt_request)}></Input>
+          <Input bordered color={selectedTypeColor} type="date" label="Data do registro" onChange={(e) => onHandleFormDataInputEdit(e, "dt_request")}></Input>
           {formData.type === "Downsell" || formData.type === "Churn" ? <> 
               <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={selectedTypeColor}>Motivo</Text>
               <Dropdown isBordered>
@@ -276,14 +298,13 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
                     <Dropdown.Item color="error" icon={<HandThumbDownIcon width="18px" />} key="Controlável">Controlável</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-            <Textarea bordered color={selectedTypeColor} type="text" label="Descrição" onChange={(e) => onHandleFormDataInputEdit(e, "request_description")} initialValue={formData.request_description}></Textarea>
+            <Textarea bordered color={selectedTypeColor} type="text" label="Descrição" onChange={(e) => onHandleFormDataInputEdit(e, "request_description")}></Textarea>
           </> :
           "" }
         </Modal.Body>
         <Modal.Footer>
           <div className="flex justify-end gap-4">
             <Button flat auto color="error" icon={<XCircleIcon width="18px" />} onPress={() => setIsVisible(false)}>Cancelar</Button>
-            <EditRevenueButton revenueRegisterId={revenueData._id} formData={formData} getRevenues={getRevenues}/>
           </div>
         </Modal.Footer>
       </Modal>
