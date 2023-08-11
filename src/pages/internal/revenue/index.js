@@ -5,6 +5,7 @@ import Layout from "@/src/components/group/Layout.js";
 import formatDateToLocaleDateString from "@/src/backend/utils/formatDateToLocaleDateString.js";
 import EditRevenueButton from "@/src/components/revenue/EditRevenueButton.js";
 import OpenEditRevenueModalButton from "@/src/components/revenue/OpenEditRevenueModalButton.js";
+import OpenAddRevenueModalButton from "@/src/components/revenue/OpenAddRevenueModalButton.js";
 
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
@@ -73,6 +74,11 @@ export default function RevenueList({listedRevenuess}) {
     <InternalLayout>
       <Layout>
       <div className="grid max-w-screen-2xl min-w-min">
+      <div className="flex justify-start py-4">
+      <Tooltip color="secondary" content="Novo registro" >
+        <Button flat auto color="secondary" size="xs" icon={<PlusIcon width="18px"/>} />
+        </Tooltip>
+      </div>
       <div className="grid grid-cols-11 bg-[#f1f3f5] p-4 gap-2 rounded-xl">
             <Text b size={14}>Empresa</Text>
             <Text b size={14}>Porte</Text>
@@ -88,23 +94,21 @@ export default function RevenueList({listedRevenuess}) {
       </div>
 
       <div className="grid mt-2 gap-2">
-      <div className="flex justify-center hover:cursor-pointer hover:bg-opacity-30 hover:bg-black p-1 rounded-lg transition-colors ease-linear">
-       <PlusIcon className="stroke-[#fff]" width="20px"/>
-      </div>
+
       {listedRevenues.reverse().map((item, index) => (
-      <div key={index} className={`grid grid-cols-11 hover:bg-[#f1f3f5] transition-colors ease-linear items-center py-1 px-4 gap-2 rounded-xl`}>
-          <p className={`font-normal`}>{item.group.name_contract}</p>
-          <p className={`font-normal`}>{item.group.size}</p>
-          <p className={`font-normal`}>{item.plan}</p>
-          <p className={`text-${changeRowColor(item.type).colorFull} font-medium`}>{item.type}</p>
-          <p className={`truncate font-normal`}>{item.value}</p>
-          <p className={`font-normal`}>{item.license_qty}</p>
-          <p className={`font-medium`}>{formatDateToLocaleDateString(item.dt_request)}</p>
-          <p className={`font-normal`}>{item.request_reason ? item.request_reason.value : ''}</p>
-          <p className={`font-normal`}>{item.request_factor}</p>
+      <div key={index} className={`grid grid-cols-11 hover:bg-[#f1f3f5] transition-colors ease-linear items-center py-1 px-4 gap-2 rounded-xl min-w-[960px]`}>
+          <p className={`font-normal text-sm`}>{item.group.name_contract}</p>
+          <p className={`font-normal text-sm`}>{item.group.size}</p>
+          <p className={`font-normal text-sm`}>{item.plan}</p>
+          <p className={`text-${changeRowColor(item.type).colorFull} font-medium text-sm`}>{item.type}</p>
+          <p className={`truncate font-normal text-sm`}>{item.value}</p>
+          <p className={`font-normal text-sm`}>{item.license_qty}</p>
+          <p className={`font-medium text-sm`}>{formatDateToLocaleDateString(item.dt_request)}</p>
+          <p className={`font-normal text-sm`}>{item.request_reason ? item.request_reason.value : ''}</p>
+          <p className={`font-normal text-sm`}>{item.request_factor}</p>
           <Tooltip content={item.request_description} placement="left">
             <div className="max-w-[150px]">
-              <p className={`truncate font-normal`}>{item.request_description}</p>
+              <p className={`truncate font-normal text-sm`}>{item.request_description}</p>
             </div>
           </Tooltip>
           <div>
@@ -117,11 +121,9 @@ export default function RevenueList({listedRevenuess}) {
           </div>
       </div>
       ))}
-
-      <div className="flex justify-center hover:cursor-pointer hover:bg-opacity-30 hover:bg-black p-1 rounded-lg transition-colors ease-linear">
-       <PlusIcon className="stroke-[#fff]" width="20px"/>
+      <div className="flex justify-center py-2">
+          <OpenAddRevenueModalButton getRevenues={getRevenues}/>
       </div>
-
       </div>
       </div>
       </Layout>
