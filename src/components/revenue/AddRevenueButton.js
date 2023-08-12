@@ -3,17 +3,18 @@ import { PencilIcon } from "@/public/icons.js"
 import { Button} from "@nextui-org/react"
 import { updateRevenue } from "@/src/backend/utils/revenue.js"
 
-export default function EditRevenueButton({revenueRegisterId, formData, getRevenues}) {
+export default function AddRevenueButton({revenueRegisterId, formData, formColor, getRevenues}) {
 
   async function onHandleSubmit(body) {    
     
     const newBody = {}
     
-    if (body.type === "Downsell" || body.type === "Churn") {
-      newBody.group = body.group._id,
-      newBody.type = body.type,
+    if (body.request_status === "lost") {
+      newBody.group = body.group,
+      newBody.request_status = 'lost'
+      newBody.request_type = body.request_type,
       newBody.plan = body.plan,
-      newBody.value = Number(body.value).toFixed(2),
+      newBody.request_value = Number(body.request_value).toFixed(2),
       newBody.license_qty = Math.floor(Number(body.license_qty)),
       newBody.dt_request = body.dt_request,
       newBody.request_reason = body.request_reason ? {
@@ -23,9 +24,10 @@ export default function EditRevenueButton({revenueRegisterId, formData, getReven
       newBody.request_description = body. request_description
     } else {
       newBody.group = body.group,
-      newBody.type = body.type,
+      newBody.request_status = 'won'
+      newBody.request_type = body.request_type,
       newBody.plan = body.plan,
-      newBody.value = Number(body.value).toFixed(2),
+      newBody.request_value = Number(body.request_value).toFixed(2),
       newBody.license_qty = Math.floor(Number(body.license_qty)),
       newBody.dt_request = body.dt_request,
       newBody.request_reason = null,
@@ -42,6 +44,6 @@ export default function EditRevenueButton({revenueRegisterId, formData, getReven
   
 
   return (    
-    <Button auto color="secondary" icon={<PencilIcon width="18px" />} onPress={() => onHandleSubmit(formData)}>Editar registro</Button>
+    <Button auto flat color="secondary" icon={<PencilIcon width="18px" />} onPress={() => onHandleSubmit(formData)}>Adicionar registro</Button>
   )
 }

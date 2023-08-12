@@ -229,7 +229,9 @@ export default function RevenueModal({getRevenues, setIsVisible, isVisible}) {
         open={isVisible}
       >
         <Modal.Header>
-          <Text h5>Novo registro</Text>
+        <div className="flex text-left">
+          <Text className="text-left" h5>Novo registro</Text>
+        </div>
         </Modal.Header>
         <Modal.Body>
         <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={selectedTypeColor}>Empresa</Text>

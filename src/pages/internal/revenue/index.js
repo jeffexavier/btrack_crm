@@ -6,6 +6,7 @@ import formatDateToLocaleDateString from "@/src/backend/utils/formatDateToLocale
 import EditRevenueButton from "@/src/components/revenue/EditRevenueButton.js";
 import OpenEditRevenueModalButton from "@/src/components/revenue/OpenEditRevenueModalButton.js";
 import OpenAddRevenueModalButton from "@/src/components/revenue/OpenAddRevenueModalButton.js";
+import RevenueModal from "@/src/components/revenue/RevenueModal.js";
 
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
@@ -75,7 +76,7 @@ export default function RevenueList() {
           </Tooltip>
           <div>
             <div className="flex justify-end">
-              <OpenEditRevenueModalButton revenueData={item} getRevenues={getRevenues} />
+              <RevenueModal revenueData={item} getRevenues={getRevenues} />
               <Tooltip color="error" placement="top" content="Excluir registro">
                 <Button auto light color="error" icon={<TrashIcon width="18px"/>} onPress={() => console.log(changeRowColor(item.type).colorFlat)}/>
               </Tooltip>

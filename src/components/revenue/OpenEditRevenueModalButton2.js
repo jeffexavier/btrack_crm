@@ -175,7 +175,6 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
 
   function onChangeSelectRequestFactor(e) {
     setFormData({...formData, request_factor: e})
-    onChangeSelectRequestFactorColor(e)
   }
 
   function onChangeSelectRequestFactorColor(e) {
