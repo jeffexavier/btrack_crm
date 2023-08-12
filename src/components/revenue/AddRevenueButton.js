@@ -10,7 +10,7 @@ export default function EditRevenueButton({revenueRegisterId, formData, getReven
     const newBody = {}
     
     if (body.type === "Downsell" || body.type === "Churn") {
-      newBody.group = body.group,
+      newBody.group = body.group._id,
       newBody.type = body.type,
       newBody.plan = body.plan,
       newBody.value = Number(body.value).toFixed(2),

@@ -1,5 +1,5 @@
 
-import { PencilIcon, PlusIcon, TrashIcon, ChevronUpIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronDoubleDownIcon, HandThumbDownIcon, HandRaisedIcon, XMarkIcon, ChevronDoubleRightIcon, BuildingOffice2Icon, BuildingStorefrontIcon, BuildingOfficeIcon, EyeIcon, FireIcon, ClockIcon, RocketLaunchIcon, XCircleIcon } from "@/public/icons.js"
+import { PencilIcon, PlusIcon, TrashIcon, ChevronUpIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronDoubleDownIcon, HandThumbDownIcon, HandRaisedIcon, XMarkIcon, ChevronDoubleRightIcon, BuildingOffice2Icon, BuildingStorefrontIcon, BuildingOfficeIcon, EyeIcon, FireIcon, ClockIcon, RocketLaunchIcon, XCircleIcon, MinusIcon } from "@/public/icons.js"
 import { Button, Modal, Tooltip, Text, Input, Dropdown, Textarea } from "@nextui-org/react"
 import { useState, useEffect } from "react"
 import formatDate from "@/src/backend/utils/formatDate.js"
@@ -13,16 +13,6 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
   const [formData, setFormData] = useState({...revenueData, group: revenueData.group._id})
   const [listedRevenueRequestReasons, setListedRevenueRequestReasons] = useState([])
 
-  const [selectedType, setSelectedType] = useState(revenueData.type)
-  const [selectedTypeColor, setSelectedTypeColor] = useState('secondary')
-
-  const [selectedPlan, setSelectedPlan] = useState(revenueData.plan)
-  const [selectedPlanColor, setSelectedPlanColor] = useState('secondary')
-
-  const [selectedRequestReason, setSelectedRequestReason] = useState(revenueData.request_reason)
-
-  const [selectedRequestFactor, setSelectedRequestFactor] = useState(revenueData.request_factor || 'Incontrolável')
-  const [selectedRequestFactorColor, setSelectedRequestFactorColor] = useState('')
 
   async function getRevenueRequestReasons() {
     const revenueRequestReasonList = await fetch('/api/revenuerequestreason').then((response) => {
@@ -36,13 +26,9 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
     setFormData( {...formData, 
       [name]: e.target.value
     })
-
-    console.log(e.target.value)
   }
 
   function onHandleFormDataInputValueEdit(e, name) {
-    
-    const number = e.target.value
 
     if(formData.type === "Downsell" || formData.type === "Churn") {
       if(Math.sign(e.target.value) === 1) {
@@ -72,102 +58,53 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
           [name]: e.target.value
         })
       }
+    } else {
+      setFormData( {...formData, 
+        [name]: e.target.value
+      })
     }
-
- 
-
-    console.log(formData)
 
   }
 
 
   function openModal(){
     getRevenueRequestReasons();
+    setFormData(revenueData)
+    onChangeSelectType(revenueData.type)
+
     setIsVisible(true)    
   }
 
   function onChangeSelectType(e) {
-    const value = {number: formData.value}
+    const value = {number: formData.request_value}
+    const license_qty = {number: formData.license_qty}
     
     if(e === "Downsell" || e === "Churn") {
-      if(Math.sign(formData.value) === 1) {
-        // setFormData({...formData, 
-        //   value: formData.value * -1
-        // })
-
+      if(Math.sign(formData.request_value) === 1) {
         value.number = value.number * -1
-      } else if(Math.sign(formData.value) === -1) {
-        // setFormData({...formData, 
-        //   value: formData.value
-        // })
-        
+      }
+
+      if(Math.sign(formData.license_qty) === 1) {
+        license_qty.number = license_qty.number * -1
       }
     } else if(e === "Entrada" || e === "Upsell") {
-      if(Math.sign(formData.value) === -1) {
-        // setFormData({...formData, 
-        //   value: formData.value * -1
-        // })
+      if(Math.sign(formData.request_value) === -1) {
         value.number = value.number * -1
-      } else if(Math.sign(formData.value) === 1) {
-        // setFormData({...formData, 
-        //   value: formData.value
-        // })
+      }
+
+      if(Math.sign(formData.license_qty) === -1) {
+        license_qty.number = license_qty.number * -1
       }
     }
     console.log(value)
     
-    setFormData({...formData, type: e, value: value.number})
-    onChangeSelectTypeColor(e)
-  }
-
-  function onChangeSelectTypeColor(e) {
-    switch (e) {
-      case "Entrada":
-        setSelectedTypeColor('primary')
-        break;
-      case "Upsell":
-        setSelectedTypeColor('success')
-        break;
-      case 'Migração':
-        setSelectedTypeColor('secondary')
-        break;
-      case 'Downsell':
-        setSelectedTypeColor('warning')
-        break;
-      case 'Churn':
-        setSelectedTypeColor('error')
-        break;
-     }
+    setFormData({...formData, request_type: e, request_value: value.number, license_qty: license_qty.number})
   }
 
   function onChangeSelectPlan(index) {
-    setSelectedPlan(revenuePlans[index])    
-    setFormData({...formData, plan: revenuePlans[index].value})
-    console.log(revenuePlans[index])
-    onChangeSelectPlanColor(revenuePlans[index].value)
-  }
+    setSelectedPlan(revenuePlans[index])
 
-  function onChangeSelectPlanColor(e) {
-    switch (e) {
-      case "Free":
-        setSelectedPlanColor('error')
-        break;
-      case "Trial":
-        setSelectedPlanColor('warning')
-        break;
-      case 'POC':
-        setSelectedPlanColor('warning')
-        break;
-      case 'Basic':
-        setSelectedPlanColor('primary')
-        break;
-      case 'Pro':
-        setSelectedPlanColor('success')
-        break;
-      case 'Enterprise':
-        setSelectedPlanColor('secondary')
-        break;
-     }
+    setFormData({...formData, plan: revenuePlans[index].value})
   }
   
   function onChangeSelectRequestReason(index) {
@@ -178,26 +115,10 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
     console.log(listedRevenueRequestReasons[index])
   }
 
-  function onChangeSelectRequestFactor(e) {
-    setFormData({...formData, request_factor: e})
-    onChangeSelectRequestFactorColor(e)
-  }
 
-  function onChangeSelectRequestFactorColor(e) {
-    switch (e) {
-      case "Incontrolável":
-        setSelectedRequestFactorColor('warning')
-        break;
-      case "Controlável":
-        setSelectedRequestFactorColor('error')
-        break;
-     }
-  }
 
   useEffect(() => {
     getRevenueRequestReasons();
-    onChangeSelectTypeColor(selectedType)
-    onChangeSelectRequestFactorColor(selectedRequestFactor)
   }, [])
 
   
@@ -216,15 +137,25 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
           <Text h5>Edição de registro referente à {revenueData.group.name_contract}</Text>
         </Modal.Header>
         <Modal.Body>
-          <Input bordered color="secondary" type="text" readOnly label="Empresa" onChange={(e) => onHandleFormDataInputEdit(e, "name_contract")} initialValue={revenueData.group.name_contract}></Input>
-          <Input bordered color="secondary" type="text" readOnly label="Porte" onChange={(e) => onHandleFormDataInputEdit(e, "size")} initialValue={revenueData.group.size}></Input>
-          <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={selectedTypeColor}>Tipo</Text>
-          <Dropdown isBordered>
+        <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color="secondary">Tipo</Text>
+        <Dropdown isBordered>
             <Dropdown.Trigger>
-              <Button color={selectedTypeColor} bordered>{formData.type}</Button>
+              <Button color="secondary" bordered>{formData.request_type}</Button>
             </Dropdown.Trigger>
             <Dropdown.Menu onAction={(e) => {onChangeSelectType(e)}}>
-                <Dropdown.Item color="primary" icon={<ChevronUpIcon width="18px" />} key={"Entrada"}>Entrada</Dropdown.Item>
+                <Dropdown.Item color="primary" icon={<PlusIcon width="18px" />} key="Entrada">Entrada</Dropdown.Item>
+                <Dropdown.Item color="success" icon={<MinusIcon width="18px" />} key="Saída">Saída</Dropdown.Item>
+            </Dropdown.Menu>
+          </Dropdown>
+          <Input bordered color="secondary" type="text" readOnly label="Empresa" onChange={(e) => onHandleFormDataInputEdit(e, "name_contract")} initialValue={revenueData.group.name_contract}></Input>
+          <Input bordered color="secondary" type="text" readOnly label="Porte" onChange={(e) => onHandleFormDataInputEdit(e, "size")} initialValue={revenueData.group.size}></Input>
+          <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color="secondary">Tipo</Text>
+          <Dropdown isBordered>
+            <Dropdown.Trigger>
+              <Button color="secondary" bordered>{formData.request_type}</Button>
+            </Dropdown.Trigger>
+            <Dropdown.Menu onAction={(e) => {onChangeSelectType(e)}}>
+                <Dropdown.Item color="primary" icon={<ChevronUpIcon width="18px" />} key="Assinatura">Assinatura</Dropdown.Item>
                 <Dropdown.Item color="success" icon={<ChevronDoubleUpIcon width="18px" />} key="Upsell">Upsell</Dropdown.Item>
                 <Dropdown.Item color="secondary" withDivider icon={<ChevronDoubleRightIcon width="18px" />} key="Migração">Migração</Dropdown.Item>
                 <Dropdown.Item color="warning" withDivider icon={<ChevronDoubleDownIcon width="18px" />} key="Downsell">Downsell</Dropdown.Item>
@@ -233,10 +164,10 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
           </Dropdown>
           {formData.type === "Migração" ? 
           <>
-          <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={selectedPlanColor}>Plano</Text>
+          <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color="secondary">Plano</Text>
           <Dropdown isBordered>
             <Dropdown.Trigger>
-              <Button color={selectedPlanColor} bordered >{formData.plan}</Button>
+              <Button color="secondary" bordered >{formData.plan}</Button>
             </Dropdown.Trigger>
             <Dropdown.Menu onAction={(e) => onChangeSelectPlan(e)}>
               {revenuePlans.map((item, index) => (
@@ -248,35 +179,35 @@ export default function OpenEditRevenueModalButton({revenueData, getRevenues}) {
           }
       
           <div className="flex gap-4">
-            <Input bordered color={selectedTypeColor} type="number" label="Valor" onChange={(e) => onHandleFormDataInputValueEdit(e, "value")} step={.01} initialValue={revenueData.value}></Input>
-            <Input bordered color={selectedTypeColor} type="number" label="Assinaturas" onChange={(e) => onHandleFormDataInputEdit(e, "license_qty")} initialValue={revenueData.license_qty}></Input>
+            <Input bordered color="secondary" type="number" label="Valor" onChange={(e) => onHandleFormDataInputValueEdit(e, "request_value")} step={.01} value={formData.request_value}></Input>
+            <Input bordered color="secondary" type="number" label="Assinaturas" onChange={(e) => onHandleFormDataInputValueEdit(e, "license_qty")} value={formData.license_qty}></Input>
           </div>
-          <Input bordered color={selectedTypeColor} type="date" label="Data do registro" onChange={(e) => onHandleFormDataInputEdit(e, "dt_request")} initialValue={formatDate(revenueData.dt_request)}></Input>
+          <Input bordered color="secondary" type="date" label="Data do registro" onChange={(e) => onHandleFormDataInputEdit(e, "dt_request")} initialValue={formatDate(revenueData.dt_request)}></Input>
           {formData.type === "Downsell" || formData.type === "Churn" ? <> 
-              <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={selectedTypeColor}>Motivo</Text>
+              <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color="secondary">Motivo</Text>
               <Dropdown isBordered>
                 <Dropdown.Trigger>
-                  <Button auto color={selectedTypeColor} bordered>{formData.request_reason ? formData.request_reason.value: ''}</Button>
+                  <Button auto color="secondary" bordered>{formData.request_reason ? formData.request_reason.value: ''}</Button>
                 </Dropdown.Trigger>
                 <Dropdown.Menu onAction={(e) => onChangeSelectRequestReason(e)}>
                   {listedRevenueRequestReasons.map((item, index) => (
-                    <Dropdown.Item color={selectedTypeColor} key={index}>{item.value}</Dropdown.Item>
+                    <Dropdown.Item color="secondary" key={index}>{item.value}</Dropdown.Item>
                     )
                   )}
                   <Dropdown.Item withDivider color="secondary" icon={<PlusIcon width="18px"/>}>Adicionar outro motivo</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-              <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={selectedRequestFactorColor}>Fator</Text>
+              <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color="secondary">Fator</Text>
               <Dropdown isBordered>
                 <Dropdown.Trigger>
-                  <Button color={selectedRequestFactorColor} bordered>{formData.request_factor || selectedRequestFactor}</Button>
+                  <Button color="secondary" bordered>{formData.request_factor || selectedRequestFactor}</Button>
                 </Dropdown.Trigger>
                 <Dropdown.Menu onAction={(e) => onChangeSelectRequestFactor(e)}>
                     <Dropdown.Item color="warning" icon={<HandRaisedIcon width="18px" />} key="Incontrolável">Incontrolável</Dropdown.Item>
                     <Dropdown.Item color="error" icon={<HandThumbDownIcon width="18px" />} key="Controlável">Controlável</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
-            <Textarea bordered color={selectedTypeColor} type="text" label="Descrição" onChange={(e) => onHandleFormDataInputEdit(e, "request_description")} initialValue={formData.request_description}></Textarea>
+            <Textarea bordered color="secondary" type="text" label="Descrição" onChange={(e) => onHandleFormDataInputEdit(e, "request_description")} initialValue={formData.request_description}></Textarea>
           </> :
           "" }
         </Modal.Body>

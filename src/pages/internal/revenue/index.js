@@ -13,49 +13,9 @@ import { useEffect, useState } from "react";
 import { Button, Table, Text, Textarea, Tooltip } from "@nextui-org/react";
 import { PencilIcon, PlusCircleIcon, PlusIcon, TrashIcon } from "@/public/icons.js";
 
-export default function RevenueList({listedRevenuess}) {
+export default function RevenueList() {
 
   const [listedRevenues, setListedRevenues] = useState([]);
-
-  function changeRowColor(type) {
-
-    let color = {}
-
-    switch(type) {
-        case "Entrada":
-          color = {
-            colorFlat: 'primary-flat',
-            colorFlatHover: 'primary-flat-hover',
-            colorFull: 'primary-full'
-          }; break;
-        case "Upsell":
-          color = {
-            colorFlat: 'success-flat',
-            colorFlatHover: 'success-flat-hover',
-            colorFull: 'success-full'
-          }; break;
-        case 'Migração':
-          color = {
-            colorFlat: 'secondary-flat',
-            colorFlatHover: 'secondary-flat-hover',
-            colorFull: 'secondary-full'
-          }; break;
-        case 'Downsell':
-          color = {
-            colorFlat: 'warning-flat',
-            colorFlatHover: 'warning-flat-hover',
-            colorFull: 'warning-full'
-          }; break;
-        case 'Churn':
-          color = {
-            colorFlat: 'error-flat',
-            colorFlatHover: 'error-flat-hover',
-            colorFull: 'error-full'
-          }; break;
-       }
-       return color;
-    }
-
 
   async function getRevenues() {
     const revenueList = await fetch('/api/revenue').then((response) => {
@@ -79,7 +39,8 @@ export default function RevenueList({listedRevenuess}) {
         <Button flat auto color="secondary" size="xs" icon={<PlusIcon width="18px"/>} />
         </Tooltip>
       </div>
-      <div className="grid grid-cols-11 bg-[#f1f3f5] p-4 gap-2 rounded-xl">
+      <div className="grid grid-cols-12 bg-[#f1f3f5] p-4 gap-2 rounded-xl">
+            <div></div>
             <Text b size={14}>Empresa</Text>
             <Text b size={14}>Porte</Text>
             <Text b size={14}>Plano</Text>
@@ -96,12 +57,13 @@ export default function RevenueList({listedRevenuess}) {
       <div className="grid mt-2 gap-2">
 
       {listedRevenues.reverse().map((item, index) => (
-      <div key={index} className={`grid grid-cols-11 hover:bg-[#f1f3f5] transition-colors ease-linear items-center py-1 px-4 gap-2 rounded-xl min-w-[960px]`}>
+      <div key={index} className={`grid grid-cols-12 hover:bg-[#f1f3f5] transition-colors ease-linear items-center py-1 px-4 gap-2 rounded-xl min-w-[960px]`}>
+          <p className={`font-normal text-sm`}>{item.request_status}</p>
           <p className={`font-normal text-sm`}>{item.group.name_contract}</p>
           <p className={`font-normal text-sm`}>{item.group.size}</p>
           <p className={`font-normal text-sm`}>{item.plan}</p>
-          <p className={`text-${changeRowColor(item.type).colorFull} font-medium text-sm`}>{item.type}</p>
-          <p className={`truncate font-normal text-sm`}>{item.value}</p>
+          <p className={`font-medium text-sm`}>{item.request_type}</p>
+          <p className={`truncate font-normal text-sm`}>{item.request_value}</p>
           <p className={`font-normal text-sm`}>{item.license_qty}</p>
           <p className={`font-medium text-sm`}>{formatDateToLocaleDateString(item.dt_request)}</p>
           <p className={`font-normal text-sm`}>{item.request_reason ? item.request_reason.value : ''}</p>
