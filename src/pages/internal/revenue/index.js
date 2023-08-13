@@ -1,18 +1,17 @@
 'use-client'
 
 import InternalLayout from "@/src/components/InternalLayout";
-import Layout from "@/src/components/group/Layout.js";
+import Layout from "@/src/components/revenue/Layout.js";
 import formatDateToLocaleDateString from "@/src/backend/utils/formatDateToLocaleDateString.js";
-import EditRevenueButton from "@/src/components/revenue/EditRevenueButton.js";
-import OpenEditRevenueModalButton from "@/src/components/revenue/OpenEditRevenueModalButton.js";
-import OpenAddRevenueModalButton from "@/src/components/revenue/OpenAddRevenueModalButton.js";
+
 import RevenueModal from "@/src/components/revenue/RevenueModal.js";
+import { DeleteRevenueButton } from "@/src/components/revenue/DeleteRevenueButton.js";
 
 import { parseCookies } from "nookies";
 import { verifyToken } from "@/src/backend/utils/token";
 import { useEffect, useState } from "react";
-import { Button, Table, Text, Textarea, Tooltip } from "@nextui-org/react";
-import { PencilIcon, PlusCircleIcon, PlusIcon, TrashIcon } from "@/public/icons.js";
+import { Button, Text, Tooltip } from "@nextui-org/react";
+import { MinusIcon, PlusIcon, TrashIcon } from "@/public/icons.js";
 
 export default function RevenueList() {
 
@@ -30,65 +29,71 @@ export default function RevenueList() {
     getRevenues();
   }, [])
 
+  function itemColor(status) {
+    if(status === "won") {
+      return {
+        bg_flat: "bg-success-flat",
+        bg_hover: "hover:bg-success-flat-hover",
+        text_full: "text-success-full"
+      }
+    } else {
+      return {
+        bg_flat: "bg-error-flat",
+        bg_hover: "hover:bg-error-flat-hover",
+        text_full: "text-error-full"
+      }
+    }
+  }
+
 
   return (
     <InternalLayout>
-      <Layout>
+      <Layout getRevenues={getRevenues}>
       <div className="grid max-w-screen-2xl min-w-min">
-      <div className="flex justify-start py-4">
-      <Tooltip color="secondary" content="Novo registro" >
-        <Button flat auto color="secondary" size="xs" icon={<PlusIcon width="18px"/>} />
-        </Tooltip>
-      </div>
-      <div className="grid grid-cols-12 bg-[#f1f3f5] p-4 gap-2 rounded-xl">
-            <div></div>
-            <Text b size={14}>Empresa</Text>
-            <Text b size={14}>Porte</Text>
-            <Text b size={14}>Plano</Text>
-            <Text b size={14}>Tipo</Text>
-            <Text b size={14}>Valor</Text>
-            <Text b size={14}>Assinaturas</Text>
-            <Text b size={14}>Data</Text>
-            <Text b size={14}>Motivo</Text>
-            <Text b size={14}>Fator</Text>
-            <Text b size={14}>Descrição</Text>
-            <Text b size={14}></Text>
-      </div>
-
-      <div className="grid mt-2 gap-2">
-
-      {listedRevenues.reverse().map((item, index) => (
-      <div key={index} className={`grid grid-cols-12 hover:bg-[#f1f3f5] transition-colors ease-linear items-center py-1 px-4 gap-2 rounded-xl min-w-[960px]`}>
-          <p className={`font-normal text-sm`}>{item.request_status}</p>
-          <p className={`font-normal text-sm`}>{item.group.name_contract}</p>
-          <p className={`font-normal text-sm`}>{item.group.size}</p>
-          <p className={`font-normal text-sm`}>{item.plan}</p>
-          <p className={`font-medium text-sm`}>{item.request_type}</p>
-          <p className={`truncate font-normal text-sm`}>{item.request_value}</p>
-          <p className={`font-normal text-sm`}>{item.license_qty}</p>
-          <p className={`font-medium text-sm`}>{formatDateToLocaleDateString(item.dt_request)}</p>
-          <p className={`font-normal text-sm`}>{item.request_reason ? item.request_reason.value : ''}</p>
-          <p className={`font-normal text-sm`}>{item.request_factor}</p>
-          <Tooltip content={item.request_description} placement="left">
-            <div className="max-w-[150px]">
-              <p className={`truncate font-normal text-sm`}>{item.request_description}</p>
+        <div className="grid grid-cols-12 bg-[#f1f3f5] p-4 gap-2 rounded-xl">
+          <div className="max-w-[20px]" />
+          <Text b size={14}>Empresa</Text>
+          <Text b size={14}>Porte</Text>
+          <Text b size={14}>Plano</Text>
+          <Text b size={14}>Tipo</Text>
+          <Text b size={14}>Valor</Text>
+          <Text b size={14}>Assinaturas</Text>
+          <Text b size={14}>Data</Text>
+          <Text b size={14}>Motivo</Text>
+          <Text b size={14}>Fator</Text>
+          <Text b size={14}>Descrição</Text>
+          <Text b size={14}></Text>
+        </div>
+        <div className="grid mt-2 gap-2">
+        {listedRevenues.reverse().map((item, index) => (
+          <div key={index} className={`grid grid-cols-12 ${itemColor(item.request_status).bg_flat} ${itemColor(item.request_status).bg_hover} transition-colors ease-linear items-center py-1 px-4 gap-2 rounded-xl min-w-[960px]`}>
+            <div className="max-w-[10px]">
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.request_status === "won" ? <PlusIcon width="18px"/> : <MinusIcon width="18px" />}</p>
             </div>
-          </Tooltip>
-          <div>
-            <div className="flex justify-end">
-              <RevenueModal revenueData={item} getRevenues={getRevenues} />
-              <Tooltip color="error" placement="top" content="Excluir registro">
-                <Button auto light color="error" icon={<TrashIcon width="18px"/>} onPress={() => console.log(changeRowColor(item.type).colorFlat)}/>
-              </Tooltip>
-            </div>
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.group.name_contract}</p>
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.group.size}</p>
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.plan}</p>
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.request_type}</p>
+              <p className={`truncate ${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.request_value}</p>
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.license_qty}</p>
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{formatDateToLocaleDateString(item.dt_request)}</p>
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.request_reason ? item.request_reason.value : ''}</p>
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.request_factor}</p>
+              <div>
+                <Tooltip content={item.request_description} placement="left">
+                  <p className={`truncate ${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.request_description}</p>
+                </Tooltip>
+              </div>
+              <div>
+                <div className="flex justify-end">
+                  <RevenueModal revenueData={item} getRevenues={getRevenues} />
+                  <DeleteRevenueButton revenueData={item} getRevenues={getRevenues}/>
+                </div>
+              </div>
           </div>
-      </div>
-      ))}
-      <div className="flex justify-center py-2">
-          <OpenAddRevenueModalButton getRevenues={getRevenues}/>
-      </div>
-      </div>
-      </div>
+          ))}
+          </div>
+        </div>
       </Layout>
     </InternalLayout>
   )

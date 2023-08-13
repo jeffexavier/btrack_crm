@@ -3,14 +3,14 @@ import { PencilIcon } from "@/public/icons.js"
 import { Button} from "@nextui-org/react"
 import { updateRevenue } from "@/src/backend/utils/revenue.js"
 
-export default function EditRevenueButton({revenueRegisterId, formData, formColor, getRevenues}) {
+export default function EditRevenueButton({revenueRegisterId, formData, getRevenues}) {
 
   async function onHandleSubmit(body) {    
     
     const newBody = {}
     
     if (body.request_status === "lost") {
-      newBody.group = body.group,
+      newBody.group = body.group._id,
       newBody.request_status = 'lost'
       newBody.request_type = body.request_type,
       newBody.plan = body.plan,
@@ -23,7 +23,7 @@ export default function EditRevenueButton({revenueRegisterId, formData, formColo
       newBody.request_factor = body.request_factor,
       newBody.request_description = body. request_description
     } else {
-      newBody.group = body.group,
+      newBody.group = body.group._id,
       newBody.request_status = 'won'
       newBody.request_type = body.request_type,
       newBody.plan = body.plan,

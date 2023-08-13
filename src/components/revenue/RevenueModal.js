@@ -1,6 +1,6 @@
 
-import { PencilIcon, PlusIcon, TrashIcon, ChevronUpIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronDoubleDownIcon, HandThumbDownIcon, HandRaisedIcon, XMarkIcon, ChevronDoubleRightIcon, BuildingOffice2Icon, BuildingStorefrontIcon, BuildingOfficeIcon, EyeIcon, FireIcon, ClockIcon, RocketLaunchIcon, XCircleIcon, MinusIcon } from "@/public/icons.js"
-import { Button, Modal, Tooltip, Text, Input, Dropdown, Textarea, Divider } from "@nextui-org/react"
+import { PencilIcon, PlusIcon, ChevronUpIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronDoubleDownIcon, HandThumbDownIcon, HandRaisedIcon, ChevronDoubleRightIcon, XCircleIcon, MinusIcon } from "@/public/icons.js"
+import { Button, Modal, Tooltip, Text, Input, Dropdown, Textarea } from "@nextui-org/react"
 import { useState, useEffect } from "react"
 import formatDate from "@/src/backend/utils/formatDate.js"
 import EditRevenueButton from "./EditRevenueButton.js"
@@ -11,11 +11,13 @@ import AddRevenueButton from "./AddRevenueButton.js"
 
 export default function RevenueModal({revenueData, getRevenues}) {
 
-  const [formData, setFormData] = useState(revenueData ? {...revenueData, group: revenueData.group._id} : {})
+  const [formData, setFormData] = useState(revenueData ? {...revenueData, group: revenueData.group} : {})
   const [listedRevenueRequestReasons, setListedRevenueRequestReasons] = useState([])
-  const [requestStatus, setRequestStatus] = useState(false)
-  const [formColor, setFormColor] = useState("success")
+  const [listedGroups, setListedGroups] = useState([])
 
+  const [requestStatus, setRequestStatus] = useState(false)
+
+  const [formColor, setFormColor] = useState("success")
 
   const [isVisible, setIsVisible] = useState(false)
   
@@ -23,6 +25,13 @@ export default function RevenueModal({revenueData, getRevenues}) {
     setIsVisible(true)
     setFormData(revenueData ? {...revenueData, group: revenueData.group._id} : {})
     onHandleFormStatusInputEdit((revenueData ? revenueData.request_status : "won"), 'request_status')
+  }
+
+  async function getGroups() {
+    const groupList = await fetch('/api/group').then((response) => {
+      return response.json();
+    })
+    setListedGroups(groupList.value)
   }
 
   async function getRevenueRequestReasons() {
@@ -35,6 +44,13 @@ export default function RevenueModal({revenueData, getRevenues}) {
   function onHandleFormDataInputEdit(e, name) {
     setFormData( {...formData, 
       [name]: e.target.value
+    })
+  }
+
+  function onChangeSelectGroup(index) {
+    setFormData({
+      ...formData,
+      group: {...listedGroups[index]}
     })
   }
 
@@ -68,6 +84,8 @@ export default function RevenueModal({revenueData, getRevenues}) {
         setFormData({...formData, request_type: 'Downsell'})
       } else if(formData.request_type === 'Assinatura') {
         setFormData({...formData, request_type: 'Churn'})
+      } else {
+
       }
 
       if(Math.sign(formData.request_value) === 1) {
@@ -82,6 +100,14 @@ export default function RevenueModal({revenueData, getRevenues}) {
 
     setFormData({...formData, [name]: status, request_value: value.number, license_qty: license_qty.number})
 
+  }
+  
+  function onChangeSelectType(e) {    
+    setFormData({...formData, request_type: e})
+  }
+  
+  function onChangeSelectPlan(index) {
+    setFormData({...formData, plan: revenuePlans[index].value})
   }
 
   function onHandleFormDataInputValueEdit(e, name) {
@@ -121,14 +147,6 @@ export default function RevenueModal({revenueData, getRevenues}) {
     }
 
   }
-
-  function onChangeSelectType(e) {    
-    setFormData({...formData, request_type: e})
-  }
-
-  function onChangeSelectPlan(index) {
-    setFormData({...formData, plan: revenuePlans[index].value})
-  }
   
   function onChangeSelectRequestReason(index) {
     setFormData({
@@ -142,20 +160,35 @@ export default function RevenueModal({revenueData, getRevenues}) {
     setFormData({...formData, request_factor: e})
   }
 
+  function onHandleCloseModal() {
+    setIsVisible(false);
+    setFormData({})
+  }
+
+  function onHandleAddRevenue() {
+    setFormData({request_status: formData.request_status, group: formData.group})
+    getRevenues()
+  }
+
   useEffect(() => {
     getRevenueRequestReasons();
+    getGroups()
   }, [])
 
   
   return (
     <>
-      <Tooltip color="secondary" placement="top" content="Editar registro" >
-        <Button auto light color="secondary" icon={<PencilIcon width="18px"/>} onPress={() => openModal()}/>
+    {revenueData ?    
+      <Tooltip color={revenueData.request_status === "won" ? "success" : "error"} placement="top" content="Editar" >
+        <Button light auto color={revenueData.request_status === "won" ? "success" : "error"} icon={<PencilIcon width="18px"/>} onPress={() => openModal()} />
       </Tooltip>
+      :
+        <Button flat auto color="secondary" icon={<PlusIcon width="18px"/>} onPress={() => openModal()}>Adicionar registro</Button>
+      }
       <Modal
         aria-labelledby="modal-edit-revenue"
         closeButton
-        onClose={() => setIsVisible(false)}
+        onClose={() => onHandleCloseModal()}
         open={isVisible}
       >
         <Modal.Header>
@@ -177,12 +210,24 @@ export default function RevenueModal({revenueData, getRevenues}) {
           <Button ghost={requestStatus} size="sm" auto color="success" icon={<PlusIcon width="18px" />} onPress={() => onHandleFormStatusInputEdit("won", "request_status")}>Entrada</Button>
           <Button ghost={!requestStatus} size="sm" auto color="error" icon={<MinusIcon width="18px" />} onPress={() => onHandleFormStatusInputEdit("lost", "request_status")}>Saída</Button>
         </div>
-          <Input bordered color={formColor} type="text" readOnly label="Empresa" onChange={(e) => onHandleFormDataInputEdit(e, "name_contract")} initialValue={revenueData ? revenueData.group.name_contract : ''}></Input>
-          <Input bordered color={formColor} type="text" readOnly label="Porte" onChange={(e) => onHandleFormDataInputEdit(e, "size")} initialValue={revenueData ? revenueData.group.size : ''}></Input>
+        <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={formColor}>Empresa</Text>
+              <Dropdown isBordered isDisabled={revenueData ? true : false}>
+                <Dropdown.Trigger>
+                  <Button color={formColor} bordered icon={<ChevronDownIcon width="18px" />}>{formData.group ? formData.group.name_contract : 'Escolha uma empresa.'}</Button>
+                </Dropdown.Trigger>
+                <Dropdown.Menu onAction={(e) => onChangeSelectGroup(e)}>
+                  {listedGroups.map((item, index) => (
+                    <Dropdown.Item color={formColor} key={index}>{item.name_contract || ''}</Dropdown.Item>
+                    )
+                  )}
+                  <Dropdown.Item withDivider color="secondary" icon={<PlusIcon width="18px"/>}>Adicionar outro motivo</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+          <Input bordered color={formColor} type="text" readOnly label="Porte" onChange={(e) => onHandleFormDataInputEdit(e, "size")} initialValue={formData.group ? formData.group.size : ''}></Input>
           <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={formColor}>Tipo</Text>
           <Dropdown isBordered>
             <Dropdown.Trigger>
-              <Button color={formColor} bordered>{formData.request_type}</Button>
+              <Button color={formColor} bordered icon={<ChevronDownIcon width="18px" />}>{formData.request_type || `Selecione o tipo de ${formData.request_status === "won" ? "entrada" : "saída"}.`}</Button>
             </Dropdown.Trigger>
             {requestStatus === false ?
             <Dropdown.Menu onAction={(e) => {onChangeSelectType(e)}}>         
@@ -198,12 +243,12 @@ export default function RevenueModal({revenueData, getRevenues}) {
             </Dropdown.Menu>
               }   
           </Dropdown>
-          {formData.request_type === "Migração" ? 
+          {formData.request_type === "Migração" || formData.request_type === "Assinatura" ? 
           <>
           <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={formColor}>Plano</Text>
           <Dropdown isBordered>
             <Dropdown.Trigger>
-              <Button color={formColor} bordered >{formData.plan || ''}</Button>
+              <Button color={formColor} bordered icon={<ChevronDownIcon width="18px" />}>{formData.plan || 'Escolha um plano.'}</Button>
             </Dropdown.Trigger>
             <Dropdown.Menu onAction={(e) => onChangeSelectPlan(e)}>
               {revenuePlans.map((item, index) => (
@@ -215,8 +260,8 @@ export default function RevenueModal({revenueData, getRevenues}) {
           }
       
           <div className="flex gap-4">
-            <Input bordered color={formColor} type="number" label="Valor" onChange={(e) => onHandleFormDataInputValueEdit(e, "request_value")} step={.01} value={formData.request_value}></Input>
-            <Input bordered color={formColor} type="number" label="Assinaturas" onChange={(e) => onHandleFormDataInputValueEdit(e, "license_qty")} value={formData.license_qty}></Input>
+            <Input bordered color={formColor} type="number" label="Valor" onChange={(e) => onHandleFormDataInputValueEdit(e, "request_value")} step={.01} value={formData.request_value || 0}></Input>
+            <Input bordered color={formColor} type="number" label="Assinaturas" onChange={(e) => onHandleFormDataInputValueEdit(e, "license_qty")} value={formData.license_qty || 0}></Input>
           </div>
           <Input bordered color={formColor} type="date" label="Data do registro" onChange={(e) => onHandleFormDataInputEdit(e, "dt_request")} initialValue={formatDate(revenueData ? revenueData.dt_request : new Date())}></Input>
           {formData.request_status === "lost" ? <> 
@@ -247,13 +292,13 @@ export default function RevenueModal({revenueData, getRevenues}) {
           </> :
           "" }
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer>       
           <div className="flex justify-end gap-4">
-            <Button light auto color="error" icon={<XCircleIcon width="18px" />} onPress={() => setIsVisible(false)}>Cancelar</Button>
+            <Button light auto color="error" icon={<XCircleIcon width="18px" />} onPress={() => onHandleCloseModal()}>Cancelar</Button>
             {revenueData ?
             <EditRevenueButton revenueRegisterId={revenueData._id} formData={formData} getRevenues={getRevenues}/>
             :
-            <AddRevenueButton formData={formData} getRevenues={getRevenues}/>
+            <AddRevenueButton formData={formData} onHandleAddRevenue={onHandleAddRevenue}/>
             }
           </div>
         </Modal.Footer>

@@ -90,12 +90,13 @@ export default function AddGroupButton({getGroups}) {
   return (
     <>
       <Button
+        flat
         auto
         color="secondary"
         icon={<PlusIcon width={18} />}
         onPress={() => openCreateGroupModal()}
       >
-        Grupo
+        Adicionar empresa
       </Button>
 
       <Modal closeButton width="600px" open={isVisible} onClose={() => setIsVisible(false)}>
