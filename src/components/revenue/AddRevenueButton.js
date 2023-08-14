@@ -35,7 +35,7 @@ export default function EditRevenueButton({formData, onHandleAddRevenue}) {
         newBody.request_type = body.request_type,
         newBody.plan = body.plan,
         newBody.request_value = Number(body.request_value || 0).toFixed(2),
-        newBody.license_qty = Math.floor(Number(body.license_qty)),
+        newBody.license_qty = Math.floor(Number(body.license_qty || 0)),
         newBody.dt_request = body.dt_request,
         newBody.request_reason = null,
         newBody.request_factor = null,
@@ -45,16 +45,30 @@ export default function EditRevenueButton({formData, onHandleAddRevenue}) {
       
       // console.log(newBody)
       try {
-        const createdRevenue = await createRevenue(newBody)
-        console.log(createdRevenue)
-        onHandleAddRevenue()
+        
+        if(body.request_type) {
+          if(body.request_type === "Assinatura" && !body.plan) {
+            setTextButton('Escolha um plano!')
+            setColorButton('error')
+            setIconButton((<ExclamationTriangleIcon width="18px" />))
+          } else {
+            const createdRevenue = await createRevenue(newBody)
+            console.log(createdRevenue)
+            onHandleAddRevenue()
   
-        setTextButton("Empresa adicionada!")
-        setColorButton('success')
-        setIconButton((<CheckIcon width="18px" />))
+            setTextButton("Registro adicionado!")
+            setColorButton('success')
+            setIconButton((<CheckIcon width="18px" />))
+          }
+        } else {
+          setTextButton(`Selecione o tipo de ${body.request_status === 'won' ? "entrada" : "saída"}!`)
+          setColorButton('error')
+          setIconButton((<ExclamationTriangleIcon width="18px" />))
+        }
+  
   
         setTimeout(() => {
-          setTextButton("Adicionar empresa")
+          setTextButton("Adicionar registro")
           setColorButton('secondary')
           setIconButton((<PlusIcon width="18px" />))
         }, 2000);
@@ -65,7 +79,7 @@ export default function EditRevenueButton({formData, onHandleAddRevenue}) {
 
 
         setTimeout(() => {
-          setTextButton("Adicionar empresa")
+          setTextButton("Adicionar registro")
           setColorButton('secondary')
           setIconButton((<PlusIcon width="18px" />))
         }, 2000);
@@ -77,11 +91,10 @@ export default function EditRevenueButton({formData, onHandleAddRevenue}) {
       setIconButton((<ExclamationTriangleIcon width="18px" />))
 
       setTimeout(() => {
-        setTextButton("Adicionar empresa")
+        setTextButton("Adicionar registro")
         setColorButton('secondary')
         setIconButton((<PlusIcon width="18px" />))
       }, 2000);
-
 
     }
   }

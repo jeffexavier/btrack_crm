@@ -6,6 +6,7 @@ const RevenueSchema = new mongoose.Schema({
   id_legacy: {type: String},
   request_status: {type: String, default: "won", required: true},
   request_type: {type: String, default: "Assinatura", required: true},
+  last_plan: {type: String},
   plan: {type: String},
   dt_request: {type: Date, default: Date.now},
   request_value: {type: Number, default: 0},

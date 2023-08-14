@@ -72,7 +72,7 @@ export default function RevenueList() {
             </div>
               <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.group.name_contract}</p>
               <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.group.size}</p>
-              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.plan}</p>
+              <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.request_type === "Migração" ? `${item.last_plan} > ${item.plan}` : item.plan}</p>
               <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.request_type}</p>
               <p className={`truncate ${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.request_value}</p>
               <p className={`${itemColor(item.request_status).text_full} font-medium text-sm`}>{item.license_qty}</p>

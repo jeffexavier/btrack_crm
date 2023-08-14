@@ -29,6 +29,18 @@ export async function createRevenue(body) {
   await databaseConnection();
   
   const newBody = body
+  
+  const lastRevenue = await Revenue.findOne({group: body.group}).sort({dt_request: -1})
+
+  if(body.request_type === "Migração") {
+    newBody.last_plan = lastRevenue.plan
+    newBody.plan = body.plan
+  } else if(body.request_type === "Assinatura"){    
+    newBody.plan = body.plan
+  } else {
+    newBody.last_plan = lastRevenue.last_plan
+    newBody.plan = lastRevenue.plan
+  }
 
   if(body.request_reason && body.request_reason._id) {
     const getRevenueRequestReason = await RevenueRequestReason.findById(body.request_reason._id)

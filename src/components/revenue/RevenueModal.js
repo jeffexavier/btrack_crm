@@ -302,8 +302,7 @@ export default function RevenueModal({revenueData, getRevenues}) {
             }
           </div>
         </Modal.Footer>
-      </Modal>
-      
+      </Modal>      
     </>
   )
 }
