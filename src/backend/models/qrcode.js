@@ -8,4 +8,4 @@ const QrCodeSchema = new mongoose.Schema({
   }
 })
 
-export default moongose.models.QrCode || mongoose.model("QrCode", QrCodeSchema)
+export default mongoose.models.QrCode || mongoose.model("QrCode", QrCodeSchema)
