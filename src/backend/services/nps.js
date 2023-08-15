@@ -56,13 +56,7 @@ export async function deleteNps(id) {
   try {
     databaseConnection();
     const deleteNps = await Nps.findByIdAndDelete(id);
-    const deletedNps = {
-      _id: deleteNps._id,
-      id_legacy: deleteNps.id_legacy,
-      name_contract: deleteNps.name_contract,
-      contract_cnpj: deleteNps.contract_cnpj,
-      status: "deleted"
-    }  
+    const deletedNps = { ...deleteNps, status: "deleted" }  
     return deletedNps    
   } catch (error) {
     return error
