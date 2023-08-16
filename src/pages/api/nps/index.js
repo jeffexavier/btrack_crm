@@ -1,7 +1,7 @@
 import { verifyToken } from "@/src/backend/utils/token";
 import {
   createNps,
-  listNpss,
+  listNps,
   updateNps,
   deleteNps,
 } from "@/src/backend/services/nps.js";
@@ -17,7 +17,7 @@ export default async function nps(req, res) {
   } else if (req.method === "GET") {
     try {
       const {id, id_legacy} = req.query
-      const listedNpss = await listNpss(id, id_legacy);
+      const listedNpss = await listNps(id, id_legacy);
       const responseListedNpss = {
         value: listedNpss,
         count: listedNpss.length ? (listedNpss.length) : 0 

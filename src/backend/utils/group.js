@@ -1,3 +1,13 @@
+
+export async function listGroup() {
+  const groupList = await fetch('/api/group').then((response) => {
+    return response.json()
+  }).catch((error) => {
+    return error
+  })
+  return groupList
+}
+
 export async function updateGroup(id, body) {
   const groupUpdate = await fetch(`/api/group?id=${id}`, {
     method: "PUT",

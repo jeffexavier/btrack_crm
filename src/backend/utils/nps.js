@@ -1,3 +1,14 @@
+
+export async function listNps() {
+  const npsList = await fetch('/api/nps').then((response) => {
+    return response.json()
+  }).catch((error) => {
+    return error
+  })
+
+  return npsList
+}
+
 export async function updateNps(id, body) {
   const npsUpdate = await fetch(`/api/nps?id=${id}`, {
     method: "PUT",

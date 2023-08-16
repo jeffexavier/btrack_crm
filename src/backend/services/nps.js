@@ -26,17 +26,17 @@ export async function createNps(body) {
     return createNewNps;     
 }
 
-export async function listNpss(id, id_legacy) {
+export async function listNps(id, id_legacy) {
   databaseConnection();
   if(id){
-    const nps = await Nps.findById(id);
+    const nps = await Nps.findById(id).populate('group').populate('contact', "name");
     return nps;
   } else if(id_legacy){
-    const nps = await Nps.findOne({id_legacy});
+    const nps = await Nps.findOne({id_legacy}).populate('group').populate('contact', "name");
     return nps;
   }
 
-  const listNpss = await Nps.find();
+  const listNpss = await Nps.find().populate('group').populate('contact', "name");
   return listNpss;
 }
 

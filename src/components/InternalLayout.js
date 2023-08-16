@@ -6,7 +6,7 @@ import Sidebar from "./Sidebar.js";
 
 import Head from "next/head.js";
 
-export default function InteranlLayout({children}) {
+export default function InternalLayout({children}) {
 
   return(
     <>
