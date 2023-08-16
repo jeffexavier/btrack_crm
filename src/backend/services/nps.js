@@ -14,7 +14,7 @@ export async function createNps(body) {
   if(body.score < 0 || body.score > 10) {
     return "Erro: Valor válido entre 0 e 10."
   } else if(body.score <= 6) {
-   newNps.nps_status = "Detractor"
+   newNps.nps_status = "Detrator"
   } else if(body.score <= 8) {
     newNps.nps_status = "Neutro"
   } else if(body.score >= 9 ) {
