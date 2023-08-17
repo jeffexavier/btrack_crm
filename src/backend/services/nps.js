@@ -42,12 +42,26 @@ export async function listNps(id, id_legacy) {
 
 export async function updateNps(id, id_legacy, body) {
   databaseConnection();
+
+  const newNps = body
+
+  if(body.score < 0 || body.score > 10) {
+    return "Erro: Valor válido entre 0 e 10."
+  } else if(body.score <= 6) {
+   newNps.nps_status = "Detrator"
+  } else if(body.score <= 8) {
+    newNps.nps_status = "Neutro"
+  } else if(body.score >= 9 ) {
+    newNps.nps_status = "Promotor"
+  }
+
+
   if(id) {
-    const nps = await Nps.findByIdAndUpdate(id, {...body, dt_update: new Date()});
+    const nps = await Nps.findByIdAndUpdate(id, {...newNps, dt_update: new Date()});
     const updatedNps = await Nps.findById(nps._id)
     return updatedNps;
   }
-  const nps = await Nps.findOneAndUpdate({id_legacy}, {...body, dt_update: new Date()});
+  const nps = await Nps.findOneAndUpdate({id_legacy}, {...newNps, dt_update: new Date()});
   const updatedNps = await Nps.findById(nps._id)
   return updatedNps;
 }

@@ -15,7 +15,7 @@ const NpsSchema = new mongoose.Schema({
   nps_status: {type: String},
   stage: {type: String},
   category: {type: String},
-  comments: {type: String},
+  comment: {type: String},
   tags: {type: String},
   dt_register: {type: Date, default: Date.now},
   dt_update: {type: Date}

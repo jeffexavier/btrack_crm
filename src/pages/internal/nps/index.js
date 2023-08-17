@@ -11,6 +11,7 @@ import formatDate from "@/src/backend/utils/formatDate.js";
 import formatDateToLocaleDateString from "@/src/backend/utils/formatDateToLocaleDateString.js";
 import { PencilIcon, TrashIcon } from "@/public/icons.js";
 import { DeleteNpsButton } from "@/src/components/nps/DeleteNpsButton.js";
+import EditNpsButton from "@/src/components/nps/EditNpsButton.js";
 
 export default function NpsList() {
 
@@ -19,7 +20,6 @@ export default function NpsList() {
 
   async function getNpsList() {
     const newListedNps = await listNps()
-    console.log(newListedNps.value)
     setListedNps(newListedNps.value)
   }
 
@@ -29,10 +29,10 @@ export default function NpsList() {
 
   return(
   <InternalLayout>
-    <Layout>
+    <Layout getNpsList={getNpsList}>
       {/* <p>teste</p>
       <Button onPress={() => getNpsList()}>Pegar NPS</Button> */}
-      <div className="table w-full rounded-xl overflow-hidden mt-4 text-sm text-secondary-full">
+      <div className="table w-full rounded-xl overflow-hidden text-sm text-secondary-full">
           <div className="table-header-group table-auto font-semibold bg-secondary-flat">
             <div className="table-row">
               <div className="table-cell p-4">ID</div>
@@ -57,11 +57,10 @@ export default function NpsList() {
                 <div className="table-cell p-4">{item.nps_status}</div>
                 <div className="table-cell justify-center place-item-center p-0 self-center align-middle">
                   <div className="flex">
-                    <Button light auto color="secondary" icon={<PencilIcon width="18px" />} />
+                    <EditNpsButton npsData={item} getNpsList={getNpsList}/>
                     <DeleteNpsButton npsId={item._id} getNpsList={getNpsList}/>
                   </div>
-                </div>
- 
+                </div> 
               </div>
               )
             )}

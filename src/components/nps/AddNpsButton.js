@@ -1,10 +1,10 @@
 import { useState } from "react"
-import NpsModal from "./NpsModa.js"
+import NpsModal from "./NpsModal.js"
 import { Button } from "@nextui-org/react"
 
 import { PlusIcon } from "@/public/icons.js"
 
-export default function AddNpsButton() {
+export default function AddNpsButton({getNpsList}) {
 
   const [isVisible, setIsVisible] = useState(false)
 
@@ -15,7 +15,7 @@ export default function AddNpsButton() {
   return (
     <>
       <Button flat auto color="secondary" icon={<PlusIcon width="18px"/>} onPress={() => openModal()}>Adicionar NPS</Button>
-      <NpsModal isVisible={isVisible} setIsVisible={setIsVisible} />
+      <NpsModal isVisible={isVisible} setIsVisible={setIsVisible} getNpsList={getNpsList} />
     </>
   )
 }
