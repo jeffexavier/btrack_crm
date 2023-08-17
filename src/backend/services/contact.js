@@ -53,13 +53,7 @@ export async function deleteContact(id) {
   try {
     databaseConnection();
     const deleteContact = await Contact.findByIdAndDelete(id);
-    const deletedContact = {
-      _id: deleteContact._id,
-      id_legacy: deleteContact.id_legacy,
-      name_contract: deleteContact.name_contract,
-      contract_cnpj: deleteContact.contract_cnpj,
-      status: "deleted"
-    }  
+    const deletedContact = { ...deleteContact, status: "deleted" }  
     return deletedContact    
   } catch (error) {
     return error
