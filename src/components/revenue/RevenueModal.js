@@ -220,7 +220,6 @@ export default function RevenueModal({revenueData, getRevenues}) {
                     <Dropdown.Item color={formColor} key={index}>{item.name_contract || ''}</Dropdown.Item>
                     )
                   )}
-                  <Dropdown.Item withDivider color="secondary" icon={<PlusIcon width="18px"/>}>Adicionar outro motivo</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
           <Input bordered color={formColor} type="text" readOnly label="Porte" onChange={(e) => onHandleFormDataInputEdit(e, "size")} initialValue={formData.group ? formData.group.size : ''}></Input>
