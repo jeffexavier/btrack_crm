@@ -23,11 +23,11 @@ export default function DeleteGroupButton({groupId, groupName, getGroups}) {
       if(deletedGroup.status === "deleted"){
         setInputMessage('Grupo deletado com sucesso!')
         setColorMessage('success')
+        getGroups()
         setTimeout(() => {
-          getGroups()
           setInputMessage()
           setIsVisible(false)
-        }, 2000);
+        }, 1000);
       }
     else {
       setInputMessage("Verifique a palavra inserida.")

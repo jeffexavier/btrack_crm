@@ -390,7 +390,7 @@ export default function AddGroupButton({getGroups}) {
         </Modal.Body>
         <Modal.Footer justify="flex-end">
           <Button
-            flat
+            light
             auto
             color="error"
             icon={<XCircleIcon width="18px" />}
@@ -399,6 +399,7 @@ export default function AddGroupButton({getGroups}) {
             Cancelar
           </Button>
           <Button
+            flat
             color={colorMessage}
             icon={<PlusIcon width="18px" />}
             onPress={() => handleFormSubmit(formData)}
