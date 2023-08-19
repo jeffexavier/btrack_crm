@@ -204,7 +204,7 @@ export default function UploadGroupButton({getGroups}) {
           >
             Cancelar
           </Button>
-        <Button flat  color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit(formData)}>Upload File</Button>
+        <Button flat disabled={csvData.length > 0 ? false : true} color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit(formData)}>Upload File</Button>
       </Modal.Footer>
       </Modal>
     </>
