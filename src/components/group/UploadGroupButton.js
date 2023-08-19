@@ -3,6 +3,8 @@ import Papa from 'papaparse'
 import { useState } from "react";
 import { createGroup } from "@/src/backend/utils/group.js";
 import { ChevronDownIcon, DocumentPlusIcon, XCircleIcon } from "@/public/icons.js";
+import UploadReportButton from "./UploadReportButton.js";
+import formatDate from "@/src/backend/utils/formatDate.js"
 
 const acceptableCSVFileTypes = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, .csv';
 
@@ -49,7 +51,6 @@ export default function UploadGroupButton({getGroups}) {
   }, 2000);    
     while (i < newCsvData.length) {
       const newFormData = {
-        ...formData,
         id_legacy: newCsvData[i][formData[0].value],
         name_contract: newCsvData[i][formData[1].value],
         name: newCsvData[i][formData[2].value],
@@ -68,7 +69,7 @@ export default function UploadGroupButton({getGroups}) {
         dt_stage: newCsvData[i][formData[15].value],
         size: newCsvData[i][formData[16].value],
         plan: newCsvData[i][formData[17].value],
-        dt_register: newCsvData[i][formData[18].value],
+        dt_register: formatDate(newCsvData[i][formData[18].value]),
         dt_insert: newCsvData[i][formData[19].value],
         dt_update: newCsvData[i][formData[20].value],
         dt_cancel: newCsvData[i][formData[21].value],
@@ -84,11 +85,11 @@ export default function UploadGroupButton({getGroups}) {
       console.log(groupCreate)
       
       if(groupCreate._id) {
-        reports.push({status: "success", return: groupCreate})
+        reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
       } else if(groupCreate.code === 11000) {
-        reports.push({status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
+        reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
       } else {
-        reports.push({status: "error", return: groupCreate.message})
+        reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
       }
 
       if(i === newCsvData.length) {
@@ -101,6 +102,7 @@ export default function UploadGroupButton({getGroups}) {
     setFormData([])
     setIsVisible(false)
     setCsvData([])
+    setUploadReport([])
   }
   
   function onOpenButton() {
@@ -143,7 +145,7 @@ export default function UploadGroupButton({getGroups}) {
       <Modal
         open={isVisible}
         closeButton
-        onClose={() => setIsVisible(false)}
+        onClose={() => onCloseButton()}
       >
       <Modal.Header>
         <Text>Upload CSV</Text>
@@ -187,9 +189,10 @@ export default function UploadGroupButton({getGroups}) {
         : ""
         }
         </div>
-        {uploadReport.map((item, index) => (
-          <p key={index}>{item.status}</p>
-        ))}
+        {uploadReport.length > 0 ?
+        <UploadReportButton uploadReport={uploadReport} />
+        : ""
+        }
       </Modal.Body>
       <Modal.Footer>
           <Button
