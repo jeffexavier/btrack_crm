@@ -1,6 +1,7 @@
 
 import AddGroupButton from "../buttons/AddGroupButton.js";
 import UploadGroupButton from "./UploadGroupButton.js";
+import FilterGroup from "./filterGroup.js";
 
 export default function Layout({children, getGroups}) {
   return (
@@ -8,6 +9,7 @@ export default function Layout({children, getGroups}) {
       {/* <h2>Grupos</h2>       */}
       <div className="flex justify-between">
         <AddGroupButton getGroups={getGroups} />
+        {/* <FilterGroup /> */}
         <UploadGroupButton getGroups={getGroups}/>
         </div> 
     

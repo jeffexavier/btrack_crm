@@ -16,7 +16,7 @@ export default function UploadReportButton({uploadReport}) {
     setIsVisible(false)
   }
   
-  async function downloadCsv(name) {
+  async function downloadCsv(name, area) {
 
     const csv = Papa.unparse(uploadReport, {
       delimiter: ";"
@@ -28,7 +28,7 @@ export default function UploadReportButton({uploadReport}) {
 
     const link = document.createElement('a');
     link.href = blobURL;
-    link.download = name.replace(/[./]/g, '_') + "_QR_CODE_" + new Date().toLocaleDateString('pt-BR') + ".csv";
+    link.download = name.replace(/[./]/g, '_') + "_lista_" + area + "_" + new Date().toLocaleDateString('pt-BR') + ".csv";
     link.click();
   }
 
@@ -81,7 +81,7 @@ export default function UploadReportButton({uploadReport}) {
               </div>
               <div className="table-row-group">
                 {uploadReport.map((item, index) => (
-                  <div className="table-row bg-[#fff] hover:bg-secondary-flat transition-colors ease-linear">
+                  <div className={`table-row ${item.upload_status === "error" ? "bg-error-flat hover:bg-error-flat-hover" : "bg-[#fff] hover:bg-secondary-flat"} transition-colors ease-linear`}>
                     <div className="table-cell p-4"><div className="min-w-max">{item.upload_status}</div></div>
                     <div className="table-cell p-4"><div className="min-w-max max-h-min overflow-auto">{item.return}</div></div>
                     <div className="table-cell p-4"><div className="min-w-max">{item.id_legacy}</div></div>
@@ -108,7 +108,7 @@ export default function UploadReportButton({uploadReport}) {
                     <div className="table-cell p-4"><div className="min-w-max">{item.dt_cancel}</div></div>
                     <div className="table-cell p-4"><div className="min-w-max">{item.cancel_tag}</div></div>
                     <div className="table-cell p-4"><div className="min-w-max">{item.cancel_factor}</div></div>
-                    <div className="table-cell p-4"><div className="min-w-max">{item.cancel_description}</div></div>
+                    <div className="table-cell p-4"><div className="max-w-[210px] h-[20px] overflow-hidden  text-xs"><p className="text-ellipsis">{item.cancel_description}</p></div></div>
                 </div>
                 ))}
               </div>
@@ -117,7 +117,7 @@ export default function UploadReportButton({uploadReport}) {
     </Modal.Body>
     <Modal.Footer>
       <Button light auto color="error" icon={<XCircleIcon width="18px"/>} onPress={() => onCloseButton()}>Cancelar</Button>
-      <Button flat auto color="secondary" icon={<DocumentArrowDownIcon width="18px" />} onPress={() => downloadCsv('teste download csv')}>download</Button>
+      <Button flat auto color="secondary" icon={<DocumentArrowDownIcon width="18px" />} onPress={() => downloadCsv('report_upload_lista', 'empresas')}>download</Button>
     </Modal.Footer>
   </Modal>
     </>
