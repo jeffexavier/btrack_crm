@@ -1,7 +1,7 @@
 
 import AddGroupButton from "../buttons/AddGroupButton.js";
 import UploadGroupButton from "./UploadGroupButton.js";
-import FilterGroup from "./filterGroup.js";
+import FilterGroup from "./FilterGroup.js";
 
 export default function Layout({children, getGroups}) {
   return (
