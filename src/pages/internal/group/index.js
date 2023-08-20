@@ -51,14 +51,14 @@ export default function Clientes() {
               <Card borderWeight="0" isHoverable variant="shadow">
                 <Card.Header>
                 <div className="flex justify-between w-full align-middle">
-                    <Text b size="$xl">{item.name_contract}</Text>
+                    <Text b size="$xl">{item.name}</Text>
                     <DeleteGroupButton groupId={item._id} groupName={item.name_contract} getGroups={getGroups}/>
                     </div>
                 </Card.Header>
                 <Card.Divider />
                 <Card.Body>
                   <Text size="$sm">
-                    <b>Nome da empresa:</b> {item.name}
+                    <b>Razão Social:</b> {item.name_contract}
                   </Text>
                   <Text size="$sm">
                     <b>CNPJ:</b> {item.contract_cnpj}

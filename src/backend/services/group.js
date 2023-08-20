@@ -34,6 +34,14 @@ export async function listGroups(id, id_legacy) {
   return listGroups;
 }
 
+export async function listFilteredGroups(body) {
+  databaseConnection();
+
+  console.log(body)
+  const listGroups = await Group.find(body);
+  return listGroups;
+}
+
 export async function updateGroup(id, id_legacy, body) {
   databaseConnection();
   if(id) {

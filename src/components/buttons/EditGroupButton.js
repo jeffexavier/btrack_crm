@@ -91,13 +91,13 @@ export default function DetailGroupButton({groupId, getGroups}) {
     onClose={() => setIsVisible(false)}
     >
       <Modal.Header css={{justifyContent:"flex-start"}}>
-        <Text h4>{groupData.name_contract}</Text>
+        <Text h4>{groupData.name}</Text>
       </Modal.Header>
       <Modal.Body>
       <div className="flex flex-col gap-6">
       <div className="grid grid-cols-2 gap-4">
-        <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'name_contract')}} label="Nome Fantasia" initialValue={formData.name_contract} />
-        <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'name')}} label="Razão Social" initialValue={formData.name} />
+        <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'name')}} label="Nome Fantasia" initialValue={formData.name} />
+        <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'name_contract')}} label="Razão Social" initialValue={formData.name_contract} />
         <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'id_legacy')}} label="ID Legado" initialValue={formData.id_legacy} />
         <Input bordered animated color="secondary" type="text" onChange={(e) => {handleFormEdit(e, 'contract_cnpj')}} label="CNPJ" initialValue={formData.contract_cnpj} />
         </div>
@@ -144,7 +144,7 @@ export default function DetailGroupButton({groupId, getGroups}) {
       </Modal.Body>
       <Modal.Footer>
       <Button
-            flat
+            light
             auto
             color="error"
             icon={<XCircleIcon width="18px" />}
@@ -152,7 +152,7 @@ export default function DetailGroupButton({groupId, getGroups}) {
           >
             Cancelar
           </Button>
-        <Button icon={<ArrowPathRoundedSquareIcon width="18px" />} onPress={() => handleFormSubmit(groupId, formData)} color={colorButton}>{messageButton}</Button>
+        <Button flat auto icon={<ArrowPathRoundedSquareIcon width="18px" />} onPress={() => handleFormSubmit(groupId, formData)} color={colorButton}>{messageButton}</Button>
       </Modal.Footer>
     </Modal>
     </>

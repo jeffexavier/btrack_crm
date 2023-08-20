@@ -113,7 +113,7 @@ export default function AddGroupButton({getGroups}) {
             type="text"
             placeholder="Boteco da Dani"
             onChange={(e) => {
-              handleFormEdit(e, "name_contract");
+              handleFormEdit(e, "name");
             }}
             label="Nome Fantasia"
           />
@@ -124,7 +124,7 @@ export default function AddGroupButton({getGroups}) {
             type="text"
             placeholder="Agatha LDTA"
             onChange={(e) => {
-              handleFormEdit(e, "name");
+              handleFormEdit(e, "name_contract");
             }}
             label="Razão Social"
           />
