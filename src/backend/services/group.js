@@ -37,8 +37,9 @@ export async function listGroups(id, id_legacy) {
 export async function listFilteredGroups(body) {
   databaseConnection();
 
-  console.log(body)
-  const listGroups = await Group.find(body);
+  // console.log(JSON.parse(body))
+  const teste = JSON.parse(body)
+  const listGroups = await Group.find(teste);
   return listGroups;
 }
 

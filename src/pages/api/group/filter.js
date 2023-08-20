@@ -6,9 +6,9 @@ export default async function filterGroup(req, res){
     const {filter} = req.query
     
     console.log(filter)
-    // const filteredListGroup = await listFilteredGroups(filter)
+    const filteredListGroup = await listFilteredGroups(filter)
 
-    res.status(200).json(filter)
+    res.status(200).json(filteredListGroup)
   
   
   
