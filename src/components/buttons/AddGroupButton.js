@@ -113,7 +113,7 @@ export default function AddGroupButton({getGroups}) {
             type="text"
             placeholder="Boteco da Dani"
             onChange={(e) => {
-              handleFormEdit(e, "name_contract");
+              handleFormEdit(e, "name");
             }}
             label="Nome Fantasia"
           />
@@ -124,7 +124,7 @@ export default function AddGroupButton({getGroups}) {
             type="text"
             placeholder="Agatha LDTA"
             onChange={(e) => {
-              handleFormEdit(e, "name");
+              handleFormEdit(e, "name_contract");
             }}
             label="Razão Social"
           />
@@ -390,7 +390,7 @@ export default function AddGroupButton({getGroups}) {
         </Modal.Body>
         <Modal.Footer justify="flex-end">
           <Button
-            flat
+            light
             auto
             color="error"
             icon={<XCircleIcon width="18px" />}
@@ -399,6 +399,7 @@ export default function AddGroupButton({getGroups}) {
             Cancelar
           </Button>
           <Button
+            flat
             color={colorMessage}
             icon={<PlusIcon width="18px" />}
             onPress={() => handleFormSubmit(formData)}

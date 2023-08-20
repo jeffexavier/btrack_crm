@@ -25,20 +25,19 @@ export async function updateGroup(id, body) {
 }
 
 export async function createGroup(body) {
-  const groupCreate = await fetch('/api/group', {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(body)
-  }).then((response) => {
-    return response.json()
-  }).catch((error) => {
-    return error
-  })
+    const groupCreate = await fetch('/api/group', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(body)
+    }).then((response) => {
+        return response.json()
+    }).catch((error) => {
+      return error.message
+    })
 
-  const createdGroup = groupCreate
-  return createdGroup
+  return groupCreate
 }
 
 export async function deleteGroup(id, textValidator) {
