@@ -44,7 +44,7 @@ export default function SideBar() {
     <nav className="flex flex-col justify-between shadow-lg min-w-[210px]">
     <div className="flex flex-col justify-start content-start">
       <div>
-        <h1 className="text-center">JX</h1>
+        <h1 className="text-left">BTrack</h1>
       </div>
       <div className="flex flex-col gap-2 p-4 w-full">
         {pages.map((item, index) => (
