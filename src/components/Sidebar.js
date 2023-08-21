@@ -43,10 +43,10 @@ export default function SideBar() {
     <>
     <nav className="flex flex-col justify-between shadow-lg min-w-[210px]">
     <div className="flex flex-col justify-start content-start">
-      <div>
-        <h1 className="text-left">BTrack</h1>
+      <div className="p-4">
+        <h1 className="text-left text-secondary-full">BTrack</h1>
       </div>
-      <div className="flex flex-col gap-2 p-4 w-full">
+      <div className="flex flex-col gap-2 px-4 w-full">
         {pages.map((item, index) => (
           <Link key={index} href={item.link}>
           <div className="flex justify-start  hover:bg-[#e0cbf5] gap-2 py-2.5 px-4 rounded-xl items-center cursor-pointer transition-colors ease-linear">

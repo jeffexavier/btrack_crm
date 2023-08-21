@@ -81,9 +81,7 @@ export default function DetailGroupButton({groupId, getGroups}) {
 
   return (
     <>
-    <Button flat auto color="secondary" icon={<PencilSquareIcon width={18} />} onPress={() => getGroup(groupId)}>
-    Editar
-    </Button>
+    <Button light auto color="secondary" icon={<PencilSquareIcon width={18} />} onPress={() => getGroup(groupId)} />
     <Modal
     width="600px"
     closeButton
