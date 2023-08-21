@@ -51,7 +51,7 @@ function handleFormSubmit(e){
 
   return (
     <>
-    <Button light auto color="secondary" icon={<TrashIcon width="20px"/>} onPress={() => setIsVisible(true)}/>
+    <Button light auto color="secondary" icon={<TrashIcon width="18px"/>} onPress={() => setIsVisible(true)}/>
     <Modal
       open={isVisible}
       onClose={() => setIsVisible(false)}

@@ -51,9 +51,12 @@ export default function Clientes() {
               <Card borderWeight="0" isHoverable variant="shadow">
                 <Card.Header>
                 <div className="flex justify-between w-full align-middle">
-                    <Text b size="$xl">{item.name}</Text>
+                  <Text b size="$xl">{item.name}</Text>
+                  <div className="flex justify-end">
+                    <EditGroupButton groupId={item._id} getGroups={getGroups}/>
                     <DeleteGroupButton groupId={item._id} groupName={item.name_contract} getGroups={getGroups}/>
-                    </div>
+                  </div>
+                </div>
                 </Card.Header>
                 <Card.Divider />
                 <Card.Body>
@@ -95,8 +98,8 @@ export default function Clientes() {
                     </Text>
                     </Col>
                     <div className="flex md:flex-col lg:flex-row gap-2">
+                    {/* <EditGroupButton groupId={item._id} getGroups={getGroups}/> */}
                     <DetailGroupButton groupId={item._id}/>
-                    <EditGroupButton groupId={item._id} getGroups={getGroups}/>
                     </div>
                 </Card.Footer>
               </Card>
