@@ -29,7 +29,7 @@ export default function NpsList() {
 
   return(
   <InternalLayout>
-    <Layout getNpsList={getNpsList}>
+    <Layout getNpsList={getNpsList} listNps={listedNps}>
       {/* <p>teste</p>
       <Button onPress={() => getNpsList()}>Pegar NPS</Button> */}
       <div className="table w-full rounded-xl overflow-hidden text-sm text-secondary-full">
