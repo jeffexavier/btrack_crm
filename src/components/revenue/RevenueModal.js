@@ -196,7 +196,7 @@ export default function RevenueModal({revenueData, getRevenues}) {
         {revenueData ? 
         <>
           <Text h5>Edição de registro</Text>
-          <Text h4>{revenueData.group.name_contract}</Text>
+          <Text h4>{revenueData.group ? revenueData.group.name : ""}</Text>
         </>
         :
         <>
@@ -213,11 +213,11 @@ export default function RevenueModal({revenueData, getRevenues}) {
         <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color={formColor}>Empresa</Text>
               <Dropdown isBordered isDisabled={revenueData ? true : false}>
                 <Dropdown.Trigger>
-                  <Button color={formColor} bordered icon={<ChevronDownIcon width="18px" />}>{formData.group ? formData.group.name_contract : 'Escolha uma empresa.'}</Button>
+                  <Button color={formColor} bordered icon={<ChevronDownIcon width="18px" />}>{formData.group ? formData.group.name : 'Escolha uma empresa.'}</Button>
                 </Dropdown.Trigger>
                 <Dropdown.Menu onAction={(e) => onChangeSelectGroup(e)}>
                   {listedGroups.map((item, index) => (
-                    <Dropdown.Item color={formColor} key={index}>{item.name_contract || ''}</Dropdown.Item>
+                    <Dropdown.Item color={formColor} key={index}>{item.name || ''}</Dropdown.Item>
                     )
                   )}
                 </Dropdown.Menu>
