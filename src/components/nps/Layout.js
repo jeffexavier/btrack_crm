@@ -7,21 +7,19 @@ import { useEffect, useState } from "react";
 
 export default function Layout({children, getNpsList, listNps}) {
 
+  const [newListedNps, setNewListedNps] = useState([])
   
-  const newListNps = []
+  async function getListNps() {
+    const newListNps = []
+    await listNps.forEach((item, index) => {
+      const newList = { ...item, contact: item.contact ? item.contact.name : '', group: item.group.name || '' }      
+      newListNps.push(newList)
+    })
+    setNewListedNps(newListNps)
+  }
   
   useEffect(() => {
-
-
-    function getListNps() {
-      listNps.map((item, index) => {
-        const newList = { ...item, contact: item.contact.name, group: item.group.name }      
-        newListNps.push(newList)
-      })
-    }
-
-    getListNps()
-    
+    getListNps()  
   }, [])
 
 
@@ -29,7 +27,8 @@ export default function Layout({children, getNpsList, listNps}) {
     <div className="flex flex-col p-5 gap-3 justify-between">
       <div className="flex justify-between">
       <AddNpsButton getNpsList={getNpsList}/>
-      <DownloadListButton  listForDownload={newListNps} nameForDownload={"lista nps"} areaForDownload={"nps"}/>
+      <DownloadListButton  listForDownload={newListedNps} nameForDownload={"lista nps"} areaForDownload={"nps"}/>
+      <Button onPress={() => console.log(newListedNps)}>teste</Button>
         </div>    
       <main className="flex-1">{children}</main>
     </div>

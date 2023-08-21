@@ -51,7 +51,7 @@ export default function NpsList() {
                 <div className="table-cell p-4">{item._id}</div>
                 <div className="table-cell p-4">{formatDateToLocaleDateString(item.survey_date)}</div>
                 <div className="table-cell p-4">{formatDateToLocaleDateString(item.ref_date)}</div>
-                <div className="table-cell p-4">{item.group ? item.group.name_contract : ""}</div>
+                <div className="table-cell p-4">{item.group ? item.group.name : ""}</div>
                 <div className="table-cell p-4">{item.contact ? item.contact.name : ""}</div>
                 <div className="table-cell p-4">{item.score}</div>
                 <div className="table-cell p-4">{item.nps_status}</div>
