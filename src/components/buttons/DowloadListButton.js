@@ -1,15 +1,16 @@
 import { ArrowDownTrayIcon } from "@/public/icons.js";
 import { Button } from "@nextui-org/react";
+import { get } from "mongoose";
 import Papa from 'papaparse'
 
 export default function DownloadListButton({listForDownload, nameForDownload, areaForDownload}) {
 
   async function downloadCsv(array, name, area) {
+    
     const csv = Papa.unparse(array, {
       delimiter: ";"
     })
   
-    // const response = await fetch(url);
     const csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
     const blobURL = URL.createObjectURL(csvData);
   

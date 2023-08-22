@@ -6,28 +6,22 @@ import DownloadListButton from "../buttons/DowloadListButton.js"
 import { useEffect, useState } from "react";
 
 export default function Layout({children, getNpsList, listNps}) {
-
-  const [newListedNps, setNewListedNps] = useState([])
   
-  async function getListNps() {
-    const newListNps = []
-    await listNps.forEach((item, index) => {
-      const newList = { ...item, contact: item.contact ? item.contact.name : '', group: item.group.name || '' }      
-      newListNps.push(newList)
-    })
-    setNewListedNps(newListNps)
+  const newListNps = listNps.map((item, index) => {
+    return { ...item, contact: item.contact ? item.contact.name : '', group: item.group.name || '' }
   }
-  
-  useEffect(() => {
-    getListNps()  
-  }, [])
+  )
+
+  // useEffect(() => {
+  //   getListNps()  \
+  // }, [])
 
 
   return (
     <div className="flex flex-col p-5 gap-3 justify-between">
       <div className="flex justify-between">
       <AddNpsButton getNpsList={getNpsList}/>
-      <DownloadListButton  listForDownload={newListedNps} nameForDownload={"lista nps"} areaForDownload={"nps"}/>
+      <DownloadListButton  listForDownload={newListNps} nameForDownload={"lista_nps"} areaForDownload={"nps"}/>
       <Button onPress={() => console.log(newListedNps)}>teste</Button>
         </div>    
       <main className="flex-1">{children}</main>
