@@ -55,54 +55,88 @@ export default function UploadGroupButton({getGroups}) {
 
   setTimeout(() => {
     getGroups()  
-  }, 2000);    
-    while (i < newCsvData.length) {
-      const newFormData = {
-        id_legacy: getCsvData(0),
-        name_contract: getCsvData(1),
-        name: getCsvData(2),
-        contract_cnpj: getCsvData(3),
-        status: getCsvData(4),
-        cs: getCsvData(5),
-        csm: getCsvData(6),
-        segment: getCsvData(7),
-        city: getCsvData(8),
-        state: getCsvData(9),
-        country: getCsvData(10),
-        address: getCsvData(11),
-        address_number: getCsvData(12),
-        stage: getCsvData(13),
-        dt_stage: formatClassicDate(getCsvData(14)),
-        size: getCsvData(12),
-        plan: getCsvData(16),
-        dt_register: formatClassicDate(getCsvData(17)),
-        dt_insert: formatClassicDate(getCsvData(18)),
-        dt_update: formatClassicDate(getCsvData(19)),
-        dt_cancel: formatClassicDate(getCsvData(20)),
-        cancel_tag: getCsvData(21),
-        cancel_factor: getCsvData(22),
-        cancel_description: getCsvData(23)
+  }, 2000);
+  
+
+    newCsvData.forEach( async (item, index) => {
+
+      async function teste(name, value) {
+        const newFormData = {[name]:value}
+        console.log(newFormData)
       }
 
+      teste(item.name, getCsvData(index))
 
-      i++
+      // const groupCreate = await createGroup(newFormData)
+      // console.log(groupCreate)
+
+      // if(groupCreate._id) {
+      //   reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
+      // } else if(groupCreate.code === 11000) {
+      //   reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
+      // } else {
+      //   reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
+      // }
+
+      // if(index === newCsvData.length) {
+      //   setUploadReport(reports)
+      // }
+    })
+
+    // while (i < newCsvData.length) {
+    //   const newFormData = {
+    //     id_legacy: getCsvData(0),
+    //     name_contract: getCsvData(1),
+    //     name: getCsvData(2),
+    //     contract_cnpj: getCsvData(3),
+    //     status: getCsvData(4),
+    //     cs: getCsvData(5),
+    //     csm: getCsvData(6),
+    //     segment: getCsvData(7),
+    //     city: getCsvData(8),
+    //     state: getCsvData(9),
+    //     country: getCsvData(10),
+    //     address: getCsvData(11),
+    //     address_number: getCsvData(12),
+    //     stage: getCsvData(13),
+    //     dt_stage: formatClassicDate(getCsvData(14)),
+    //     size: getCsvData(12),
+    //     plan: getCsvData(16),
+    //     dt_register: formatClassicDate(getCsvData(17)),
+    //     dt_insert: formatClassicDate(getCsvData(18)),
+    //     dt_update: formatClassicDate(getCsvData(19)),
+    //     dt_cancel: formatClassicDate(getCsvData(20)),
+    //     cancel_tag: getCsvData(21),
+    //     cancel_factor: getCsvData(22),
+    //     cancel_description: getCsvData(23)
+    //   }
+
+    //   // const newFormData = async () => {
+    //   //   let newCsvData = {}
+
+    //   //   await csvData.forEach((item, index) => {
+    //   //     newCsvData = {...newCsvData, [item.name]: getCsvData(index)}
+    //   //   })
+    //   // }
+
+    //   i++
 
 
-      const groupCreate = await createGroup(newFormData)
-      console.log(groupCreate)
+    //   const groupCreate = await createGroup(newFormData)
+    //   console.log(groupCreate)
       
-      if(groupCreate._id) {
-        reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
-      } else if(groupCreate.code === 11000) {
-        reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
-      } else {
-        reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
-      }
+    //   if(groupCreate._id) {
+    //     reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
+    //   } else if(groupCreate.code === 11000) {
+    //     reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
+    //   } else {
+    //     reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
+    //   }
 
-      if(i === newCsvData.length) {
-        setUploadReport(reports)
-      }
-    }
+    //   if(i === newCsvData.length) {
+    //     setUploadReport(reports)
+    //   }
+    // }
   }
 
   function onCloseButton() {
@@ -147,7 +181,7 @@ export default function UploadGroupButton({getGroups}) {
 
   return (
     <>
-      <Button flat auto color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onOpenButton()}>Upload CSV</Button>
+      <Button flat auto color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onOpenButton()}>Upload CSV Teste</Button>
       <Modal
         open={isVisible}
         closeButton

@@ -22,7 +22,6 @@ export default function Layout({children, getNpsList, listNps}) {
       <div className="flex justify-between">
       <AddNpsButton getNpsList={getNpsList}/>
       <DownloadListButton  listForDownload={newListNps} nameForDownload={"lista_nps"} areaForDownload={"nps"}/>
-      <Button onPress={() => console.log(newListedNps)}>teste</Button>
         </div>    
       <main className="flex-1">{children}</main>
     </div>

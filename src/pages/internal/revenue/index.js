@@ -22,6 +22,7 @@ export default function RevenueList() {
       return response.json()
     })
     setListedRevenues(revenueList.value)
+    console.log(revenueList.value)
   }
 
 
@@ -48,7 +49,7 @@ export default function RevenueList() {
 
   return (
     <InternalLayout>
-      <Layout getRevenues={getRevenues}>
+      <Layout getRevenues={getRevenues} listedRevenues={listedRevenues}>
       <div className="grid max-w-screen-2xl min-w-min">
         <div className="grid grid-cols-12 bg-[#f1f3f5] p-4 gap-2 rounded-xl">
           <div className="max-w-[20px]" />
