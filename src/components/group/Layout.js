@@ -16,7 +16,7 @@ export default function Layout({children, getGroups, setGroups, groups}) {
         </div>
         <div className="flex gap-4">
           <DownloadListButton listForDownload={groups} nameForDownload={"lista de empresas"} areaForDownload={"empresas"}/>
-          <UploadGroupButton getGroups={getGroups}/>
+          {/* <UploadGroupButton getGroups={getGroups}/> */}
           <UploadGroupButtonTest getGroups={getGroups}/>
         </div>
       </div> 

@@ -28,7 +28,7 @@ export default function UploadGroupButton({getGroups}) {
     });
   }
 
-  function onHandleFormEdit(e, name, index) {
+  function onHandleFormEdit(e, index) {
 
     const newFormData = [...formData]
     newFormData[index].value = e
@@ -183,7 +183,7 @@ export default function UploadGroupButton({getGroups}) {
                 <Dropdown.Trigger>
                   <Button flat bordered={formData[index].match ? false : true} color="secondary" icon={<ChevronDownIcon width="18px"/>}>{formData[index].match || ""}</Button>
                 </Dropdown.Trigger>
-                <Dropdown.Menu onAction={(e) => onHandleFormEdit(e, item.name, index)}>
+                <Dropdown.Menu onAction={(e) => onHandleFormEdit(e, index)}>
                   <Dropdown.Item key={null}>{""}</Dropdown.Item>
                   {csvData.length > 0 ? csvData[0].map((item, index) => (
                     <Dropdown.Item key={index}>{item}</Dropdown.Item>

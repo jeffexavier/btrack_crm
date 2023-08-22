@@ -28,7 +28,7 @@ export default function UploadGroupButton({getGroups}) {
     });
   }
 
-  function onHandleFormEdit(e, name, index) {
+  function onHandleFormEdit(e, index) {
 
     const newFormData = [...formData]
     newFormData[index].value = e
@@ -38,105 +38,69 @@ export default function UploadGroupButton({getGroups}) {
     // console.log(newFormData)
   }
 
+  // async function createNewGroups(body, index, indexLength){
+  //   const reports = []
+
+  //   const groupCreate = await createGroup(body)
+  //   console.log(groupCreate)
+
+  //   if(groupCreate._id) {
+  //     reports.push({...body, upload_status: "success", return: groupCreate._id})
+  //   } else if(groupCreate.code === 11000) {
+  //     reports.push({...body, upload_status: "error", return: `Group with CNPJ ${body.contract_cnpj} already exists!`})
+  //   } else {
+  //     reports.push({...body, upload_status: "error", return: groupCreate.message})
+  //   }
+
+  //   if(index === indexLength) {
+  //     setUploadReport(reports)
+  //   }
+  // }
+
+
   async function onHandleFormSubmit() {
 
     const newCsvData = csvData.slice(1, csvData.length)
 
-    function getCsvData(index){
-      if(formData[index].value === null) {
+    function getCsvData(indexCsv, indexForm){
+      if(formData[indexForm].value === null) {
         return null
       }
-      return newCsvData[i][formData[index].value]
-    }
-
-    let i = 0
-
-    const reports = []
-
-  setTimeout(() => {
-    getGroups()  
-  }, 2000);
-  
-
-    newCsvData.forEach( async (item, index) => {
-
-      async function teste(name, value) {
-        const newFormData = {[name]:value}
-        console.log(newFormData)
-      }
-
-      teste(item.name, getCsvData(index))
-
-      // const groupCreate = await createGroup(newFormData)
-      // console.log(groupCreate)
-
-      // if(groupCreate._id) {
-      //   reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
-      // } else if(groupCreate.code === 11000) {
-      //   reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
-      // } else {
-      //   reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
-      // }
-
-      // if(index === newCsvData.length) {
-      //   setUploadReport(reports)
-      // }
-    })
-
-    // while (i < newCsvData.length) {
-    //   const newFormData = {
-    //     id_legacy: getCsvData(0),
-    //     name_contract: getCsvData(1),
-    //     name: getCsvData(2),
-    //     contract_cnpj: getCsvData(3),
-    //     status: getCsvData(4),
-    //     cs: getCsvData(5),
-    //     csm: getCsvData(6),
-    //     segment: getCsvData(7),
-    //     city: getCsvData(8),
-    //     state: getCsvData(9),
-    //     country: getCsvData(10),
-    //     address: getCsvData(11),
-    //     address_number: getCsvData(12),
-    //     stage: getCsvData(13),
-    //     dt_stage: formatClassicDate(getCsvData(14)),
-    //     size: getCsvData(12),
-    //     plan: getCsvData(16),
-    //     dt_register: formatClassicDate(getCsvData(17)),
-    //     dt_insert: formatClassicDate(getCsvData(18)),
-    //     dt_update: formatClassicDate(getCsvData(19)),
-    //     dt_cancel: formatClassicDate(getCsvData(20)),
-    //     cancel_tag: getCsvData(21),
-    //     cancel_factor: getCsvData(22),
-    //     cancel_description: getCsvData(23)
-    //   }
-
-    //   // const newFormData = async () => {
-    //   //   let newCsvData = {}
-
-    //   //   await csvData.forEach((item, index) => {
-    //   //     newCsvData = {...newCsvData, [item.name]: getCsvData(index)}
-    //   //   })
-    //   // }
-
-    //   i++
-
-
-    //   const groupCreate = await createGroup(newFormData)
-    //   console.log(groupCreate)
+      return newCsvData[indexCsv][formData[indexForm].value]
+    }     
+    
+    const reports = []    
+    
+    newCsvData.forEach(async (itemCsv, indexCsv) => {  
+      let newFormData = {}      
+      formData.forEach((itemForm, indexForm) => {
+        newFormData = {...newFormData, [formData[indexForm].name]: getCsvData(indexCsv, indexForm)}
+      })
       
-    //   if(groupCreate._id) {
-    //     reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
-    //   } else if(groupCreate.code === 11000) {
-    //     reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
-    //   } else {
-    //     reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
-    //   }
+      // console.log(newFormData)
+    
+        const groupCreate = await createGroup(newFormData)
+        console.log(groupCreate)
+    
+        if(groupCreate._id) {
+          reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
+        } else if(groupCreate.code === 11000) {
+          reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
+        } else {
+          reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
+        }
+    
+        if(indexCsv === newCsvData.length - 1) {
+          setUploadReport(reports)
+          console.log(reports)
+        }
 
-    //   if(i === newCsvData.length) {
-    //     setUploadReport(reports)
-    //   }
-    // }
+    })
+    
+    setTimeout(() => {
+      getGroups()  
+    }, 2000);  
+
   }
 
   function onCloseButton() {
@@ -181,7 +145,7 @@ export default function UploadGroupButton({getGroups}) {
 
   return (
     <>
-      <Button flat auto color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onOpenButton()}>Upload CSV Teste</Button>
+      <Button flat auto color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onOpenButton()}>Upload CSV</Button>
       <Modal
         open={isVisible}
         closeButton
@@ -217,7 +181,7 @@ export default function UploadGroupButton({getGroups}) {
                 <Dropdown.Trigger>
                   <Button flat bordered={formData[index].match ? false : true} color="secondary" icon={<ChevronDownIcon width="18px"/>}>{formData[index].match || ""}</Button>
                 </Dropdown.Trigger>
-                <Dropdown.Menu onAction={(e) => onHandleFormEdit(e, item.name, index)}>
+                <Dropdown.Menu onAction={(e) => onHandleFormEdit(e, index)}>
                   <Dropdown.Item key={null}>{""}</Dropdown.Item>
                   {csvData.length > 0 ? csvData[0].map((item, index) => (
                     <Dropdown.Item key={index}>{item}</Dropdown.Item>
