@@ -5,7 +5,7 @@ import FilterGroup from "./FilterGroup.js";
 import DownloadListButton from "../buttons/DowloadListButton.js"
 import { createGroup } from "@/src/backend/utils/group.js";
 
-export default function Layout({children, getGroups, setGroups, groups}) {
+export default function Layout({children, getGroups, setGroups, groups, hasFilter}) {
 
   const groupModel = {
       id_legacy: null,
@@ -42,7 +42,7 @@ export default function Layout({children, getGroups, setGroups, groups}) {
       <div className="flex justify-between">
         <div className="flex gap-4">
           <AddGroupButton getGroups={getGroups} />
-          <FilterGroup setGroups={setGroups}/>
+          { hasFilter? <FilterGroup setGroups={setGroups}/> : ""}
         </div>
         <div className="flex gap-4">
           <DownloadListButton listForDownload={groups} nameForDownload={"lista de empresas"} areaForDownload={"empresas"}/>

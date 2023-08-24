@@ -32,7 +32,7 @@ export default function Clientes() {
 
   return (
     <InternalLayout>
-      <Layout getGroups={getGroups} setGroups={setGroups} groups={groups}>
+      <Layout hasFilter getGroups={getGroups} setGroups={setGroups} groups={groups}>
         {/* <div className="flex justify-between">
           <Button
             bordered
