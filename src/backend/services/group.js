@@ -37,8 +37,8 @@ export async function listFilteredGroups(body) {
   databaseConnection();
 
   // console.log(JSON.parse(body))
-  const teste = JSON.parse(body)
-  const listGroups = await Group.find(teste);
+  const filter = JSON.parse(body)
+  const listGroups = await Group.find(filter);
   return listGroups;
 }
 
