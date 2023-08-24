@@ -1,14 +1,14 @@
 import { Button, Dropdown, Input, Modal, Text } from "@nextui-org/react";
 import Papa from 'papaparse'
 import { useState } from "react";
-import { createGroup } from "@/src/backend/utils/group.js";
+
 import { ChevronDownIcon, DocumentPlusIcon, XCircleIcon } from "@/public/icons.js";
 import UploadReportButton from "./UploadReportButton.js";
 import formatClassicDate from "@/src/backend/utils/formatClassicDate.js";
 
 const acceptableCSVFileTypes = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, .csv';
 
-export default function UploadGroupButton({getGroups}) {
+export default function UploadListButton({getList, list, createFunction}) {
 
   const [csvData, setCsvData] = useState([])
   const [formData, setFormData] = useState([])
@@ -35,74 +35,52 @@ export default function UploadGroupButton({getGroups}) {
     newFormData[index].match = csvData[0][e]
 
     setFormData(newFormData)
-    // console.log(newFormData)
+
   }
 
   async function onHandleFormSubmit() {
 
     const newCsvData = csvData.slice(1, csvData.length)
 
-    function getCsvData(index){
-      if(formData[index].value === null) {
+    function getCsvData(indexCsv, indexForm){
+      if(formData[indexForm].value === null) {
         return null
       }
-      return newCsvData[i][formData[index].value]
-    }
+      return newCsvData[indexCsv][formData[indexForm].value]
+    }     
+    
+    const reports = []    
+    
+    newCsvData.forEach(async (itemCsv, indexCsv) => {  
+      let newFormData = {}      
+      formData.forEach((itemForm, indexForm) => {
+        newFormData = {...newFormData, [formData[indexForm].name]: itemForm.type === 'date' ? formatClassicDate(getCsvData(indexCsv, indexForm)) : getCsvData(indexCsv, indexForm)}
+      })
+    
+        const groupCreate = await createFunction(newFormData)
+        console.log(groupCreate)
+    
+        if(groupCreate._id) {
+          reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
+        } else if(groupCreate.message) {
+          reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
+        } else{
+          console.log(JSON.stringify(groupCreate))
+          // reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
+          reports.push({...newFormData, upload_status: "error", return: JSON.stringify(groupCreate)})
+        }
+    
+        if(indexCsv === newCsvData.length - 1) {
+          setUploadReport(reports)
+          console.log(reports)
+        }
 
-    let i = 0
+    })
+    
+    setTimeout(() => {
+      getList()  
+    }, 2000);  
 
-    const reports = []
-
-  setTimeout(() => {
-    getGroups()  
-  }, 2000);    
-    while (i < newCsvData.length) {
-      const newFormData = {
-        id_legacy: getCsvData(0),
-        name_contract: getCsvData(1),
-        name: getCsvData(2),
-        contract_cnpj: getCsvData(3),
-        status: getCsvData(4),
-        cs: getCsvData(5),
-        csm: getCsvData(6),
-        segment: getCsvData(7),
-        city: getCsvData(8),
-        state: getCsvData(9),
-        country: getCsvData(10),
-        address: getCsvData(11),
-        address_number: getCsvData(12),
-        stage: getCsvData(13),
-        dt_stage: formatClassicDate(getCsvData(14)),
-        size: getCsvData(12),
-        plan: getCsvData(16),
-        dt_register: formatClassicDate(getCsvData(17)),
-        dt_insert: formatClassicDate(getCsvData(18)),
-        dt_update: formatClassicDate(getCsvData(19)),
-        dt_cancel: formatClassicDate(getCsvData(20)),
-        cancel_tag: getCsvData(21),
-        cancel_factor: getCsvData(22),
-        cancel_description: getCsvData(23)
-      }
-
-
-      i++
-
-
-      const groupCreate = await createGroup(newFormData)
-      console.log(groupCreate)
-      
-      if(groupCreate._id) {
-        reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
-      } else if(groupCreate.code === 11000) {
-        reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
-      } else {
-        reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
-      }
-
-      if(i === newCsvData.length) {
-        setUploadReport(reports)
-      }
-    }
   }
 
   function onCloseButton() {
@@ -114,36 +92,19 @@ export default function UploadGroupButton({getGroups}) {
   
   function onOpenButton() {
     setIsVisible(true)
-    setFormData(content)
+
+    const listKeys = Object.entries(list)
+    const newList = []
+    listKeys.forEach(item => {
+      if(item[1] && item[1].type === 'date') {
+        newList.push({name: item[0], value: null, type: 'date'})
+      } else {
+        newList.push({name: item[0], value: null, type: null})
+      }
+    })
+    console.log(newList)
+    setFormData(newList)
   }
-
-  const content = [
-      { name: "id_legacy", value: null },
-      { name: "name_contract", value: null },
-      { name: "name", value: null },
-      { name: "contract_cnpj", value: null },
-      { name: "status", value: null },
-      { name: "cs", value: null },
-      { name: "csm", value: null },
-      { name: "segment", value: null },
-      { name: "city", value: null },
-      { name: "state", value: null },
-      { name: "country", value: null },
-      { name: "address", value: null },
-      { name: "address_number", value: null },
-      { name: "stage", value: null },
-      { name: "dt_stage", value: null },
-      { name: "size", value: null },
-      { name: "plan", value: null },
-      { name: "dt_register", value: null },
-      { name: "dt_insert", value: null },
-      { name: "dt_update", value: null },
-      { name: "dt_cancel", value: null },
-      { name: "cancel_tag", value: null },
-      { name: "cancel_factor", value: null },
-      { name: "cancel_description", value: null }
-    ]
-
 
   return (
     <>

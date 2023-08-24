@@ -23,7 +23,7 @@ export default function UploadReportButton({uploadReport}) {
     })
 
     // const response = await fetch(url);
-    const csvData = await new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+    const csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
     const blobURL = URL.createObjectURL(csvData);
 
     const link = document.createElement('a');
