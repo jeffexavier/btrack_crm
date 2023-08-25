@@ -76,10 +76,6 @@ export default function UploadListButton({getList, list, createFunction}) {
         }
 
     })
-    
-    setTimeout(() => {
-      getList()  
-    }, 2000);  
 
   }
 

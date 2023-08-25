@@ -8,7 +8,7 @@ import formatClassicDate from "@/src/backend/utils/formatClassicDate.js";
 
 const acceptableCSVFileTypes = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, .csv';
 
-export default function UploadBiudPurchasesButton({getList, list, createFunction}) {
+export default function UploadBiudPurchasesButton({getList, list, createFunction, tokenBiud}) {
 
   const [csvData, setCsvData] = useState([])
   const [formData, setFormData] = useState([])
@@ -51,42 +51,40 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
     
     const reports = []    
     
-    newCsvData.forEach(async (itemCsv, indexCsv) => {  
-      let newFormData = {}      
-      
-        newFormData = { ...newFormData,
-          token: "0006faf6-7a61-426c-9034-579f2cfcfa83",
-          total_value: null,
-          discount: null,
-          nfe: null,
-          date: null,
-          observation: null,
+    newCsvData.forEach(async (itemCsv, indexCsv) => {     
+        const newFormData = {
+          token: tokenBiud,
+          total_value: getCsvData(indexCsv, 0),
+          discount: getCsvData(indexCsv, 1),
+          nfe: getCsvData(indexCsv, 2),
+          date: formatClassicDate(getCsvData(indexCsv, 3)),
+          observation: getCsvData(indexCsv, 4),
           customer: {
-            cpf: null,
-            forceUpdateData: null,
-            name: null,
-            phone: null,
-            email:null,
-            gender: null,
-            born_at: null,
+            cpf: getCsvData(indexCsv, 5),
+            forceUpdateData: getCsvData(indexCsv, 6),
+            name: getCsvData(indexCsv, 7),
+            phone: getCsvData(indexCsv, 8),
+            email:getCsvData(indexCsv, 9),
+            gender: getCsvData(indexCsv, 10),
+            born_at: formatClassicDate(getCsvData(indexCsv, 11)),
             address: {
-              postal_code: null,
-              street: null,
-              district: null,
-              complement: null,
-              number: null,
-              city: null,
-              uf: null
+              postal_code: getCsvData(indexCsv, 12),
+              street: getCsvData(indexCsv, 13),
+              district: getCsvData(indexCsv, 14),
+              complement: getCsvData(indexCsv, 15),
+              number: getCsvData(indexCsv, 16),
+              city: getCsvData(indexCsv, 17),
+              uf: getCsvData(indexCsv, 18)
             }
           },
           products: [
             {
-              code: null,
-              discount: null,
-              description: null,
-              quantity: null,
-              cfop: null,
-              value: null
+              code: getCsvData(indexCsv, 19),
+              discount: getCsvData(indexCsv, 20),
+              description: getCsvData(indexCsv, 21),
+              quantity: getCsvData(indexCsv, 22),
+              cfop: getCsvData(indexCsv, 23),
+              value: getCsvData(indexCsv, 24)
             }
           ]
         }
@@ -147,6 +145,7 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
         open={isVisible}
         closeButton
         onClose={() => onCloseButton()}
+        width="500px"
       >
       <Modal.Header>
         <Text>Upload CSV</Text>
@@ -171,7 +170,7 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
         {csvData.length > 0 ? <>
           {formData.map((item, index) => (
             <div className="flex justify-center gap-2">
-              <div className="min-w-[150px] bg-secondary-full rounded-xl py-2 px-4 text-[#fff] font-semibold">
+              <div className="min-w-[250px] bg-secondary-full rounded-xl py-2 px-4 text-[#fff] font-semibold">
                 <p>{item.name}</p>
               </div>
               <Dropdown isDisabled={csvData.length > 0 ? false : true}>

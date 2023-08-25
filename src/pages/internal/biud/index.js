@@ -24,7 +24,6 @@ export default function Biud() {
   }
 
   const purchaseBody = {
-    token: {type: "string"},
     total_value: {type: "number"},
     discount: {type: "number"},
     nfe: {type: "string"},
@@ -61,7 +60,7 @@ export default function Biud() {
           {newToken ?
             <>
               <Input readOnly color="secondary" value={newToken} contentRight={<Button light auto color="secondary" icon={<DocumentDuplicateIcon width="18px" />} />}/>
-              <UploadBiudPurchasesButton list createFunction/>
+              <UploadBiudPurchasesButton list={purchaseBody} createFunction={() => "Foi aqui!"} tokenBiud={newToken}/>
             </> 
           : ""
           }
