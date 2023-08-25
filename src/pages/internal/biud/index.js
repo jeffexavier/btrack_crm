@@ -5,6 +5,7 @@ import { createTokenBiud } from "@/src/backend/utils/biud.js"
 import { DocumentDuplicateIcon } from "@/public/icons.js"
 
 import UploadBiudPurchasesButton from "@/src/components/biud/UploadBiudPurchasesButton.js"
+import UploadBiudCustomersButton from "@/src/components/biud/UploadBiudCustomersButton.js"
 import DownloadListButton from "@/src/components/buttons/DowloadListButton.js"
 
 export default function Biud() {
@@ -50,6 +51,23 @@ export default function Biud() {
     products_cfop: {type: "number"},
     products_value: {type: "number"}
   }
+  
+  const customerBody = {
+    cpf: {type: "string"},
+    name: {type: "string"},
+    email: {type: "string"},
+    phone: {type: "string"},
+    bornAt: {type: "date"},
+    gender: {type: "string"},
+    forceUpdateData: {type: "boolean"},
+    address_postal_code: {type: "string"},
+    address_street: {type: "string"},
+    address_district: {type: "string"},
+    address_complement: {type: "string"},
+    address_number: {type: "string"},
+    address_city: {type: "string"},
+    address_uf: {type: "string"}
+  }
 
   return (
     <>
@@ -61,6 +79,7 @@ export default function Biud() {
             <>
               <Input readOnly color="secondary" value={newToken} contentRight={<Button light auto color="secondary" icon={<DocumentDuplicateIcon width="18px" />} />}/>
               <UploadBiudPurchasesButton list={purchaseBody} createFunction={() => "Foi aqui!"} tokenBiud={newToken}/>
+              <UploadBiudCustomersButton list={customerBody} createFunction={() => "Foi aqui!"} tokenBiud={newToken}/>
             </> 
           : ""
           }

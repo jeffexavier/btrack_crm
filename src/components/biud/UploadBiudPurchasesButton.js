@@ -109,9 +109,9 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
 
     })
     
-    setTimeout(() => {
-      getList()  
-    }, 2000);  
+    // setTimeout(() => {
+    //   getList()  
+    // }, 2000);  
 
   }
 
@@ -140,7 +140,7 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
 
   return (
     <>
-      <Button flat auto color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onOpenButton()}>Upload CSV</Button>
+      <Button flat auto color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onOpenButton()}>Upload Purchases CSV</Button>
       <Modal
         open={isVisible}
         closeButton
@@ -205,7 +205,7 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
           >
             Cancelar
           </Button>
-        <Button flat disabled={csvData.length > 0 ? false : true} color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit(formData)}>Upload File</Button>
+        <Button flat disabled={csvData.length > 0 ? false : true} color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit(formData)}>Upload Purchases File</Button>
       </Modal.Footer>
       </Modal>
     </>
