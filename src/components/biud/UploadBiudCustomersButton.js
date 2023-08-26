@@ -76,13 +76,13 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
         console.log(groupCreate)
     
         if(groupCreate._id) {
-          reports.push({...newFormData, upload_status: "success", return: groupCreate._id})
+          reports.push({...newFormData, address: newFormData.address.toString(), upload_status: "success", return: groupCreate._id})
         } else if(groupCreate.message) {
-          reports.push({...newFormData, upload_status: "error", return: groupCreate.message})
+          reports.push({...newFormData, address: newFormData.address.toString(), upload_status: "error", return: groupCreate.message})
         } else{
           console.log(JSON.stringify(groupCreate))
           // reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
-          reports.push({...newFormData, upload_status: "error", return: JSON.stringify(groupCreate)})
+          reports.push({...newFormData, address: newFormData.address.toString(), upload_status: "error", return: JSON.stringify(groupCreate)})
         }
     
         if(indexCsv === newCsvData.length - 1) {
