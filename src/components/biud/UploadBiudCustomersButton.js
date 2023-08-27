@@ -44,15 +44,15 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
 
     const newErrors = []
 
-    const teste = await unparseCustomersBiud(csvData, formData, tokenBiud);
+    const createdCustomersBiud = await unparseCustomersBiud(csvData, formData, tokenBiud);
     
-    teste.forEach((item, index) => {
-      if(item.cause) {
-        newErrors.push({upload_status: item.cause.code, upload_return: item.cause.message})
-      } else if (item.success === false) {
-        newErrors.push({upload_status: "error",  upload_return: item.messages[0]})
+    createdCustomersBiud.forEach((item, index) => {
+      if(item.response.cause) {
+        newErrors.push({upload_status: item.response.cause.code, return: item.response.cause.message})
+      } else if (item.response.success === false) {
+        newErrors.push({upload_status: "error", return: item.response.errors[0]})
       } else if ( item.success === true) {
-        newErrors.push({upload_status: "success", upload_return: item.messages[0]})
+        newErrors.push({upload_status: "success", return: item.response.messages[0]})
       }
     })
 
@@ -60,67 +60,67 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
   }
 
 
-  async function onHandleFormSubmit() {
+  // async function onHandleFormSubmit() {
 
-    const newCsvData = csvData.slice(1, csvData.length)
+  //   const newCsvData = csvData.slice(1, csvData.length)
 
-    function getCsvData(indexCsv, indexForm){
-      if(formData[indexForm].value === null) {
-        return null
-      }
-      return newCsvData[indexCsv][formData[indexForm].value]
-    }     
+  //   function getCsvData(indexCsv, indexForm){
+  //     if(formData[indexForm].value === null) {
+  //       return null
+  //     }
+  //     return newCsvData[indexCsv][formData[indexForm].value]
+  //   }     
     
-    const reports = []    
+  //   const reports = []    
     
-    newCsvData.forEach(async (itemCsv, indexCsv) => {     
-        const newFormData = {
-            token: tokenBiud,
-            cpf: getCsvData(indexCsv, 0),
-            name: getCsvData(indexCsv, 1),
-            email: getCsvData(indexCsv, 2),
-            phone: getCsvData(indexCsv, 3),
-            bornAt: formatClassicDate(getCsvData(indexCsv, 4)),
-            gender: getCsvData(indexCsv, 5),
-            forceUpdateData: getCsvData(indexCsv, 6),
-            address: {
-              postal_code: getCsvData(indexCsv, 7),
-              street: getCsvData(indexCsv, 8),
-              district: getCsvData(indexCsv, 9),
-              complement: getCsvData(indexCsv, 10),
-              number: getCsvData(indexCsv, 11),
-              city: getCsvData(indexCsv, 12),
-              uf: getCsvData(indexCsv, 13)
-            }
-          }
+  //   newCsvData.forEach(async (itemCsv, indexCsv) => {     
+  //       const newFormData = {
+  //           token: tokenBiud,
+  //           cpf: getCsvData(indexCsv, 0),
+  //           name: getCsvData(indexCsv, 1),
+  //           email: getCsvData(indexCsv, 2),
+  //           phone: getCsvData(indexCsv, 3),
+  //           bornAt: formatClassicDate(getCsvData(indexCsv, 4)),
+  //           gender: getCsvData(indexCsv, 5),
+  //           forceUpdateData: getCsvData(indexCsv, 6),
+  //           address: {
+  //             postal_code: getCsvData(indexCsv, 7),
+  //             street: getCsvData(indexCsv, 8),
+  //             district: getCsvData(indexCsv, 9),
+  //             complement: getCsvData(indexCsv, 10),
+  //             number: getCsvData(indexCsv, 11),
+  //             city: getCsvData(indexCsv, 12),
+  //             uf: getCsvData(indexCsv, 13)
+  //           }
+  //         }
 
-        console.log(newFormData)
+  //       console.log(newFormData)
     
-        const groupCreate = await createFunction(newFormData)
-        console.log(groupCreate)
+  //       const groupCreate = await createFunction(newFormData)
+  //       console.log(groupCreate)
     
-        if(groupCreate._id) {
-          reports.push({...newFormData, address: newFormData.address.toString(), upload_status: "success", return: groupCreate._id})
-        } else if(groupCreate.message) {
-          reports.push({...newFormData, address: newFormData.address.toString(), upload_status: "error", return: groupCreate.message})
-        } else{
-          console.log(JSON.stringify(groupCreate))
-          // reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
-          reports.push({...newFormData, address: newFormData.address.toString(), upload_status: "error", return: JSON.stringify(groupCreate)})
-        }
+  //       if(groupCreate._id) {
+  //         reports.push({...newFormData, address: newFormData.address.toString(), upload_status: "success", return: groupCreate._id})
+  //       } else if(groupCreate.message) {
+  //         reports.push({...newFormData, address: newFormData.address.toString(), upload_status: "error", return: groupCreate.message})
+  //       } else{
+  //         console.log(JSON.stringify(groupCreate))
+  //         // reports.push({...newFormData, upload_status: "error", return: `Group with CNPJ ${newFormData.contract_cnpj} already exists!`})
+  //         reports.push({...newFormData, address: newFormData.address.toString(), upload_status: "error", return: JSON.stringify(groupCreate)})
+  //       }
     
-        if(indexCsv === newCsvData.length - 1) {
-          setUploadReport(reports)
-          console.log(reports)
-        }
+  //       if(indexCsv === newCsvData.length - 1) {
+  //         setUploadReport(reports)
+  //         console.log(reports)
+  //       }
 
-    })
+  //   })
     
-    // setTimeout(() => {
-    //   getList()  
-    // }, 2000);  
+  //   // setTimeout(() => {
+  //   //   getList()  
+  //   // }, 2000);  
 
-  }
+  // }
 
   function onCloseButton() {
     setFormData([])
@@ -147,7 +147,7 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
 
   return (
     <>
-      <Button flat auto color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onOpenButton()}>Upload Customers CSV</Button>
+      <Button flat auto color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onOpenButton()}>Upload Customers</Button>
       <Modal
         open={isVisible}
         closeButton
@@ -161,7 +161,7 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
       <>
 
       </> 
-        <div a="file" onDrop={(e) => {e.preventDefault(); console.log(e)}} className={`flex flex-col min-h-[80px] text-center justify-center items-center ${csvData.length > 0 ? "bg-secondary-flat border-0" : "bg-[#fff] border-2"} border-secondary-full rounded-xl`}>
+        <div a="input" type="file" onDrop={(e) => {e.preventDefault(); console.log(e)}} className={`flex flex-col min-h-[80px] text-center justify-center items-center ${csvData.length > 0 ? "bg-secondary-flat border-0" : "bg-[#fff] border-2"} border-secondary-full rounded-xl`}>
         <input
         className="text-secondary-full"
         type="file"
@@ -212,8 +212,8 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
           >
             Cancelar
           </Button>
-        <Button flat disabled={csvData.length > 0 ? false : true} color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit(formData)}>Upload Customers File</Button>
-        <Button flat disabled={csvData.length > 0 ? false : true} color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit2(csvData, formData, tokenBiud)}>Upload Customers File 2</Button>
+        {/* <Button flat disabled={csvData.length > 0 ? false : true} color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit(formData)}>Upload Customers File</Button> */}
+        <Button flat disabled={csvData.length > 0 ? false : true} color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit2(csvData, formData, tokenBiud)}>Upload File 2</Button>
       </Modal.Footer>
       </Modal>
     </>

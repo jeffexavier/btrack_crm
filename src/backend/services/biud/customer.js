@@ -13,7 +13,7 @@ export async function createCustomers(body) {
       }).catch((error) => {
         return error
       })
-      return createCustomerBiud
+      return {...item, response: createCustomerBiud}
     })
     return await Promise.all(createdCustomersBiud).then((response) => response)
     // return typeof(body)
