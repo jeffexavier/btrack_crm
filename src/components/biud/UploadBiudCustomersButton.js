@@ -6,6 +6,8 @@ import { ChevronDownIcon, DocumentPlusIcon, XCircleIcon } from "@/public/icons.j
 import UploadReportButton from "../buttons/UploadReportButton.js";
 import formatClassicDate from "@/src/backend/utils/formatClassicDate.js";
 
+import { unparseCustomersBiud } from "@/src/backend/utils/biud.js";
+
 const acceptableCSVFileTypes = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel, .csv';
 
 export default function UploadBiudPurchasesButton({getList, list, createFunction, tokenBiud}) {
@@ -37,6 +39,26 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
     setFormData(newFormData)
 
   }
+
+  async function onHandleFormSubmit2(csvData, formData, tokenBiud) {
+
+    const newErrors = []
+
+    const teste = await unparseCustomersBiud(csvData, formData, tokenBiud);
+    
+    teste.forEach((item, index) => {
+      if(item.cause) {
+        newErrors.push({success: false, status: item.cause.code, message: item.cause.message})
+      } else if (item.success === false) {
+        newErrors.push({success: item.success, status: "error", message: item.messages[0]})
+      } else if ( item.success === true) {
+        newErrors.push({success: item.success, status: "success", message: item.messages[0]})
+      }
+    })
+
+    setUploadReport(newErrors)
+  }
+
 
   async function onHandleFormSubmit() {
 
@@ -71,6 +93,8 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
               uf: getCsvData(indexCsv, 13)
             }
           }
+
+        console.log(newFormData)
     
         const groupCreate = await createFunction(newFormData)
         console.log(groupCreate)
@@ -189,8 +213,10 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
             Cancelar
           </Button>
         <Button flat disabled={csvData.length > 0 ? false : true} color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit(formData)}>Upload Customers File</Button>
+        <Button flat disabled={csvData.length > 0 ? false : true} color="secondary" icon={<DocumentPlusIcon width={18} />} onPress={() => onHandleFormSubmit2(csvData, formData, tokenBiud)}>Upload Customers File 2</Button>
       </Modal.Footer>
       </Modal>
     </>
   )
 }
+
