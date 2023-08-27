@@ -59,17 +59,16 @@ export async function unparseCustomersBiud(csvData, formData, tokenBiud) {
         phone: getCsvData(indexCsv, 3).replace(/\D/g, ''),
         bornAt: formatClassicDate(getCsvData(indexCsv, 4)) || '2000-01-01',
         gender: getCsvData(indexCsv, 5),
-        forceUpdateData: getCsvData(indexCsv, 6) || true
-        // ,
-        // address: {
-        //   postal_code: getCsvData(indexCsv, 7),
-        //   street: getCsvData(indexCsv, 8),
-        //   district: getCsvData(indexCsv, 9),
-        //   complement: getCsvData(indexCsv, 10),
-        //   number: getCsvData(indexCsv, 11),
-        //   city: getCsvData(indexCsv, 12),
-        //   uf: getCsvData(indexCsv, 13)
-        // }
+        forceUpdateData: getCsvData(indexCsv, 6) || true,
+        address: {
+          postal_code: getCsvData(indexCsv, 7),
+          street: getCsvData(indexCsv, 8),
+          district: getCsvData(indexCsv, 9),
+          complement: getCsvData(indexCsv, 10),
+          number: getCsvData(indexCsv, 11),
+          city: getCsvData(indexCsv, 12),
+          uf: getCsvData(indexCsv, 13)
+        }
       }
       return newFormData
   })

@@ -48,11 +48,11 @@ export default function UploadBiudPurchasesButton({getList, list, createFunction
     
     teste.forEach((item, index) => {
       if(item.cause) {
-        newErrors.push({success: false, status: item.cause.code, message: item.cause.message})
+        newErrors.push({upload_status: item.cause.code, upload_return: item.cause.message})
       } else if (item.success === false) {
-        newErrors.push({success: item.success, status: "error", message: item.messages[0]})
+        newErrors.push({upload_status: "error",  upload_return: item.messages[0]})
       } else if ( item.success === true) {
-        newErrors.push({success: item.success, status: "success", message: item.messages[0]})
+        newErrors.push({upload_status: "success", upload_return: item.messages[0]})
       }
     })
 
