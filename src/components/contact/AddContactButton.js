@@ -1,23 +1,29 @@
 
 import { Tooltip, Button, Modal, Text, Divider, Input, Radio, Dropdown } from "@nextui-org/react"
-import { PlusIcon, UserPlusIcon, TrashIcon, XCircleIcon, PencilIcon } from "@/public/icons.js"
-import { useState } from "react"
+import { PlusIcon, UserPlusIcon, TrashIcon, XCircleIcon, PencilIcon, ChevronDownIcon } from "@/public/icons.js"
+import { useEffect, useState } from "react"
 import { createContact } from "@/src/backend/utils/contact.js"
+import { listGroup } from "@/src/backend/utils/group.js"
 
 export default function AddContactButton({groupId, getContactsList}) {
 
+  
   const bodyFormat = {
-    groups: groupId,
+    groups: groupId || "",
     name: "",
     email: [],
     phone: [],
     primary: []
   }
+  
 
+  
   const [isVisible, setIsVisible] = useState(false)
   const [attComponent, setAttComponent] = useState(true)
-
+  
+  const [listedGroups, setListedGroups] = useState([])
   const [inputMessage, setInputMessage] = useState('Adicionar contato');
+  
   const [colorMessage, setColorMessage] = useState('secondary')
 
   const [formData, setFormData] = useState(bodyFormat)
@@ -85,10 +91,37 @@ export default function AddContactButton({groupId, getContactsList}) {
     getContactsList(groupId)
   }
 
+  function onChangeSelectGroup(index) {
+    setFormData({
+      ...formData,
+      groups: {...listedGroups[index]}
+    })
+  }
+
+  async function getGroups() {
+    const groupList = await fetch('/api/group').then((response) => {
+      return response.json();
+    }).catch((error) => {
+      return error
+    })
+    setListedGroups(groupList.value)
+  }
+
+  useEffect(() => {
+    if(!groupId) {
+      getGroups()
+      console.log("teste não tenho groupID")
+    }
+  }, [])
+
   return (
     <>      
       <Tooltip content="Adicionar contato">
+        {groupId ? 
         <Button flat auto size="xs" color="secondary" icon={<PlusIcon width="18px" />} onPress={() => setIsVisible(true)}>Adicionar</Button>
+        :
+        <Button flat auto color="secondary" icon={<UserPlusIcon width="18px" />} onPress={() => setIsVisible(true)}>Adicionar contato</Button>
+        }
       </Tooltip>
       <Modal
       closeButton
@@ -99,6 +132,18 @@ export default function AddContactButton({groupId, getContactsList}) {
           <Text>Adicionar contato</Text>
         </Modal.Header>
         <Modal.Body>
+        <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color="secondary">Empresa</Text>
+          <Dropdown isBordered >
+            <Dropdown.Trigger>
+              <Button color="secondary"  bordered icon={<ChevronDownIcon width="18px" />}>{formData.groups ? formData.groups.name : 'Escolha uma empresa'}</Button>
+            </Dropdown.Trigger>
+            <Dropdown.Menu onAction={(e) => onChangeSelectGroup(e)}>
+              {listedGroups.map((item, index) => (
+                <Dropdown.Item color="secondary" key={index}>{item.name || ''}</Dropdown.Item>
+                )
+              )}
+            </Dropdown.Menu>
+          </Dropdown>
           <Text>Name</Text>
           <Input aria-label="input contact name" color="secondary" bordered initialValue="" onChange={(e) => {editFormData(e, 0, 'name')}}/>
           <Text>E-mail</Text>
@@ -164,35 +209,6 @@ export default function AddContactButton({groupId, getContactsList}) {
           </Button>
         </Modal.Footer>
       </Modal>
-      {/* <Modal
-        closeButton
-        onClose={() => {setIsVisible(false)}}
-        open={isVisible}
-      >
-        <Modal.Header>
-          <Text>Adicionar contato</Text>
-        </Modal.Header>
-        <Divider />
-        <Modal.Body>
-        <Input aria-label="input" bordered animated color="secondary" type="text" placeholder="Lohane Vêkanandre Sthephany Smith Bueno de HA HA HA de Raio Laser bala de Icekiss" onChange={(e) => {handleFormEdit(e, 'name')}} label="Nome" value={formData.name} />
-        <Input aria-label="input"bordered animated color="secondary" type="email" placeholder="val@disnei.com" onChange={(e) => {handleFormEdit(e, 'phoneValue')}} label="E-mail" value={formData.phoneValue} />
-        <Radio.Group aria-label="input" orientation="horizontal" onChange={(e) => {handleFormRadioEdit(e, 'emailLabel')}}>
-          <Radio value="trabalho">Trabalho</Radio>
-          <Radio value="comercial">Comercial</Radio>
-          <Radio value="pessoal">Pessoal</Radio>
-        </Radio.Group>
-        <Input aria-label="input" bordered animated color="secondary" type="tel" placeholder="61999999999" onChange={(e) => {handleFormEdit(e, 'emailValue')}} label="Telefone" value={formData.emailValue} />
-        <Radio.Group aria-label="input" orientation="horizontal"onChange={(e) => {handleFormRadioEdit(e, 'phoneLabel')}}>
-          <Radio value="trabalho">Trabalho</Radio>
-          <Radio value="comercial">Comercial</Radio>
-          <Radio value="pessoal">Pessoal</Radio>
-        </Radio.Group>
-        <Divider />
-        </Modal.Body>
-        <Modal.Footer>
-        <Button flat auto onPress={() => handleFormSubmit(groupId, formData)} color="secondary" icon={<UserPlusIcon width="18px"/>}>Adicionar contato</Button>
-        </Modal.Footer>
-      </Modal> */}
     </>
 
 
