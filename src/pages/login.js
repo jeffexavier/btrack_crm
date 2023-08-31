@@ -3,6 +3,7 @@ import Link from "next/link.js";
 import Router from "next/router.js";
 import { useState } from "react";
 import { setCookie } from "nookies";
+import { Button, Input, Text } from "@nextui-org/react";
 
 export default function Login() {
 
@@ -51,14 +52,26 @@ export default function Login() {
 
 
   return (
-    <div className="bg-eerie-black min-h-screen flex justify-center items-center align-middle">
-      <form onSubmit={handleFormSubmit} className="bg-lavender p-3 flex flex-col gap-2 rounded-md">
+    <div className="flex justify-between bg-secondary-flat min-h-full items-center align-middle">
+      <div className="w-2/6">"teste"</div>
+      <div className="flex gap-4 justify-center items-center w-2/6 bg-white h-screen">
+        {/* <form onSubmit={handleFormSubmit} className="bg-lavender p-3 flex flex-col gap-2 rounded-md">
         <input type="email" autoComplete="email" placeholder="E-mail" onChange={(e) => {handleFormEdit(e, 'email')}} className="p-2 rounded-md shadow-sm focus:shadow-inner"/>
         <input type="password" autoComplete="password" placeholder="Senha" onChange={(e) => {handleFormEdit(e, 'password')}} className="p-2 rounded-md shadow-sm focus:shadow-inner"/>
         {error && <p className="text-red text-sm">{error}</p> }
         <button type="submit" className="p-2 bg-rose hover:bg-rebecca-purple active:bg-tropical-indigo rounded-md shadow-md text-white">Login</button>
         <Link href="/cadastro" className="text-eerie-black text-sm">Quero me cadastrar...</Link>
-      </form>
+      </form> */}
+        
+        <div className="grid gap-10 w-full p-12">
+          <Text h2>Seja bem-vindo de volta!</Text>
+          <Input underlined type="email" autoComplete="email" labelPlaceholder="E-mail" onChange={(e) => {handleFormEdit(e, 'email')}}/>
+          <Input.Password underlined type="password" autoComplete="password" labelPlaceholder="Senha" onChange={(e) => {handleFormEdit(e, 'password')}}/>
+          {error && <p className="text-red text-sm">{error}</p> }
+          <Button color="secondary">Entrar</Button>
+          <Link href="/cadastro" className="text-eerie-black text-sm">Quero me cadastrar...</Link>
+        </div>
+      </div>
     </div>
   )
 }
