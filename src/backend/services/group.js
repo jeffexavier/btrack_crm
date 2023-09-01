@@ -9,14 +9,13 @@ import { createToken } from "@/src/backend/utils/token";
 
 export async function createGroup(body) {
   await databaseConnection();
-    const newGroup = body
-    const createNewGroup = await Group.create(newGroup);
+    const createNewGroup = await Group.create(body);
     if(body.partner) {
       const partner = await Partner.findById(body.partner)
       partner.groups.push(createNewGroup._id) 
       await partner.save();
     }
-
+    console.log(createNewGroup)
     return createNewGroup;     
 }
 
@@ -38,8 +37,8 @@ export async function listFilteredGroups(body) {
   databaseConnection();
 
   // console.log(JSON.parse(body))
-  const teste = JSON.parse(body)
-  const listGroups = await Group.find(teste);
+  const filter = JSON.parse(body)
+  const listGroups = await Group.find(filter);
   return listGroups;
 }
 

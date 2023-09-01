@@ -2,7 +2,7 @@ import Image from "next/image.js";
 import Link from "next/link.js";
 
 import { Button, Navbar } from "@nextui-org/react";
-import { BuildingOffice2Icon, BanknotesIcon, ChatBubbleOvalLeftEllipsisIcon, QrCodeIcon, HomeIcon, FaceSmileIcon } from "@/public/icons.js";
+import { BuildingOffice2Icon, BanknotesIcon, ChatBubbleOvalLeftEllipsisIcon, QrCodeIcon, HomeIcon, FaceSmileIcon, BiudIcon, UserIcon } from "@/public/icons.js";
 
 const pages = [
   {
@@ -14,6 +14,11 @@ const pages = [
     page: "Empresas",
     link: "/internal/group",
     icon: () => <BuildingOffice2Icon stroke="#7828C7" width="18px"/>
+  },
+  {
+    page: "Contatos",
+    link: "/internal/contacts",
+    icon: () => <UserIcon stroke="#7828C7" width="18px"/>
   },
   {
     page: "Financeiro",
@@ -33,8 +38,12 @@ const pages = [
   {
     page: "QR Code",
     link: "/internal/qrcode",
-    icon: () => <QrCodeIcon stroke="#7828C7" width="18px"/>
-    
+    icon: () => <QrCodeIcon stroke="#7828C7" width="18px"/>  
+  },
+  {
+    page: "BIUD",
+    link: "/internal/biud",
+    icon: () => <BiudIcon stroke="#7828C7" width="18px"/>    
   }
 ]
 

@@ -16,14 +16,14 @@ export default function UploadReportButton({uploadReport}) {
     setIsVisible(false)
   }
   
-  async function downloadCsv(name, area) {
+  async function downloadCsv(array, name, area) {
 
-    const csv = Papa.unparse(uploadReport, {
+    const csv = Papa.unparse(array, {
       delimiter: ";"
     })
 
     // const response = await fetch(url);
-    const csvData = await new Blob([csv], {type: 'text/csv;charset=utf-8;'});
+    const csvData = new Blob([csv], {type: 'text/csv;charset=utf-8;'});
     const blobURL = URL.createObjectURL(csvData);
 
     const link = document.createElement('a');
@@ -117,7 +117,7 @@ export default function UploadReportButton({uploadReport}) {
     </Modal.Body>
     <Modal.Footer>
       <Button light auto color="error" icon={<XCircleIcon width="18px"/>} onPress={() => onCloseButton()}>Cancelar</Button>
-      <Button flat auto color="secondary" icon={<DocumentArrowDownIcon width="18px" />} onPress={() => downloadCsv('report_upload_lista', 'empresas')}>download</Button>
+      <Button flat auto color="secondary" icon={<DocumentArrowDownIcon width="18px" />} onPress={() => downloadCsv(uploadReport, 'report_upload_lista', 'empresas')}>download</Button>
     </Modal.Footer>
   </Modal>
     </>

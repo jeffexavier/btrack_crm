@@ -18,8 +18,7 @@ export default function GroupId({userData, listedGroups}) {
   const [groupData, setGroupData] = useState(listedGroups)
   return (
     <InternalLayout>
-      <Layout>
-        <div className="flex justify-around gap-4">
+        <div className="flex justify-around gap-4 p-5">
           <div className="grid gap-4 place-content-start">
             <EditGroup groupData={groupData} />
             <ContactsList groupId={groupData._id} />
@@ -28,9 +27,7 @@ export default function GroupId({userData, listedGroups}) {
             <Card.Header><Text h4>Comentários</Text></Card.Header>
             <Card.Body><AreaComment groupId={groupData._id} userData={userData}/></Card.Body>
           </Card>
-
         </div>
-      </Layout>
     </InternalLayout>
   );
 }

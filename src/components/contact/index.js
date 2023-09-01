@@ -74,7 +74,7 @@ export default function ContactsList({groupId}) {
         </div>
           <div className="flex flex-col gap-1">
             {contact.groups.map((item, index) => (
-              <Link href={`/internal/group/${item._id}`} target="_blank"><Text size={14}>{item.name_contract}</Text></Link>                
+              <Link href={`/internal/group/${item._id}`} target="_blank"><Text size={14}>{item.name}</Text></Link>                
             ))}
           </div>
         </div>

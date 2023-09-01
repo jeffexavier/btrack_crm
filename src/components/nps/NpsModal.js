@@ -90,11 +90,11 @@ export default function NpsModal({npsData, getNpsList, isVisible, setIsVisible})
       <Text size={15} css={{marginLeft: "5px", marginBottom: "0px"}} color="secondary">Empresa</Text>
       <Dropdown isBordered isDisabled={npsData ? true : false}>
         <Dropdown.Trigger>
-          <Button color="secondary" disabled={npsData ? true : false} bordered icon={<ChevronDownIcon width="18px" />}>{formData.group ? formData.group.name_contract : 'Escolha uma empresa'}</Button>
+          <Button color="secondary" disabled={npsData ? true : false} bordered icon={<ChevronDownIcon width="18px" />}>{formData.group ? formData.group.name : 'Escolha uma empresa'}</Button>
         </Dropdown.Trigger>
         <Dropdown.Menu onAction={(e) => onChangeSelectGroup(e)}>
           {listedGroups.map((item, index) => (
-            <Dropdown.Item color="secondary" key={index}>{item.name_contract || ''}</Dropdown.Item>
+            <Dropdown.Item color="secondary" key={index}>{item.name || ''}</Dropdown.Item>
             )
           )}
         </Dropdown.Menu>
@@ -113,8 +113,8 @@ export default function NpsModal({npsData, getNpsList, isVisible, setIsVisible})
           )}
         </Dropdown.Menu>
       </Dropdown>
-        <Input bordered color="secondary" type="date" label="Data da pesquisa" onChange={(e) => onHandleFormEdit(e.target.value,"survey_date")} value={formatDate(formData.survey_date) || ""}/>
-        <Input bordered color="secondary" type="date" label="Data da resposta" onChange={(e) => onHandleFormEdit(e.target.value,"ref_date")} value={formatDate(formData.ref_date) || ""}/>
+        <Input bordered color="secondary" type="date" label="Data da pesquisa" onChange={(e) => onHandleFormEdit(e.target.value,"survey_date")} initialValuealue={formatDate(formData.survey_date || "")}/>
+        <Input bordered color="secondary" type="date" label="Data da resposta" onChange={(e) => onHandleFormEdit(e.target.value,"ref_date")} initialValue={formatDate(formData.ref_date || "")} />
         <div className="flex pl-1">
           <Text size="$sm" color="secondary">Nota</Text>
         </div>

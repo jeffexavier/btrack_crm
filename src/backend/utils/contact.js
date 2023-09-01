@@ -15,6 +15,13 @@ export async function createContact(body) {
   return createdContact
 }
 
+export async function listContacts() {
+  const contactsList = await fetch('/api/contact').then((response) => {
+    return response.json()
+  })
+  return contactsList
+}
+
 export async function updateContact(id, body) {
   const contactUpdate = await fetch(`/api/contact?id=${id}`, {
     method: "PUT",
