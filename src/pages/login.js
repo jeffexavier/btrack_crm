@@ -5,6 +5,8 @@ import { useState } from "react";
 import { setCookie } from "nookies";
 import { Button, Checkbox, Input, Text } from "@nextui-org/react";
 import { AtSymbolIcon, KeyIcon, TrashIcon } from "@/public/icons.js";
+import bgImg from "@/public/images/bg-login.jpg"
+import Image from "next/image.js";
 
 export default function Login() {
 
@@ -55,9 +57,11 @@ export default function Login() {
 
 
   return (
-    <div className="flex justify-between bg-secondary-flat min-h-full items-center align-middle">
-      <div className="flex justify-center bg-red w-full">"teste"</div>
-      <div className="grid gap-4 justify-center content-center w-[890px] bg-white h-screen">
+    <div className="flex justify-between min-h-full items-center align-middle">
+    <div className="overflow-hidden w-[100vw]">
+      <Image src={bgImg} style={{objectFit: 'cover', height: '100vh'}} quality={10}/>
+    </div>
+      <div className="grid gap-4 justify-center content-center w-[890px] bg-[f1f1f1] h-screen">
         <div className="grid gap-4 w-full p-12 justify-center">
           <Text h2>Bem-vindo de volta!</Text>
           <Input bordered color="secondary" type="email" autoComplete="email" labelLeft={<AtSymbolIcon width="18px"/>}s onChange={(e) => {handleFormEdit(e, 'email')}}/>
