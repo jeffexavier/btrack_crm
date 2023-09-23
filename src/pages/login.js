@@ -62,7 +62,7 @@ export default function Login() {
       <Image src={bgImg} style={{objectFit: 'cover', height: '100vh'}} quality={10}/>
     </div>
       <div className="grid gap-4 justify-center content-center w-[890px] bg-[f1f1f1] h-screen">
-        <div className="grid gap-4 w-full p-12 justify-center">
+        <div className="grid gap-4 w-25 p-12 justify-center text-center">
           <Text h2>Bem-vindo de volta!</Text>
           <Input bordered color="secondary" type="email" autoComplete="email" labelLeft={<AtSymbolIcon width="18px"/>}s onChange={(e) => {handleFormEdit(e, 'email')}}/>
           <Input.Password bordered color="secondary" type="password" autoComplete="password" labelLeft={<KeyIcon width="18px"/>} onChange={(e) => {handleFormEdit(e, 'password')}}/>
