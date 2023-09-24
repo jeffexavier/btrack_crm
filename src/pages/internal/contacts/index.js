@@ -8,6 +8,7 @@ import Layout from "@/src/components/contact/Layout.js";
 export default function ContactsList() {
 
   const [listedContacts, setListedContacts] = useState([])
+  
   async function getContactsList() {
     const contactsList = await listContacts()
     console.log(contactsList.value)

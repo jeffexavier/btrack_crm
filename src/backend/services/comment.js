@@ -47,7 +47,7 @@ export async function listComments(id, id_partner, id_group, id_user, id_parent)
     query.parent = id_parent;
   }
 
-  const listComments = await Comment.find(query).populate("children").populate('parent').populate("created_by").populate({path: 'children', populate: {path: 'created_by'}});
+  const listComments = await Comment.find(query).populate("children").populate('parent').populate("created_by").populate({path: 'children', populate: {path: 'created_by'}}).populate("group");
   // const listComments = await Comment.find(query).populate({path: 'children', populate: {path: 'created_by'}});
   return listComments;
 }

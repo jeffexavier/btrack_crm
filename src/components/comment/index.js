@@ -5,12 +5,15 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowUturnLeftIcon, ChatBubbleBottomCenterTextIcon, PencilIcon, TrashIcon } from "@/public/icons.js";
 import CommentInput from "./CommentInput.js";
 import AreaCreateComment from "./AreaCreateComment.js";
+import { listGroup } from "@/src/backend/utils/group.js";
+
 
 
 export function AreaComment({userData, groupId}) {
 
   const [formData, setFormData] = useState({});
   const [comments, setComments] = useState([])
+  const [listGroups, setListGroups] = useState([])
 
 
   function handleFormEdit(e, name) {
@@ -21,14 +24,21 @@ export function AreaComment({userData, groupId}) {
   }
 
   async function getComments(id_group){
-    const listComments = await fetch(`/api/comment/?id_group=${id_group}`).then((response) => {
-      return response.json()
-    })
-
-    const listedComments = listComments.value.slice(0).reverse()
-    setComments(listedComments)
-    console.log(listedComments)
-
+    if(id_group) {
+      const listComments = await fetch(`/api/comment/?id_group=${id_group}`).then((response) => {
+        return response.json()
+      })
+      console.log(listComments)
+      const listedComments = listComments.value.slice(0).reverse()
+      setComments(listedComments)
+    } else {
+      const listComments = await fetch(`/api/comment/`).then((response) => {
+        return response.json()
+      })
+      console.log(listComments)
+      const listedComments = listComments.value.slice(0).reverse()
+      setComments(listedComments)
+    }
   }
 
   function setConsoleLog(groupId) {
@@ -36,6 +46,7 @@ export function AreaComment({userData, groupId}) {
   }
 
   useEffect(() => {
+    setListGroups(listGroup)
     getComments(groupId)
   }, [])
 

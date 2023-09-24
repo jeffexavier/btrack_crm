@@ -32,7 +32,7 @@ export default function AddAnswerButton({comment, groupId, getComments, userData
         <Popover.Content>
         <div className="flex flex-col pb-2 pt-4">
           <div className="flex justify-between pr-2">
-            <User bordered color="secondary" src={comment.created_by.avatar || ""} name={comment.created_by.email} />
+            <User bordered color="secondary" src={comment.created_by ? comment.created_by.avatar : ""} name={comment.created_by ? comment.created_by.email : ""} />
             <Button light color="error" auto icon={<XMarkIcon width="18px" />} onPress={() => setIsVisible(false)}/>
           </div>
           <div className="flex flex-col px-4 pt-4 pb-2 gap-4 max-w-md">

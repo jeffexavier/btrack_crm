@@ -78,10 +78,10 @@ export default function CommentInput({ comment, commentType, getComments, groupI
       <User
         bordered
         color="secondary"
-        src={comment.created_by.avatar || ""}
-        name={comment.created_by.email}
+        src={comment.created_by ? comment.created_by.avatar : ""}
+        name={comment.created_by && comment.group ? `${comment.created_by.email} | ${comment.group.name}` : comment.created_by.email}
       />
-      <div className="flex justify-between gap-4 pr-4 py-2 ml-4 h-fit rounded-md shadow-md mb-6 mt-1">
+      <div className="flex justify-between gap-4 pr-4 ml-4 h-fit rounded-md shadow-md mb-6 mt-1">
         <Textarea
           minRows={1}
           ref={commentRef}
@@ -90,8 +90,8 @@ export default function CommentInput({ comment, commentType, getComments, groupI
           borderWeight="0"
           helperText={
             comment.dt_update
-              ? `Editado em ${formatDateToLocaleString(comment.dt_update)}`
-              : ""
+              ? `${formatDateToLocaleString(comment.dt_register)} | Editado em ${formatDateToLocaleString(comment.dt_update)}`
+              : formatDateToLocaleString(comment.dt_register)
           }
           maxRows={5}
           readOnly={!isEditable}
